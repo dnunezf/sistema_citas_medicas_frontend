@@ -1,14 +1,20 @@
+import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import RegisterPage from './auth/RegisterPage'; // O el path donde lo guardaste
+import Header from './components/Header';
+import Footer from './components/Footer';
+import RegistroUsuario from './components/RegistroUsuario';
+import './styles/global.css';
 
 function App() {
-  return (
-      <Router>
-        <Routes>
-          <Route path="/registro" element={<RegisterPage />} />
-        </Routes>
-      </Router>
-  );
+    return (
+        <Router>
+            <Header />
+            <Routes>
+                <Route path="/registro" element={<RegistroUsuario />} />
+            </Routes>
+            <Footer />
+        </Router>
+    );
 }
 
 export default App;

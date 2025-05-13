@@ -1,0 +1,202 @@
+/* ===== Reset ===== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', sans-serif;
+    background-color: #f8f9fa;
+    color: #333;
+}
+
+/* ===== HEADER ===== */
+header {
+    background-color: #ffffff;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+    position: relative;
+    z-index: 1000;
+}
+
+/* Top bar (logo + contacto) */
+.top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 30px;
+    background-color: #eaf6ff;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.logo img {
+    height: 50px;
+}
+
+.brand-title {
+    font-size: 22px;
+    font-weight: 700;
+    color: #007bff;
+    letter-spacing: 0.5px;
+}
+
+.contact-info {
+    font-size: 14px;
+    color: #555;
+}
+
+/* Navigation bar */
+.main-nav {
+    background-color: #d3e9fc;
+    padding: 12px 30px;
+}
+
+.main-nav ul {
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 25px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+}
+
+.main-nav a {
+    text-decoration: none;
+    color: #333;
+    font-weight: 500;
+    transition: all 0.3s;
+    padding: 6px 10px;
+    border-radius: 5px;
+}
+
+.main-nav a:hover {
+    color: #007bff;
+    background-color: #ffffff60;
+}
+
+/* Login button highlight */
+.login-button {
+    background-color: #007bff;
+    color: white !important;
+    padding: 7px 16px;
+    border-radius: 6px;
+    transition: background-color 0.3s ease;
+    font-weight: 600;
+}
+
+.login-button:hover {
+    background-color: #0056b3;
+}
+
+/* Dropdowns */
+.dropdown {
+    position: relative;
+}
+
+.dropdown .dropdown-content {
+    display: none;
+    position: absolute;
+    right: 0;
+    background-color: #fff;
+    box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+    padding: 10px 0;
+    border-radius: 8px;
+    z-index: 999;
+    min-width: 190px;
+    animation: fadeIn 0.2s ease-in-out;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.dropdown-content li {
+    padding: 10px 20px;
+    transition: background-color 0.2s;
+}
+
+.dropdown-content li a {
+    color: #333;
+    text-decoration: none;
+    display: block;
+    font-size: 14px;
+}
+
+.dropdown-content li:hover {
+    background-color: #f5f5f5;
+}
+
+.dropdown-content li a:hover {
+    color: #007bff;
+}
+
+/* Fade animation */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-5px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ===== FOOTER ===== */
+footer {
+    background-color: #212529;
+    color: #ffffff;
+    text-align: center;
+    padding: 25px 20px;
+    width: 100%;
+    margin-top: 60px;
+}
+
+.footer-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.footer-content p {
+    font-size: 14px;
+    opacity: 0.9;
+}
+
+.social-icons {
+    display: flex;
+    gap: 20px;
+}
+
+.social-icons a {
+    display: inline-block;
+    transition: transform 0.3s ease;
+}
+
+.social-icons img {
+    width: 28px;
+    height: 28px;
+    filter: brightness(0) invert(1);
+}
+
+.social-icons img:hover {
+    transform: scale(1.2);
+}
+
+/* ===== Responsive adjustments ===== */
+@media (max-width: 768px) {
+    .top-bar {
+        flex-direction: column;
+        text-align: center;
+        gap: 8px;
+    }
+
+    .main-nav ul {
+        justify-content: center;
+        gap: 18px;
+    }
+
+    .logo img {
+        height: 42px;
+    }
+}
