@@ -13,7 +13,8 @@ function App() {
             <Header />
             <Routes>
                 <Route path="/registro" element={<RegistroUsuario />} />
-                <Route path="/medico/perfil" element={<PerfilMedico />} />
+                <Route path="/medico/perfil/:id" element={<PerfilMedico />} />
+
             </Routes>
             <Footer />
         </Router>

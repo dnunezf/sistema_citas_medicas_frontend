@@ -2,29 +2,57 @@
     max-width: 600px;
     margin: auto;
     padding: 1rem;
+    font-family: Arial, sans-serif;
 }
 
-.perfil-medico form {
+.perfil-medico .title {
+    text-align: center;
+    color: #0077cc;
+    margin-bottom: 1.5rem;
+}
+
+.form-group {
+    margin-bottom: 1rem;
     display: flex;
     flex-direction: column;
 }
 
+.form-group label {
+    font-weight: bold;
+    margin-bottom: 0.3rem;
+}
+
 .perfil-medico input,
 .perfil-medico textarea {
-    margin-bottom: 10px;
-    padding: 8px;
+    padding: 0.5rem;
     font-size: 1rem;
+    border-radius: 4px;
+    border: 1px solid #ccc;
 }
 
 .perfil-medico button {
     background-color: #0077cc;
     color: white;
     border: none;
-    padding: 0.6rem;
+    padding: 0.7rem;
     cursor: pointer;
     border-radius: 5px;
+    font-size: 1rem;
 }
 
 .perfil-medico button:hover {
     background-color: #005fa3;
+}
+
+.foto-circular {
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+.foto-circular img {
+    width: 140px;
+    height: 140px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 2px solid #ccc;
 }
