@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import '../styles/auth/login.css';
 
 const Login = () => {
@@ -9,6 +10,7 @@ const Login = () => {
 
     const [error, setError] = useState('');
     const [mensaje, setMensaje] = useState('');
+    const navigate = useNavigate();
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -38,7 +40,8 @@ const Login = () => {
                 const usuario = await response.json();
                 setMensaje(`Bienvenido, ${usuario.nombre}`);
                 setError('');
-                // Guardar token o usuario si es necesario
+                // Redirigir a la página principal
+                navigate('/');
             } else if (response.status === 401) {
                 setError('Credenciales inválidas. Intenta de nuevo.');
                 setMensaje('');
@@ -72,9 +75,9 @@ const Login = () => {
                 )}
 
                 <div className="input-group">
-          <span className="icon">
-            <i className="fas fa-id-card"></i>
-          </span>
+                    <span className="icon">
+                        <i className="fas fa-id-card"></i>
+                    </span>
                     <input
                         type="text"
                         name="id"
@@ -89,9 +92,9 @@ const Login = () => {
                 </div>
 
                 <div className="input-group">
-          <span className="icon">
-            <i className="fas fa-lock"></i>
-          </span>
+                    <span className="icon">
+                        <i className="fas fa-lock"></i>
+                    </span>
                     <input
                         type="password"
                         name="clave"
@@ -119,4 +122,3 @@ const Login = () => {
 };
 
 export default Login;
-
