@@ -14,7 +14,7 @@ function App() {
             <Routes>
                 <Route path="/registro" element={<RegistroUsuario />} />
                 <Route path="/medico/perfil/:id" element={<PerfilMedico />} />
-
+                <Route path="/login" element={<Login />} />
             </Routes>
             <Footer />
         </Router>
