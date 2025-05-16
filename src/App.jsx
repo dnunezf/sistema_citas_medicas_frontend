@@ -4,6 +4,7 @@ import Header from './components/Header';
 import Footer from './components/Footer';
 import RegistroUsuario from './components/RegistroUsuario';
 import PerfilMedico from './components/PerfilMedico.jsx';
+import Login from './components/Login';
 
 import './styles/global.css';
 

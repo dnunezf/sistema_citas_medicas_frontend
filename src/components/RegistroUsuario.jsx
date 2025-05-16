@@ -14,7 +14,7 @@ const RegistroUsuario = () => {
     const [error, setError] = useState('');
     const [errorClave, setErrorClave] = useState('');
 
-    const rolesDisponibles = ['PACIENTE', 'MEDICO', 'ADMINISTRADOR'];
+    const rolesDisponibles = ['PACIENTE', 'MEDICO',];
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
