@@ -7,8 +7,7 @@ import PerfilMedico from './components/PerfilMedico.jsx';
 import Login from './components/Login';
 import BuscarCita from './components/BuscarCita';
 import GestionMedicos from './components/GestionMedicos';
-
-import './styles/global.css';
+import GestionCitasWrapper from "./auth/GestionCItasWrapper.jsx";
 
 function App() {
     return (
@@ -20,6 +19,7 @@ function App() {
                 <Route path="/login" element={<Login />} />
                 <Route path="/" element={<BuscarCita />} />
                 <Route path="/admin/medicos" element={<GestionMedicos />} />
+                <Route path="/medico/:id/gestion-citas" element={<GestionCitasWrapper />} />
             </Routes>
             <Footer />
         </Router>
