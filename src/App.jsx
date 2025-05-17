@@ -7,7 +7,12 @@ import PerfilMedico from './components/PerfilMedico.jsx';
 import Login from './components/Login';
 import BuscarCita from './components/BuscarCita';
 import GestionMedicos from './components/GestionMedicos';
+import BuscarCita from './components/BuscarCita';
+import GestionMedicos from './components/GestionMedicos';
 import GestionCitasWrapper from "./auth/GestionCItasWrapper.jsx";
+import HorarioMedicoExtendido from './components/HorarioMedicoExtendido.jsx';
+
+import './styles/global.css';
 
 function App() {
     return (
@@ -20,7 +25,9 @@ function App() {
                 <Route path="/" element={<BuscarCita />} />
                 <Route path="/admin/medicos" element={<GestionMedicos />} />
                 <Route path="/medico/:id/gestion-citas" element={<GestionCitasWrapper />} />
+                <Route path="/horarios/medico/:id" element={<HorarioMedicoExtendido />} />
             </Routes>
+
             <Footer />
         </Router>
     );
