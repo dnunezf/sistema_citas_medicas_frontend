@@ -5,6 +5,8 @@ import Footer from './components/Footer';
 import RegistroUsuario from './components/RegistroUsuario';
 import PerfilMedico from './components/PerfilMedico.jsx';
 import Login from './components/Login';
+import BuscarCita from './components/BuscarCita';
+import GestionMedicos from './components/GestionMedicos';
 
 import './styles/global.css';
 
@@ -16,6 +18,8 @@ function App() {
                 <Route path="/registro" element={<RegistroUsuario />} />
                 <Route path="/medico/perfil/:id" element={<PerfilMedico />} />
                 <Route path="/login" element={<Login />} />
+                <Route path="/" element={<BuscarCita />} />
+                <Route path="/admin/medicos" element={<GestionMedicos />} />
             </Routes>
             <Footer />
         </Router>

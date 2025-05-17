@@ -1,0 +1,192 @@
+/* ========== Estilos generales ========== */
+body {
+    font-family: 'Segoe UI', sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
+
+/* ========== Contenedor principal ========== */
+.dashboard-container {
+    max-width: 1100px;
+    margin: 40px auto;
+    padding: 20px;
+}
+
+/* Título */
+.dashboard-title {
+    text-align: center;
+    color: #007bff;
+    font-size: 26px;
+    margin-bottom: 25px;
+}
+
+/* ========== Formulario de búsqueda ========== */
+.form-busqueda {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+.form-busqueda input {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    flex: 1;
+    min-width: 250px;
+    font-size: 15px;
+}
+
+.form-busqueda button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 15px;
+    transition: background-color 0.3s;
+}
+
+.form-busqueda button:hover {
+    background-color: #0056b3;
+}
+
+/* ========== Tarjeta de médico ========== */
+.doctor-card {
+    background-color: white;
+    padding: 20px 25px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+    margin-bottom: 25px;
+}
+
+/* Info del doctor */
+.doctor-info {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.doctor-info img {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.doctor-text {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.doctor-text strong {
+    font-size: 18px;
+    color: #2c3e50;
+}
+
+.especialidad {
+    color: #007bff;
+    font-weight: 500;
+}
+
+.costoConsulta {
+    color: #007bff;
+    font-weight: 500;
+}
+
+.ubicacion {
+    color: #555;
+    font-size: 14px;
+}
+
+/* ========== Horarios ========== */
+.horarios {
+    margin-top: 15px;
+    padding: 12px;
+    background: #f9f9f9;
+    border-radius: 6px;
+}
+
+.fecha {
+    font-weight: bold;
+    color: #ff7f00;
+    margin-bottom: 6px;
+}
+
+.horas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.hora {
+    display: inline-block;
+    padding: 8px 12px;
+    border-radius: 50%;
+    background-color: #3498db;
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.hora:hover {
+    background-color: #00a8e8;
+}
+
+.hora.ocupada {
+    background-color: #ccc;
+    color: #666;
+    pointer-events: none;
+    cursor: not-allowed;
+}
+
+
+/* ========== Botón Agendar ========== */
+.schedule-button {
+    margin-top: 20px;
+    text-align: right;
+}
+
+.schedule-button a {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 18px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background-color 0.3s;
+}
+
+.schedule-button a:hover {
+    background-color: #0056b3;
+}
+
+.form-busqueda select {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    flex: 1;
+    min-width: 250px;
+    font-size: 15px;
+    background-color: white;
+    color: #333;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 16px 16px;
+}
+
+.foto-doctor {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 2px solid #ccc;
+}

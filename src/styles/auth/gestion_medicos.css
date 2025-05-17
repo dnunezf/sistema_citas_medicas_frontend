@@ -1,0 +1,150 @@
+body {
+    font-family: 'Segoe UI', sans-serif;
+    background-color: #f4f9fc;
+    margin: 0;
+    padding: 0;
+}
+
+/* Contenedor */
+.container {
+    max-width: 1100px;
+    margin: 60px auto;
+    background: white;
+    padding: 30px 40px;
+    border-radius: 14px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* Título */
+.title {
+    text-align: center;
+    font-size: 26px;
+    color: #007bff;
+    margin-bottom: 25px;
+}
+
+/* Mensajes */
+.message {
+    padding: 12px 18px;
+    border-radius: 6px;
+    font-size: 15px;
+    font-weight: 500;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+/* Tabla */
+.medicos-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+.medicos-table thead {
+    background-color: #007bff;
+    color: white;
+}
+
+.medicos-table th,
+.medicos-table td {
+    padding: 14px;
+    text-align: center;
+    border: 1px solid #ddd;
+    font-size: 14px;
+}
+
+.medicos-table tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.medicos-table tbody tr:hover {
+    background-color: #eaf4ff;
+}
+
+/* Select y botón en cada fila */
+select {
+    padding: 6px 10px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+    background-color: #fff;
+    transition: border-color 0.3s ease;
+}
+
+select:hover {
+    border-color: #007bff;
+}
+
+button {
+    background-color: #28a745;
+    color: white;
+    padding: 8px 14px;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 6px;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #218838;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .container {
+        padding: 20px;
+    }
+
+    .medicos-table,
+    .medicos-table thead,
+    .medicos-table tbody,
+    .medicos-table th,
+    .medicos-table td,
+    .medicos-table tr {
+        display: block;
+        width: 100%;
+    }
+
+    .medicos-table thead {
+        display: none;
+    }
+
+    .medicos-table tr {
+        margin-bottom: 15px;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        padding: 10px;
+        background-color: #fff;
+    }
+
+    .medicos-table td {
+        text-align: right;
+        padding-left: 50%;
+        position: relative;
+        font-size: 14px;
+    }
+
+    .medicos-table td::before {
+        content: attr(data-label);
+        position: absolute;
+        left: 10px;
+        top: 12px;
+        font-weight: bold;
+        text-align: left;
+        color: #007bff;
+    }
+}

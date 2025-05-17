@@ -3,11 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import '../styles/auth/login.css';
 
 const Login = () => {
-    const [formData, setFormData] = useState({
-        id: '',
-        clave: '',
-    });
-
+    const [formData, setFormData] = useState({ id: '', clave: '' });
     const [error, setError] = useState('');
     const [mensaje, setMensaje] = useState('');
     const navigate = useNavigate();
@@ -30,18 +26,40 @@ const Login = () => {
             const response = await fetch('http://localhost:8080/api/usuarios/login', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    id: formData.id,
-                    clave: formData.clave,
-                }),
+                body: JSON.stringify(formData),
             });
 
             if (response.ok) {
                 const usuario = await response.json();
                 setMensaje(`Bienvenido, ${usuario.nombre}`);
                 setError('');
-                // Redirigir a la página principal
-                navigate('/');
+
+                if (usuario.rol === 'MEDICO') {
+                    if (usuario.estadoAprobacion === 'rechazado') {
+                        setError('❌ Su solicitud fue rechazada. Contacte al administrador.');
+                        return;
+                    } else if (usuario.estadoAprobacion === 'pendiente') {
+                        setError('⚠️ Su cuenta está pendiente de aprobación.');
+                        return;
+                    }
+                }
+
+                // Redireccionar según el rol
+                switch (usuario.rol) {
+                    case 'ADMINISTRADOR':
+                        navigate('/admin/medicos');
+                        break;
+                    case 'MEDICO':
+                        navigate(`/medico/perfil/${usuario.id}`);
+                        break;
+                    case 'PACIENTE':
+                        navigate('/');
+                        break;
+                    default:
+                        setError('Rol no reconocido.');
+                        break;
+                }
+
             } else if (response.status === 401) {
                 setError('Credenciales inválidas. Intenta de nuevo.');
                 setMensaje('');
@@ -59,11 +77,7 @@ const Login = () => {
         <div className="login-container">
             <form className="login-form" onSubmit={handleSubmit}>
                 <div className="login-header">
-                    <img
-                        src="/images/login.jpg"
-                        alt="Login Icon"
-                        className="login-image"
-                    />
+                    <img src="/images/login.jpg" alt="Login Icon" className="login-image" />
                     <h2>Bienvenido</h2>
                     <p>Inicie sesión para acceder a su cuenta</p>
                 </div>
@@ -75,9 +89,7 @@ const Login = () => {
                 )}
 
                 <div className="input-group">
-                    <span className="icon">
-                        <i className="fas fa-id-card"></i>
-                    </span>
+                    <span className="icon"><i className="fas fa-id-card"></i></span>
                     <input
                         type="text"
                         name="id"
@@ -92,9 +104,7 @@ const Login = () => {
                 </div>
 
                 <div className="input-group">
-                    <span className="icon">
-                        <i className="fas fa-lock"></i>
-                    </span>
+                    <span className="icon"><i className="fas fa-lock"></i></span>
                     <input
                         type="password"
                         name="clave"
