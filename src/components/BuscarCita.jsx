@@ -40,6 +40,14 @@ const BuscarCita = () => {
         return horasOcupadas[idMedico]?.includes(fechaHora);
     };
 
+    const obtenerFechaMasProxima = (espacios) => {
+        const fechas = Object.keys(espacios);
+        if (fechas.length === 0) return null;
+
+        const ordenadas = fechas.sort((a, b) => new Date(a) - new Date(b));
+        return ordenadas[0];
+    };
+
     return (
         <main className="dashboard-container">
             <h2 className="dashboard-title">Buscar Médicos</h2>
@@ -62,50 +70,58 @@ const BuscarCita = () => {
                 <button type="submit">Buscar</button>
             </form>
 
-            {medicos.map((medico) => (
-                <div className="doctor-card" key={medico.id}>
-                    <div className="doctor-info">
-                        <img
-                            src={medico.rutaFotoPerfil || "/images/avatar.png"}
-                            alt="Foto del Doctor"
-                            className="foto-doctor"
-                            onError={(e) => (e.target.src = "/images/avatar.png")}
-                        />
-                        <div className="doctor-text">
-                            <strong>{medico.nombre}</strong>
-                            <div className="especialidad">{medico.especialidad}</div>
-                            <div className="costoConsulta">Precio de consulta: ${medico.costoConsulta}</div>
-                            <div className="ubicacion">{medico.localidad}</div>
+            {medicos.map((medico) => {
+                const espacios = espaciosAgrupados[medico.id] || {};
+                const fechaProxima = obtenerFechaMasProxima(espacios);
+                const horas = fechaProxima ? espacios[fechaProxima] : [];
+
+                return (
+                    <div className="doctor-card" key={medico.id}>
+                        <div className="doctor-info">
+                            <img
+                                src={medico.rutaFotoPerfil || "/images/avatar.png"}
+                                alt="Foto del Doctor"
+                                className="foto-doctor"
+                                onError={(e) => (e.target.src = "/images/avatar.png")}
+                            />
+                            <div className="doctor-text">
+                                <strong>{medico.nombre}</strong>
+                                <div className="especialidad">{medico.especialidad}</div>
+                                <div className="costoConsulta">Precio de consulta: ${medico.costoConsulta}</div>
+                                <div className="ubicacion">{medico.localidad}</div>
+                            </div>
+                        </div>
+
+                        <div className="horarios">
+                            {fechaProxima ? (
+                                <>
+                                    <div className="fecha">
+                                        {new Date(fechaProxima).toLocaleDateString()}
+                                    </div>
+                                    <div className="horas">
+                                        {horas.map((hora) => {
+                                            const horaSimple = new Date(hora).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                                            const clase = esHoraOcupada(medico.id, hora) ? "hora ocupada" : "hora";
+                                            const link = `/citas/confirmar?idMedico=${medico.id}&fechaHora=${hora}`;
+                                            return (
+                                                <a key={hora} href={clase === "hora" ? link : undefined} className={clase}>
+                                                    {horaSimple}
+                                                </a>
+                                            );
+                                        })}
+                                    </div>
+                                </>
+                            ) : (
+                                <p>No hay horarios disponibles próximamente.</p>
+                            )}
+                        </div>
+
+                        <div className="schedule-button">
+                            <a href={`/citas/horarios/${medico.id}`}>Horario Extendido →</a>
                         </div>
                     </div>
-
-                    <div className="horarios">
-                        {Object.entries(espaciosAgrupados[medico.id] || {}).map(([fecha, horas]) => (
-                            <div key={fecha}>
-                                <div className="fecha">
-                                    {new Date(fecha).toLocaleDateString()}
-                                </div>
-                                <div className="horas">
-                                    {horas.map((hora) => {
-                                        const horaSimple = new Date(hora).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-                                        const clase = esHoraOcupada(medico.id, hora) ? "hora ocupada" : "hora";
-                                        const link = `/citas/confirmar?idMedico=${medico.id}&fechaHora=${hora}`;
-                                        return (
-                                            <a key={hora} href={clase === "hora" ? link : undefined} className={clase}>
-                                                {horaSimple}
-                                            </a>
-                                        );
-                                    })}
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-
-                    <div className="schedule-button">
-                        <a href={`/citas/horarios/${medico.id}`}>Horario Extendido →</a>
-                    </div>
-                </div>
-            ))}
+                );
+            })}
         </main>
     );
 };

@@ -1,134 +1,91 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import '../styles/auth/horarios_medico.css';
+import '../styles/auth/dashboard.css';
 
-function HorariosMedicoExtendido() {
+function HorarioMedicoExtendido() {
     const { id } = useParams();
-    const idMedico = parseInt(id);
-
-    const [horarios, setHorarios] = useState([]);
-    const [nuevoHorario, setNuevoHorario] = useState({
-        dia: '',
-        horaInicio: '',
-        horaFin: '',
-        intervalo: 30
-    });
-
-    const cargarHorarios = () => {
-        fetch(`http://localhost:8080/api/horarios/medico/${idMedico}`)
-            .then(res => res.json())
-            .then(data => {
-                if (Array.isArray(data)) {
-                    setHorarios(data);
-                } else {
-                    console.warn("Se esperaba un arreglo pero se recibió:", data);
-                    setHorarios([]);
-                }
-            })
-            .catch(err => {
-                console.error("Error al cargar horarios:", err);
-                setHorarios([]);
-            });
-    };
+    const [medico, setMedico] = useState(null);
+    const [espacios, setEspacios] = useState([]);
+    const [ocupados, setOcupados] = useState([]);
 
     useEffect(() => {
-        if (idMedico) {
-            cargarHorarios();
-        }
-    }, [idMedico]);
+        fetch(`http://localhost:8080/api/medicos/${id}`)
+            .then(res => res.json())
+            .then(setMedico);
 
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setNuevoHorario(prev => ({ ...prev, [name]: value }));
-    };
-
-    const guardarHorario = () => {
-        const { dia, horaInicio, horaFin, intervalo } = nuevoHorario;
-
-        if (!idMedico || !dia || !horaInicio || !horaFin || intervalo <= 0) {
-            alert("Todos los campos son obligatorios.");
-            return;
-        }
-
-        fetch(`http://localhost:8080/api/horarios/medico/${idMedico}`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                diaSemana: dia,
-                horaInicio: horaInicio,
-                horaFin: horaFin,
-                tiempoCita: intervalo
-            })
-        })
-            .then(res => {
-                if (!res.ok) throw new Error("Error al guardar el horario.");
-                return res.text();
-            })
-            .then(() => {
-                alert("Horario creado correctamente.");
-                setNuevoHorario({ dia: '', horaInicio: '', horaFin: '', intervalo: 30 });
-                cargarHorarios();
-            })
-            .catch(err => {
-                console.error(err);
-                alert("No se pudo guardar el horario.");
+        fetch(`http://localhost:8080/api/dashboard`)
+            .then(res => res.json())
+            .then(data => {
+                setEspacios(data.espaciosAgrupados[id] || {});
+                setOcupados(data.horasOcupadas[id] || []);
             });
+    }, [id]);
+
+    const esHoraOcupada = (fechaHora) => {
+        return ocupados.includes(fechaHora);
     };
 
-    const eliminarHorario = (idHorario) => {
-        fetch(`http://localhost:8080/api/horarios/${idHorario}`, {
-            method: "DELETE"
-        })
-            .then(() => cargarHorarios());
+    const esEnProximosTresDias = (fechaStr) => {
+        const fecha = new Date(fechaStr + "T00:00");
+        const hoy = new Date();
+        hoy.setHours(0, 0, 0, 0);
+        const max = new Date(hoy);
+        max.setDate(hoy.getDate() + 2);
+        return fecha >= hoy && fecha <= max;
     };
 
     return (
-        <div className="horarios-container">
-            <h2>Gestión de Horarios del Médico</h2>
+        <main className="dashboard-container">
+            <h2 className="dashboard-title">Horario Extendido</h2>
 
-            <div>
-                <h4>Agregar horario</h4>
-                <label>Día:
-                    <select name="dia" value={nuevoHorario.dia} onChange={handleChange}>
-                        <option value="">Seleccione</option>
-                        <option value="LUNES">Lunes</option>
-                        <option value="MARTES">Martes</option>
-                        <option value="MIERCOLES">Miércoles</option>
-                        <option value="JUEVES">Jueves</option>
-                        <option value="VIERNES">Viernes</option>
-                        <option value="SABADO">Sábado</option>
-                        <option value="DOMINGO">Domingo</option>
-                    </select>
-                </label>
-                <label>Hora inicio:
-                    <input type="time" name="horaInicio" value={nuevoHorario.horaInicio} onChange={handleChange} />
-                </label>
-                <label>Hora fin:
-                    <input type="time" name="horaFin" value={nuevoHorario.horaFin} onChange={handleChange} />
-                </label>
-                <label>Duración de la cita (min):
-                    <input type="number" name="intervalo" value={nuevoHorario.intervalo} onChange={handleChange} />
-                </label>
-                <button onClick={guardarHorario}>Guardar Horario</button>
+            <div style={{ marginBottom: '20px' }}>
+                <a href="/" className="btn-volver">← Volver al Dashboard</a>
             </div>
 
-            <hr />
+            {medico && (
+                <div className="doctor-card">
+                    <div className="doctor-info">
+                        <img
+                            src={medico.rutaFotoPerfil || "/images/avatar.png"}
+                            alt="Foto del Doctor"
+                            className="foto-doctor"
+                            onError={(e) => (e.target.src = "/images/avatar.png")}
+                        />
+                        <div className="doctor-text">
+                            <strong>{medico.nombre}</strong>
+                            <div className="especialidad">{medico.especialidad}</div>
+                            <div className="costoConsulta">Precio de consulta: ${medico.costoConsulta}</div>
+                            <div className="ubicacion">{medico.localidad}</div>
+                        </div>
+                    </div>
 
-            <h4>Horarios actuales</h4>
-            <ul className="horarios-lista">
-                {Array.isArray(horarios) && horarios.length > 0 ? (
-                    horarios.map(h => (
-                        <li key={h.id}>
-                            {h.diaSemana}: {h.horaInicio} - {h.horaFin}
-                            <button onClick={() => eliminarHorario(h.id)}>Eliminar</button>
-                        </li>
-                    ))
-                ) : (
-                    <li>No hay horarios registrados.</li>
-                )}
-            </ul>
-        </div>
+                    <div className="horarios">
+                        {Object.entries(espacios)
+                            .filter(([fecha]) => esEnProximosTresDias(fecha))
+                            .map(([fecha, horas]) => (
+                                <div key={fecha}>
+                                    <div className="fecha">
+                                        {new Date(fecha).toLocaleDateString()}
+                                    </div>
+                                    <div className="horas">
+                                        {horas.map((hora) => {
+                                            const horaFormateada = new Date(hora).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                                            const clase = esHoraOcupada(hora) ? "hora ocupada" : "hora";
+                                            const link = `/citas/confirmar?idMedico=${id}&fechaHora=${hora}`;
+                                            return (
+                                                <a key={hora} href={clase === "hora" ? link : undefined} className={clase}>
+                                                    {horaFormateada}
+                                                </a>
+                                            );
+                                        })}
+                                    </div>
+                                </div>
+                            ))}
+                    </div>
+                </div>
+            )}
+        </main>
     );
 }
 
-export default HorariosMedicoExtendido;
+export default HorarioMedicoExtendido;

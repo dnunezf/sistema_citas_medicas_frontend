@@ -7,10 +7,10 @@ import PerfilMedico from './components/PerfilMedico.jsx';
 import Login from './components/Login';
 import BuscarCita from './components/BuscarCita';
 import GestionMedicos from './components/GestionMedicos';
-import BuscarCita from './components/BuscarCita';
-import GestionMedicos from './components/GestionMedicos';
 import GestionCitasWrapper from "./auth/GestionCItasWrapper.jsx";
-import HorarioMedicoExtendido from './components/HorarioMedicoExtendido.jsx';
+import CrearHorarioMedico from './components/CrearHorarioMedico.jsx';
+import HorarioMedicoExtendido from './components/HorarioMedicoExtendido';
+import ConfirmarCita from './components/ConfirmarCita';
 
 import './styles/global.css';
 
@@ -25,7 +25,10 @@ function App() {
                 <Route path="/" element={<BuscarCita />} />
                 <Route path="/admin/medicos" element={<GestionMedicos />} />
                 <Route path="/medico/:id/gestion-citas" element={<GestionCitasWrapper />} />
-                <Route path="/horarios/medico/:id" element={<HorarioMedicoExtendido />} />
+                <Route path="/horarios/medico/:id" element={<CrearHorarioMedico />} />
+                <Route path="/citas/horarios/:id" element={<HorarioMedicoExtendido />} />
+                <Route path="/citas/confirmar" element={<ConfirmarCita />} />
+
             </Routes>
 
             <Footer />

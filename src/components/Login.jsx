@@ -44,7 +44,16 @@ const Login = () => {
                     }
                 }
 
-                // Redireccionar según el rol
+                // Comprobar si hay una URL pendiente en sessionStorage
+                const urlPendiente = sessionStorage.getItem("urlPendiente");
+                sessionStorage.removeItem("urlPendiente");
+
+                if (urlPendiente) {
+                    navigate(urlPendiente);
+                    return;
+                }
+
+                // Redirección por rol si no hay url pendiente
                 switch (usuario.rol) {
                     case 'ADMINISTRADOR':
                         navigate('/admin/medicos');
@@ -53,7 +62,7 @@ const Login = () => {
                         navigate(`/medico/perfil/${usuario.id}`);
                         break;
                     case 'PACIENTE':
-                        navigate('/');
+                        navigate('/dashboard');
                         break;
                     default:
                         setError('Rol no reconocido.');
