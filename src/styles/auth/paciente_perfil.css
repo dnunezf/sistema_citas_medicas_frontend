@@ -1,68 +1,117 @@
+/* ===== CONTENEDOR PRINCIPAL ===== */
 .perfil-paciente-container {
-    max-width: 500px;
-    margin: 40px auto;
-    padding: 30px;
-    background-color: #fff;
-    border-radius: 12px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+    max-width: 580px;
+    margin: 70px auto;
+    padding: 40px 35px;
+    background: linear-gradient(to right, #fefeff, #f7faff);
+    border-radius: 14px;
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.08);
+    font-family: 'Segoe UI', sans-serif;
+    transition: all 0.3s ease-in-out;
 }
 
+/* ===== TÍTULO ===== */
 .perfil-paciente-container h2 {
     text-align: center;
     color: #007bff;
-    margin-bottom: 25px;
+    margin-bottom: 30px;
+    font-size: 30px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
 }
 
+/* ===== FORMULARIO ===== */
 .perfil-form {
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 20px;
 }
 
-.perfil-form label {
-    font-weight: bold;
-    color: #444;
+/* ===== GRUPO DE INPUT ===== */
+.form-group {
+    display: flex;
+    flex-direction: column;
 }
 
-.perfil-form input {
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 6px;
+.form-group label {
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: #333;
     font-size: 15px;
 }
 
-.perfil-form button {
-    padding: 10px;
-    background-color: #007bff;
+/* ===== CAMPOS DE ENTRADA ===== */
+.form-group input {
+    padding: 12px 14px;
+    border: 1.6px solid #ced4da;
+    border-radius: 8px;
+    font-size: 15px;
+    background-color: #fbfbfb;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.form-group input:focus {
+    border-color: #007bff;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.15);
+}
+
+/* ===== BOTÓN DE ENVÍO ===== */
+button[type="submit"] {
+    padding: 13px;
+    background: linear-gradient(135deg, #007bff, #0056b3);
     color: white;
     border: none;
-    border-radius: 6px;
-    font-weight: bold;
-    font-size: 15px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 16px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: background 0.3s ease, transform 0.2s ease;
+    margin-top: 10px;
 }
 
-.perfil-form button:hover {
-    background-color: #0056b3;
+button[type="submit"]:hover {
+    background: linear-gradient(135deg, #0056b3, #00408a);
+    transform: translateY(-2px);
+}
+
+/* ===== MENSAJES ===== */
+.alert-success,
+.alert-error {
+    padding: 14px 18px;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 600;
+    text-align: center;
+    margin-bottom: 22px;
+    animation: fadeIn 0.3s ease-in-out;
 }
 
 .alert-success {
-    background-color: #d4edda;
-    color: #155724;
-    padding: 10px;
-    border-radius: 6px;
-    margin-bottom: 15px;
-    border: 1px solid #c3e6cb;
-    text-align: center;
+    background-color: #d9fbe7;
+    color: #147b34;
+    border: 1px solid #8fd694;
 }
 
 .alert-error {
-    background-color: #f8d7da;
-    color: #721c24;
-    padding: 10px;
-    border-radius: 6px;
-    margin-bottom: 15px;
-    border: 1px solid #f5c6cb;
-    text-align: center;
+    background-color: #fbe1e1;
+    color: #c31616;
+    border: 1px solid #f7b2b2;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 600px) {
+    .perfil-paciente-container {
+        padding: 28px 22px;
+        margin: 40px 16px;
+    }
+
+    .perfil-paciente-container h2 {
+        font-size: 25px;
+    }
+
+    button[type="submit"] {
+        font-size: 15px;
+        padding: 12px;
+    }
 }

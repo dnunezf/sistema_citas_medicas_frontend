@@ -32,7 +32,7 @@ const PacientePerfil = () => {
                     fechaNacimiento: data.fechaNacimiento
                 });
             })
-            .catch(() => setError("No se pudo cargar el perfil."));
+            .catch(() => setError("❌ No se pudo cargar el perfil."));
     }, [navigate]);
 
     const handleChange = (e) => {
@@ -44,20 +44,16 @@ const PacientePerfil = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        const payload = {
-            id: form.id,
-            nombre: form.nombre,
-            telefono: form.telefono,
-            direccion: form.direccion,
-            fechaNacimiento: form.fechaNacimiento
-            // ❌ NO se incluye 'clave' para no sobrescribirla con null
-        };
+        if (!/^\d{8,15}$/.test(form.telefono)) {
+            setError("⚠️ El teléfono debe contener entre 8 y 15 dígitos.");
+            return;
+        }
 
         try {
             const res = await fetch(`http://localhost:8080/api/pacientes/${form.id}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
+                body: JSON.stringify(form)
             });
 
             if (res.ok) {
@@ -68,14 +64,14 @@ const PacientePerfil = () => {
             } else {
                 setError("❌ No se pudo actualizar el perfil.");
             }
-        } catch (err) {
+        } catch {
             setError("❌ Error al conectar con el servidor.");
         }
     };
 
     return (
         <div className="perfil-paciente-container">
-            <h2>Mi Perfil</h2>
+            <h2><i className="fas fa-user-circle"></i> Mi Perfil</h2>
 
             {(mensaje || error) && (
                 <div className={mensaje ? 'alert-success' : 'alert-error'}>
@@ -84,17 +80,52 @@ const PacientePerfil = () => {
             )}
 
             <form onSubmit={handleSubmit} className="perfil-form">
-                <label>Nombre:</label>
-                <input type="text" name="nombre" value={form.nombre} onChange={handleChange} required />
+                <div className="form-group">
+                    <label>Nombre:</label>
+                    <input
+                        type="text"
+                        name="nombre"
+                        value={form.nombre}
+                        onChange={handleChange}
+                        required
+                        placeholder="Nombre completo"
+                    />
+                </div>
 
-                <label>Teléfono:</label>
-                <input type="text" name="telefono" value={form.telefono} onChange={handleChange} required />
+                <div className="form-group">
+                    <label>Teléfono:</label>
+                    <input
+                        type="text"
+                        name="telefono"
+                        value={form.telefono}
+                        onChange={handleChange}
+                        required
+                        placeholder="Ej. 88881234"
+                    />
+                </div>
 
-                <label>Dirección:</label>
-                <input type="text" name="direccion" value={form.direccion} onChange={handleChange} required />
+                <div className="form-group">
+                    <label>Dirección:</label>
+                    <input
+                        type="text"
+                        name="direccion"
+                        value={form.direccion}
+                        onChange={handleChange}
+                        required
+                        placeholder="Dirección exacta"
+                    />
+                </div>
 
-                <label>Fecha de Nacimiento:</label>
-                <input type="date" name="fechaNacimiento" value={form.fechaNacimiento} onChange={handleChange} required />
+                <div className="form-group">
+                    <label>Fecha de Nacimiento:</label>
+                    <input
+                        type="date"
+                        name="fechaNacimiento"
+                        value={form.fechaNacimiento}
+                        onChange={handleChange}
+                        required
+                    />
+                </div>
 
                 <button type="submit">Guardar Cambios</button>
             </form>

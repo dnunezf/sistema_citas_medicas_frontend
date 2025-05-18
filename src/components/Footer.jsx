@@ -3,7 +3,7 @@ import '../styles/fragments.css';
 
 const Footer = () => {
     return (
-        <footer>
+        <footer className="footer">
             <div className="footer-content">
                 <p>&copy; 2025 Total Soft Inc. | All rights reserved.</p>
                 <div className="social-icons">

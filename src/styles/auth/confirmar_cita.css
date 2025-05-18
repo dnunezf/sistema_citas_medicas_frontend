@@ -1,49 +1,102 @@
 .confirmar-container {
     max-width: 600px;
-    margin: 40px auto;
-    padding: 20px;
-    background: white;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    margin: 60px auto;
+    padding: 30px 25px;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.07);
+    font-family: 'Segoe UI', sans-serif;
+}
+
+.confirmar-container h2 {
+    text-align: center;
+    font-size: 26px;
+    color: #007bff;
+    margin-bottom: 25px;
 }
 
 .detalle-cita {
-    margin-top: 20px;
+    background-color: #f9f9f9;
+    padding: 20px 18px;
+    border-radius: 8px;
+    border: 1px solid #e0e0e0;
     font-size: 16px;
-    color: #333;
+    color: #444;
+    line-height: 1.6;
+}
+
+.detalle-cita p {
+    margin: 12px 0;
 }
 
 .acciones {
-    margin-top: 20px;
+    margin-top: 30px;
     display: flex;
     justify-content: space-between;
+    gap: 15px;
+}
+
+.btn-confirmar,
+.btn-cancelar {
+    flex: 1;
+    padding: 12px;
+    font-size: 16px;
+    font-weight: 600;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
 }
 
 .btn-confirmar {
     background-color: #28a745;
     color: white;
-    border: none;
-    padding: 10px 16px;
-    border-radius: 6px;
-    cursor: pointer;
+}
+
+.btn-confirmar:hover {
+    background-color: #218838;
 }
 
 .btn-cancelar {
     background-color: #dc3545;
     color: white;
-    border: none;
-    padding: 10px 16px;
-    border-radius: 6px;
-    cursor: pointer;
 }
+
+.btn-cancelar:hover {
+    background-color: #c82333;
+}
+
 .success-message {
-    background-color: #d4edda;
-    color: #155724;
-    padding: 12px;
+    background-color: #e1f7e1;
+    color: #217a00;
+    border: 1px solid #66cc66;
+    padding: 14px;
     border-radius: 6px;
     margin-bottom: 20px;
-    border: 1px solid #c3e6cb;
     font-weight: bold;
     text-align: center;
 }
 
+.error-message {
+    background-color: #ffe5e5;
+    color: #a80000;
+    border: 1px solid #ff6666;
+    padding: 14px;
+    border-radius: 6px;
+    margin-bottom: 20px;
+    font-weight: bold;
+    text-align: center;
+}
+
+/* Responsivo */
+@media (max-width: 600px) {
+    .acciones {
+        flex-direction: column;
+    }
+
+    .btn-confirmar,
+    .btn-cancelar {
+        width: 100%;
+    }
+}

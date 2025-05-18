@@ -1,0 +1,152 @@
+/* ===== CONTENEDOR GLOBAL ===== */
+.perfil-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 60px 20px;
+    min-height: 100vh;
+    background: linear-gradient(to right, #e6f0ff, #f4f8fd);
+}
+
+/* ===== TARJETA DE PERFIL ===== */
+.perfil-container {
+    background-color: #ffffff;
+    padding: 40px 35px;
+    border-radius: 18px;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
+    max-width: 620px;
+    width: 100%;
+    animation: fadeInUp 0.4s ease-out;
+}
+
+/* ===== ANIMACIÓN DE ENTRADA ===== */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ===== TÍTULO ===== */
+.perfil-title {
+    text-align: center;
+    color: #0077cc;
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 30px;
+    letter-spacing: 0.5px;
+}
+
+/* ===== ALERTAS ===== */
+.alert-success, .alert-error {
+    padding: 14px 16px;
+    border-radius: 8px;
+    font-weight: 600;
+    margin-bottom: 22px;
+    text-align: center;
+    font-size: 15px;
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+.alert-success {
+    background-color: #dafbe1;
+    color: #147b34;
+    border: 1px solid #8fd694;
+}
+
+.alert-error {
+    background-color: #ffe5e5;
+    color: #a80000;
+    border: 1px solid #ff6666;
+}
+
+/* ===== FOTO DE PERFIL ===== */
+.foto-circular {
+    text-align: center;
+    margin-bottom: 24px;
+}
+
+.foto-circular img {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 3px solid #0077cc44;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+    transition: transform 0.3s ease;
+}
+
+.foto-circular img:hover {
+    transform: scale(1.04);
+}
+
+/* ===== FORMULARIO ===== */
+.form-group {
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: #333;
+    font-size: 15px;
+}
+
+.form-group input,
+.form-group textarea {
+    padding: 12px 14px;
+    border: 1.5px solid #ced4da;
+    border-radius: 8px;
+    font-size: 15px;
+    background-color: #fdfdfd;
+    transition: all 0.3s ease;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+    border-color: #007bff;
+    background-color: #ffffff;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+}
+
+/* ===== BOTÓN ===== */
+button[type="submit"] {
+    width: 100%;
+    background: linear-gradient(135deg, #007bff, #0056b3);
+    color: white;
+    padding: 14px 0;
+    font-size: 16px;
+    font-weight: 600;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform 0.2s ease, background-color 0.3s ease;
+}
+
+button[type="submit"]:hover {
+    background: linear-gradient(135deg, #0056b3, #003d80);
+    transform: translateY(-2px);
+}
+
+/* ===== RESPONSIVO ===== */
+@media (max-width: 480px) {
+    .perfil-container {
+        padding: 25px 20px;
+    }
+
+    .perfil-title {
+        font-size: 24px;
+    }
+
+    .foto-circular img {
+        width: 110px;
+        height: 110px;
+    }
+}

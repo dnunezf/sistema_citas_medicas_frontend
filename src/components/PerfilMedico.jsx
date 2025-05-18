@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import '../styles/auth/PerfilMedico.css';
+import '../styles/auth/perfil_medico.css';
 
 function PerfilMedico() {
     const { id } = useParams();
@@ -15,102 +15,109 @@ function PerfilMedico() {
     });
     const [fotoPerfil, setFotoPerfil] = useState(null);
     const [mensaje, setMensaje] = useState('');
+    const [error, setError] = useState('');
 
     useEffect(() => {
         fetch(`/api/medicos/${id}`)
-            .then(res => {
-                if (!res.ok) throw new Error();
-                return res.json();
-            })
+            .then(res => res.ok ? res.json() : Promise.reject())
             .then(data => setPerfil(data))
-            .catch(() => setMensaje('No se pudo cargar el perfil.'));
+            .catch(() => setError('❌ No se pudo cargar el perfil.'));
     }, [id]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
         setPerfil(prev => ({ ...prev, [name]: value }));
+        setMensaje('');
+        setError('');
     };
 
     const handleFileChange = (e) => {
         setFotoPerfil(e.target.files[0]);
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        const formData = new FormData();
-        for (const key in perfil) {
-            formData.append(key, perfil[key]);
-        }
-        if (fotoPerfil) {
-            formData.append('fotoPerfil', fotoPerfil);
-        }
 
-        fetch(`/api/medicos/${id}`, {
-            method: 'PUT',
-            body: formData
-        })
-            .then(res => {
-                if (!res.ok) throw new Error();
-                return res.json();
-            })
-            .then(data => {
+        const formData = new FormData();
+        Object.entries(perfil).forEach(([key, value]) => formData.append(key, value));
+        if (fotoPerfil) formData.append('fotoPerfil', fotoPerfil);
+
+        try {
+            const res = await fetch(`/api/medicos/${id}`, {
+                method: 'PUT',
+                body: formData
+            });
+
+            if (res.ok) {
+                const data = await res.json();
                 setPerfil(data);
-                setMensaje('Perfil actualizado correctamente.');
-            })
-            .catch(() => setMensaje('Error al actualizar el perfil.'));
+                setMensaje('✅ Perfil actualizado correctamente.');
+            } else {
+                throw new Error();
+            }
+        } catch {
+            setError('❌ Error al actualizar el perfil.');
+        }
     };
 
     return (
-        <div className="perfil-medico">
-            <h2 className="title">Actualizar Información del Médico</h2>
-            {mensaje && <p className="message">{mensaje}</p>}
+        <main className="perfil-wrapper">
+            <section className="perfil-container">
+                <h2 className="perfil-title">Editar Perfil Médico</h2>
 
-            <div className="foto-circular">
-                <img
-                    src={perfil.rutaFotoPerfil || '/images/no_photo.png'}
-                    alt="Foto del médico"
-                />
-            </div>
+                {(mensaje || error) && (
+                    <div className={mensaje ? 'alert-success' : 'alert-error'}>
+                        {mensaje || error}
+                    </div>
+                )}
 
-            <form onSubmit={handleSubmit} encType="multipart/form-data">
-                <div className="form-group">
-                    <label>Nombre Completo</label>
-                    <input type="text" name="nombre" value={perfil.nombre} onChange={handleChange} required />
+                <div className="foto-circular">
+                    <img
+                        src={perfil.rutaFotoPerfil || '/images/no_photo.png'}
+                        alt="Foto del médico"
+                    />
                 </div>
 
-                <div className="form-group">
-                    <label>Especialidad</label>
-                    <input type="text" name="especialidad" value={perfil.especialidad} onChange={handleChange} required />
-                </div>
+                <form onSubmit={handleSubmit} encType="multipart/form-data">
+                    <div className="form-group">
+                        <label>Nombre Completo</label>
+                        <input type="text" name="nombre" value={perfil.nombre} onChange={handleChange} required />
+                    </div>
 
-                <div className="form-group">
-                    <label>Costo de Consulta (USD)</label>
-                    <input type="number" name="costoConsulta" value={perfil.costoConsulta} onChange={handleChange} min="1" step="0.01" required />
-                </div>
+                    <div className="form-group">
+                        <label>Especialidad</label>
+                        <input type="text" name="especialidad" value={perfil.especialidad} onChange={handleChange} required />
+                    </div>
 
-                <div className="form-group">
-                    <label>Localidad</label>
-                    <input type="text" name="localidad" value={perfil.localidad} onChange={handleChange} required />
-                </div>
+                    <div className="form-group">
+                        <label>Costo de Consulta (USD)</label>
+                        <input type="number" name="costoConsulta" value={perfil.costoConsulta} onChange={handleChange} min="1" step="0.01" required />
+                    </div>
 
-                <div className="form-group">
-                    <label>Frecuencia de Citas (minutos)</label>
-                    <input type="number" name="frecuenciaCitas" value={perfil.frecuenciaCitas} onChange={handleChange} min="10" max="120" required />
-                </div>
+                    <div className="form-group">
+                        <label>Localidad</label>
+                        <input type="text" name="localidad" value={perfil.localidad} onChange={handleChange} required />
+                    </div>
 
-                <div className="form-group">
-                    <label>Presentación</label>
-                    <textarea name="presentacion" value={perfil.presentacion} onChange={handleChange} rows="4" required />
-                </div>
+                    <div className="form-group">
+                        <label>Frecuencia de Citas (minutos)</label>
+                        <input type="number" name="frecuenciaCitas" value={perfil.frecuenciaCitas} onChange={handleChange} min="10" max="120" required />
+                    </div>
 
-                <div className="form-group">
-                    <label>Subir Nueva Foto de Perfil</label>
-                    <input type="file" name="fotoPerfil" onChange={handleFileChange} accept="image/*" />
-                </div>
+                    <div className="form-group">
+                        <label>Presentación Profesional</label>
+                        <textarea name="presentacion" value={perfil.presentacion} onChange={handleChange} rows="4" required />
+                    </div>
 
-                <button type="submit">Guardar Cambios</button>
-            </form>
-        </div>
+                    <div className="form-group">
+                        <label>Foto de Perfil</label>
+                        <input type="file" name="fotoPerfil" onChange={handleFileChange} accept="image/*" />
+                    </div>
+
+                    <button type="submit">Guardar Cambios</button>
+                </form>
+            </section>
+        </main>
     );
 }
 

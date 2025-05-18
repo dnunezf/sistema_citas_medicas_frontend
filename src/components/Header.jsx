@@ -18,27 +18,18 @@ const Header = () => {
     };
 
     const handlePerfil = () => {
-        if (isPaciente) {
-            navigate('/paciente/perfil');
-        } else if (isMedico) {
-            navigate(`/medico/perfil/${usuario.id}`);
-        }
+        if (isPaciente) navigate('/paciente/perfil');
+        else if (isMedico) navigate(`/medico/perfil/${usuario.id}`);
     };
 
     const handleCrearHorario = () => {
-        if (isMedico) {
-            navigate(`/horarios/medico/${usuario.id}`);
-        }
+        if (isMedico) navigate(`/horarios/medico/${usuario.id}`);
     };
 
     const handleCitas = () => {
-        if (isPaciente) {
-            navigate('/paciente/historico');
-        } else if (isAdmin) {
-            navigate('/admin/medicos');
-        } else {
-            navigate('/login');
-        }
+        if (isPaciente) navigate('/paciente/historico');
+        else if (isAdmin) navigate('/admin/medicos');
+        else navigate('/login');
     };
 
     return (
@@ -65,12 +56,8 @@ const Header = () => {
                             <button className="login-button">{usuario.nombre}</button>
                             <ul className="dropdown-content">
                                 <li><button onClick={handlePerfil}>Perfil</button></li>
-                                {isMedico && (
-                                    <li><button onClick={handleCrearHorario}>Crear Horarios</button></li>
-                                )}
-                                {isAdmin && (
-                                    <li><button onClick={() => navigate('/admin/medicos')}>Gestión Médicos</button></li>
-                                )}
+                                {isMedico && <li><button onClick={handleCrearHorario}>Crear Horarios</button></li>}
+                                {isAdmin && <li><button onClick={() => navigate('/admin/medicos')}>Gestión Médicos</button></li>}
                                 <li><button onClick={handleLogout}>Cerrar Sesión</button></li>
                             </ul>
                         </li>

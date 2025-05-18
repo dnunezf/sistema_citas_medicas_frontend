@@ -11,29 +11,36 @@ body {
     justify-content: center;
     align-items: center;
     height: 100vh;
+    padding: 20px;
 }
 
 /* Formulario */
 .login-form {
-    background: white;
+    background: #ffffff;
     padding: 40px 30px;
     border-radius: 12px;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
     width: 100%;
     max-width: 380px;
     text-align: center;
+    transition: transform 0.3s ease;
 }
 
-/* Header del form */
+.login-form:hover {
+    transform: translateY(-4px);
+}
+
+/* Header del formulario */
 .login-header h2 {
     margin: 10px 0 5px;
-    font-size: 24px;
+    font-size: 26px;
     color: #007bff;
+    font-weight: 600;
 }
 
 .login-header p {
     font-size: 14px;
-    color: #555;
+    color: #666;
     margin-bottom: 20px;
 }
 
@@ -42,6 +49,7 @@ body {
     height: 60px;
     border-radius: 50%;
     object-fit: cover;
+    margin-bottom: 10px;
 }
 
 /* Input con ícono */
@@ -50,9 +58,14 @@ body {
     align-items: center;
     background: #f1f3f5;
     border: 1px solid #ced4da;
-    border-radius: 6px;
-    padding: 10px;
-    margin-bottom: 16px;
+    border-radius: 8px;
+    padding: 10px 14px;
+    margin-bottom: 18px;
+    transition: border-color 0.3s;
+}
+
+.input-group:focus-within {
+    border-color: #007bff;
 }
 
 .icon {
@@ -76,42 +89,63 @@ body {
     border: none;
     padding: 12px;
     width: 100%;
-    border-radius: 6px;
+    border-radius: 8px;
     font-size: 16px;
     cursor: pointer;
-    transition: background-color 0.3s;
-    margin-top: 10px;
+    font-weight: bold;
+    transition: background-color 0.3s ease, transform 0.2s;
 }
 
 .btn-login:hover {
     background-color: #0056b3;
+    transform: scale(1.02);
 }
 
 /* Registro */
 .register-container {
     margin-top: 18px;
     font-size: 14px;
+    color: #555;
 }
 
 .btn-register {
     color: #dc3545;
-    font-weight: 500;
+    font-weight: 600;
     text-decoration: none;
     margin-left: 6px;
+    transition: color 0.3s;
 }
 
 .btn-register:hover {
     text-decoration: underline;
+    color: #a80000;
 }
 
-/* Error */
-.error-message {
-    background-color: #ffcccc;
-    color: #a80000;
-    border: 1px solid #a80000;
+/* Mensajes de error y éxito */
+.error-message,
+.alert-success {
     padding: 12px;
     margin-bottom: 16px;
-    border-radius: 5px;
-    font-weight: bold;
+    border-radius: 6px;
+    font-weight: 500;
     text-align: center;
+}
+
+.error-message {
+    background-color: #ffe2e2;
+    color: #a80000;
+    border: 1px solid #e84c4c;
+}
+
+.alert-success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+/* Responsive para móvil */
+@media (max-width: 450px) {
+    .login-form {
+        padding: 30px 20px;
+    }
 }

@@ -7,7 +7,7 @@ import PerfilMedico from './components/PerfilMedico.jsx';
 import Login from './components/Login';
 import BuscarCita from './components/BuscarCita';
 import GestionMedicos from './components/GestionMedicos';
-import GestionCitasWrapper from "./auth/GestionCItasWrapper.jsx";
+import GestionCitasWrapper from "./auth/GestionCitasWrapper.jsx";
 import CrearHorarioMedico from './components/CrearHorarioMedico.jsx';
 import HorarioMedicoExtendido from './components/HorarioMedicoExtendido';
 import ConfirmarCita from './components/ConfirmarCita';
