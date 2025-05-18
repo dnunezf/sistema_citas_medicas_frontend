@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import RegistroUsuario from './components/RegistroUsuario';
@@ -11,13 +11,18 @@ import GestionCitasWrapper from "./auth/GestionCItasWrapper.jsx";
 import CrearHorarioMedico from './components/CrearHorarioMedico.jsx';
 import HorarioMedicoExtendido from './components/HorarioMedicoExtendido';
 import ConfirmarCita from './components/ConfirmarCita';
+import HistoricoCitas from './components/HistoricoCitas';
+import PacientePerfil from './components/PacientePerfil';
+
+
 
 import './styles/global.css';
 
 function App() {
     return (
-        <Router>
+        <>
             <Header />
+
             <Routes>
                 <Route path="/registro" element={<RegistroUsuario />} />
                 <Route path="/medico/perfil/:id" element={<PerfilMedico />} />
@@ -28,11 +33,14 @@ function App() {
                 <Route path="/horarios/medico/:id" element={<CrearHorarioMedico />} />
                 <Route path="/citas/horarios/:id" element={<HorarioMedicoExtendido />} />
                 <Route path="/citas/confirmar" element={<ConfirmarCita />} />
+                <Route path="/paciente/historico" element={<HistoricoCitas />} />
+                <Route path="/paciente/perfil" element={<PacientePerfil />} />
+
 
             </Routes>
 
             <Footer />
-        </Router>
+        </>
     );
 }
 

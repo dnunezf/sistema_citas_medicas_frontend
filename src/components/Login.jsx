@@ -1,12 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { UserContext } from '../context/UserContext';
 import '../styles/auth/login.css';
+
 
 const Login = () => {
     const [formData, setFormData] = useState({ id: '', clave: '' });
     const [error, setError] = useState('');
     const [mensaje, setMensaje] = useState('');
     const navigate = useNavigate();
+    const { login } = useContext(UserContext);
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -44,7 +47,9 @@ const Login = () => {
                     }
                 }
 
-                // Comprobar si hay una URL pendiente en sessionStorage
+                login(usuario); // ✅ Establece el usuario global
+
+                // Redirección condicional
                 const urlPendiente = sessionStorage.getItem("urlPendiente");
                 sessionStorage.removeItem("urlPendiente");
 
@@ -53,7 +58,6 @@ const Login = () => {
                     return;
                 }
 
-                // Redirección por rol si no hay url pendiente
                 switch (usuario.rol) {
                     case 'ADMINISTRADOR':
                         navigate('/admin/medicos');
@@ -62,7 +66,7 @@ const Login = () => {
                         navigate(`/medico/perfil/${usuario.id}`);
                         break;
                     case 'PACIENTE':
-                        navigate('/dashboard');
+                        navigate('/');
                         break;
                     default:
                         setError('Rol no reconocido.');

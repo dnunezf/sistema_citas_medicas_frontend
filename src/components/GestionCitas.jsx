@@ -8,12 +8,15 @@ const GestionCitas = ({ idMedico }) => {
     const [medicoNombre, setMedicoNombre] = useState('');
 
     const cargarCitas = async () => {
-        let url = `http://localhost:8080/api/citas/medico/${idMedico}`;
+        let url = `http://localhost:8080/api/medico/citas/${idMedico}`;
 
         const params = new URLSearchParams();
         if (estado !== 'ALL') params.append('estado', estado);
-        if (nombrePaciente.trim()) params.append('nombrePaciente', nombrePaciente);
-        if ([...params].length > 0) url += `/filtrar?${params.toString()}`;
+        if (nombrePaciente.trim()) params.append('nombre', nombrePaciente);
+
+        if ([...params].length > 0) {
+            url += `/buscar?${params.toString()}`;
+        }
 
         try {
             const res = await fetch(url);
@@ -40,10 +43,10 @@ const GestionCitas = ({ idMedico }) => {
 
     const actualizarCita = async (idCita, nuevoEstado, notas) => {
         try {
-            const res = await fetch(`http://localhost:8080/api/citas/${idCita}`, {
-                method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ estado: nuevoEstado, notas })
+            const url = `http://localhost:8080/api/medico/citas/${idCita}?estado=${nuevoEstado}&notas=${encodeURIComponent(notas)}`;
+
+            const res = await fetch(url, {
+                method: 'PUT'
             });
 
             if (res.ok) {
@@ -83,49 +86,61 @@ const GestionCitas = ({ idMedico }) => {
             </div>
 
             <div className="appointments">
-                {citas.map((cita) => (
-                    <div key={cita.id} className="appointment">
-                        <div className="patient-info">
-                            <img src="/images/avatar.png" alt="Paciente" />
-                            <span>{cita.nombrePaciente}</span>
-                        </div>
+                {citas.length === 0 ? (
+                    <p className="no-citas">No hay citas para mostrar.</p>
+                ) : (
+                    citas.map((cita) => (
+                        <div key={cita.id} className="appointment">
+                            <div className="patient-info">
+                                <img src="/images/avatar.png" alt="Paciente" />
+                                <span>{cita.nombrePaciente}</span>
+                            </div>
 
-                        <div className="appointment-details">
-                            <span className="date-time">
-                                {new Date(cita.fechaHora).toLocaleString('es-CR', {
-                                    day: '2-digit',
-                                    month: '2-digit',
-                                    year: 'numeric',
-                                    hour: '2-digit',
-                                    minute: '2-digit'
-                                })}
-                            </span>
-                            <span className={`status ${cita.estado === 'pendiente' ? 'pending' :
-                                cita.estado === 'completada' ? 'attended' : 'default'}`}>
-                                {cita.estado}
-                            </span>
-                        </div>
+                            <div className="appointment-details">
+                                <span className="date-time">
+                                    {new Date(cita.fechaHora).toLocaleString('es-CR', {
+                                        day: '2-digit',
+                                        month: '2-digit',
+                                        year: 'numeric',
+                                        hour: '2-digit',
+                                        minute: '2-digit'
+                                    })}
+                                </span>
+                                <span className={`status ${cita.estado === 'pendiente' ? 'pending' :
+                                    cita.estado === 'completada' ? 'attended' : 'default'}`}>
+                                    {cita.estado}
+                                </span>
+                                <p className="notas">
+                                    <strong>Notas:</strong> {cita.notas || '---'}
+                                </p>
+                            </div>
 
-                        <div className="actions">
-                            <form onSubmit={(e) => {
-                                e.preventDefault();
-                                const form = e.target;
-                                const nuevoEstado = form.estado.value;
-                                const notas = form.notas.value;
-                                actualizarCita(cita.id, nuevoEstado, notas);
-                            }}>
-                                <select name="estado" defaultValue={cita.estado}>
-                                    <option value="pendiente">Pendiente</option>
-                                    <option value="confirmada">Confirmada</option>
-                                    <option value="cancelada">Cancelada</option>
-                                    <option value="completada">Completada</option>
-                                </select>
-                                <input type="text" name="notas" placeholder="Añadir notas..." defaultValue={cita.notas || ''} />
-                                <button type="submit">Actualizar</button>
-                            </form>
+                            <div className="actions">
+                                <form onSubmit={(e) => {
+                                    e.preventDefault();
+                                    const form = e.target;
+                                    const nuevoEstado = form.estado.value;
+                                    const notas = form.notas.value;
+                                    actualizarCita(cita.id, nuevoEstado, notas);
+                                }}>
+                                    <select name="estado" defaultValue={cita.estado}>
+                                        <option value="pendiente">Pendiente</option>
+                                        <option value="confirmada">Confirmada</option>
+                                        <option value="cancelada">Cancelada</option>
+                                        <option value="completada">Completada</option>
+                                    </select>
+                                    <input
+                                        type="text"
+                                        name="notas"
+                                        placeholder="Añadir notas..."
+                                        defaultValue={cita.notas || ''}
+                                    />
+                                    <button type="submit">Actualizar</button>
+                                </form>
+                            </div>
                         </div>
-                    </div>
-                ))}
+                    ))
+                )}
             </div>
         </main>
     );

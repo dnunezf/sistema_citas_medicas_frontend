@@ -1,0 +1,90 @@
+.historial-container {
+    max-width: 1000px;
+    margin: 40px auto;
+    padding: 30px;
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.historial-container h2 {
+    font-size: 26px;
+    color: #007bff;
+    margin-bottom: 25px;
+    text-align: center;
+}
+
+.filtros-historico {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.filtros-historico select,
+.filtros-historico input {
+    padding: 10px 14px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 15px;
+}
+
+.filtros-historico button {
+    background-color: #28a745;
+    color: white;
+    padding: 10px 14px;
+    border: none;
+    border-radius: 6px;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.filtros-historico button:hover {
+    background-color: #218838;
+}
+
+/* ========== Tabla de Citas ========== */
+.tabla-citas {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    font-size: 15px;
+    text-align: left;
+}
+
+.tabla-citas thead {
+    background-color: #f0f0f0;
+}
+
+.tabla-citas th,
+.tabla-citas td {
+    padding: 12px 16px;
+    border-bottom: 1px solid #ddd;
+}
+
+.tabla-citas tr:hover {
+    background-color: #f9f9f9;
+}
+
+.tabla-citas td {
+    vertical-align: top;
+}
+
+/* Estado destacado */
+.tabla-citas td.estado {
+    font-weight: bold;
+    text-transform: capitalize;
+    color: #007bff;
+}
+
+/* Si quieres ajustar el ancho de columnas específicas: */
+.tabla-citas td.fecha {
+    white-space: nowrap;
+}
+
+.tabla-citas td.notas {
+    font-style: italic;
+    color: #555;
+}

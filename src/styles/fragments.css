@@ -199,4 +199,31 @@ footer {
     .logo img {
         height: 42px;
     }
+
+    /* ===== Sesión activa (nombre + cerrar sesión) ===== */
+    .user-name {
+        font-weight: 600;
+        color: #007bff;
+        margin-right: 10px;
+        padding: 6px 10px;
+        border-radius: 5px;
+        background-color: #ffffff70;
+    }
+
+    .logout-button {
+        background-color: transparent;
+        border: 1px solid #dc3545;
+        color: #dc3545;
+        padding: 6px 10px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+
+    .logout-button:hover {
+        background-color: #dc3545;
+        color: white;
+    }
+
 }

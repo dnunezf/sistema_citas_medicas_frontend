@@ -6,6 +6,7 @@ function ConfirmarCita() {
     const [medico, setMedico] = useState(null);
     const [fechaHora, setFechaHora] = useState('');
     const [error, setError] = useState('');
+    const [mensaje, setMensaje] = useState('');
     const navigate = useNavigate();
     const location = useLocation();
 
@@ -14,7 +15,6 @@ function ConfirmarCita() {
         const idMedico = params.get("idMedico");
         const fecha = params.get("fechaHora");
 
-        // Verifica login
         const usuario = JSON.parse(sessionStorage.getItem("usuario"));
         if (!usuario || usuario.rol !== "PACIENTE") {
             sessionStorage.setItem("urlPendiente", location.pathname + location.search);
@@ -27,14 +27,14 @@ function ConfirmarCita() {
         fetch(`http://localhost:8080/api/medicos/${idMedico}`)
             .then(res => res.json())
             .then(data => setMedico(data))
-            .catch(err => setError("No se pudo cargar el médico."));
+            .catch(() => setError("No se pudo cargar el médico."));
     }, [location, navigate]);
 
     const confirmar = () => {
         const usuario = JSON.parse(sessionStorage.getItem("usuario"));
-        if (!usuario) return;
+        if (!usuario || !medico || !fechaHora) return;
 
-        fetch(`http://localhost:8080/api/citas/confirmar`, {
+        fetch(`http://localhost:8080/api/paciente/citas/confirmar`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
@@ -45,12 +45,17 @@ function ConfirmarCita() {
         })
             .then(res => {
                 if (res.ok) {
-                    navigate("/paciente/historico");
+                    setMensaje("🎉 ¡Tu cita ha sido confirmada exitosamente!");
+                    setError('');
+                    setTimeout(() => navigate("/paciente/historico"), 2500); // redirige en 2.5s
                 } else {
-                    throw new Error("No se pudo confirmar la cita.");
+                    throw new Error();
                 }
             })
-            .catch(() => setError("Error al confirmar la cita."));
+            .catch(() => {
+                setMensaje('');
+                setError("❌ Error al confirmar la cita. Intenta nuevamente.");
+            });
     };
 
     const cancelar = () => {
@@ -62,6 +67,7 @@ function ConfirmarCita() {
             <h2>Confirmar Cita</h2>
 
             {error && <div className="error-message">{error}</div>}
+            {mensaje && <div className="success-message">{mensaje}</div>}
 
             {medico && (
                 <div className="detalle-cita">
