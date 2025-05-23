@@ -10,6 +10,7 @@ const RegistroUsuario = () => {
         rol: ''
     });
 
+
     const [mensaje, setMensaje] = useState('');
     const [error, setError] = useState('');
     const [errorClave, setErrorClave] = useState('');
