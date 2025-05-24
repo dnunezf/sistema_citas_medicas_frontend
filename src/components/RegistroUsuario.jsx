@@ -57,8 +57,10 @@ const RegistroUsuario = () => {
 
             const responseText = await response.text();
 
-            if (response.status === 201) {
+            if (response.ok) {
                 setMensaje(responseText);
+                setError('');
+                setErrorClave('');
                 setFormData({
                     id: '',
                     nombre: '',
@@ -66,11 +68,23 @@ const RegistroUsuario = () => {
                     confirmarClave: '',
                     rol: ''
                 });
+            } else if (response.status === 400) {
+                setError(`Error: ${responseText}`);
+                setMensaje('');
+                setErrorClave('');
+            } else if (response.status === 409) {
+                setError(`Conflicto: ${responseText}`);
+                setMensaje('');
+                setErrorClave('');
             } else {
-                setError(responseText);
+                setError(`Error inesperado: ${responseText || 'Intente más tarde.'}`);
+                setMensaje('');
+                setErrorClave('');
             }
         } catch (err) {
             setError('Error al registrar usuario: ' + err.message);
+            setMensaje('');
+            setErrorClave('');
         }
     };
 

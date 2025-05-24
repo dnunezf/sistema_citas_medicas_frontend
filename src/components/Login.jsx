@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { UserContext } from '../context/UserContext';
 import '../styles/auth/login.css';
@@ -9,7 +9,7 @@ const Login = () => {
     const [error, setError] = useState('');
     const [mensaje, setMensaje] = useState('');
     const navigate = useNavigate();
-    const { login } = useContext(UserContext);
+    //const { login } = useContext(UserContext);
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -37,44 +37,27 @@ const Login = () => {
                 setMensaje(`Bienvenido, ${usuario.nombre}`);
                 setError('');
 
+                // Redirigir según rol
                 if (usuario.rol === 'MEDICO') {
-                    if (usuario.estadoAprobacion === 'rechazado') {
-                        setError('❌ Su solicitud fue rechazada. Contacte al administrador.');
-                        return;
-                    } else if (usuario.estadoAprobacion === 'pendiente') {
-                        setError('⚠️ Su cuenta está pendiente de aprobación.');
-                        return;
+                    if (usuario.perfilCompleto) {
+                        navigate(`/citas/medico/${usuario.id}`);  // Perfil completo: ir a citas
+                    } else {
+                        navigate(`/medico/perfil/${usuario.id}`); // Perfil incompleto: ir a completar perfil
                     }
-                }
-
-                login(usuario); // ✅ Establece el usuario global
-
-                // Redirección condicional
-                const urlPendiente = sessionStorage.getItem("urlPendiente");
-                sessionStorage.removeItem("urlPendiente");
-
-                if (urlPendiente) {
-                    navigate(urlPendiente);
-                    return;
-                }
-
-                switch (usuario.rol) {
-                    case 'ADMINISTRADOR':
-                        navigate('/admin/medicos');
-                        break;
-                    case 'MEDICO':
-                        navigate(`/medico/perfil/${usuario.id}`);
-                        break;
-                    case 'PACIENTE':
-                        navigate('/');
-                        break;
-                    default:
-                        setError('Rol no reconocido.');
-                        break;
+                } else if (usuario.rol === 'ADMINISTRADOR') {
+                    navigate('/admin/medicos');
+                } else if (usuario.rol === 'PACIENTE') {
+                    navigate('/');
+                } else {
+                    setError('Rol no reconocido.');
                 }
 
             } else if (response.status === 401) {
                 setError('Credenciales inválidas. Intenta de nuevo.');
+                setMensaje('');
+            } else if (response.status === 403) {
+                const errorMsg = await response.text();
+                setError(errorMsg);
                 setMensaje('');
             } else {
                 setError('Error inesperado. Intenta más tarde.');
@@ -85,6 +68,20 @@ const Login = () => {
             setMensaje('');
         }
     };
+
+
+
+    //login(usuario); // ✅ Establece el usuario global
+
+    // Redirección condicional
+    //const urlPendiente = sessionStorage.getItem("urlPendiente");
+    //sessionStorage.removeItem("urlPendiente");
+
+    // if (urlPendiente) {
+    //    navigate(urlPendiente);
+    //    return;
+    // }
+
 
     return (
         <div className="login-container">

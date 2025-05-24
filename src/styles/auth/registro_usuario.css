@@ -70,9 +70,9 @@ input:focus, select:focus {
     box-shadow: 0 0 6px rgba(0, 123, 255, 0.25);
 }
 
-input:invalid {
-    border-color: #dc3545;
-}
+/*input:invalid {*/
+/*    border-color: #dc3545;*/
+/*}*/
 
 button {
     background-color: #007bff;
