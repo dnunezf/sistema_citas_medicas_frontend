@@ -25,14 +25,6 @@ function HorarioMedicoExtendido() {
         return ocupados.includes(fechaHora);
     };
 
-    const esEnProximosTresDias = (fechaStr) => {
-        const fecha = new Date(fechaStr + "T00:00");
-        const hoy = new Date();
-        hoy.setHours(0, 0, 0, 0);
-        const max = new Date(hoy);
-        max.setDate(hoy.getDate() + 2);
-        return fecha >= hoy && fecha <= max;
-    };
 
     return (
         <main className="dashboard-container">
@@ -61,7 +53,6 @@ function HorarioMedicoExtendido() {
 
                     <div className="horarios">
                         {Object.entries(espacios)
-                            .filter(([fecha]) => esEnProximosTresDias(fecha))
                             .map(([fecha, horas]) => (
                                 <div key={fecha}>
                                     <div className="fecha">

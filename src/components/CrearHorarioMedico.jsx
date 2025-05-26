@@ -91,13 +91,13 @@ function HorariosMedicoExtendido() {
                 <label>Día:
                     <select name="dia" value={nuevoHorario.dia} onChange={handleChange}>
                         <option value="">Seleccione</option>
-                        <option value="LUNES">Lunes</option>
-                        <option value="MARTES">Martes</option>
-                        <option value="MIERCOLES">Miércoles</option>
-                        <option value="JUEVES">Jueves</option>
-                        <option value="VIERNES">Viernes</option>
-                        <option value="SABADO">Sábado</option>
-                        <option value="DOMINGO">Domingo</option>
+                        <option value="lunes">Lunes</option>
+                        <option value="martes">Martes</option>
+                        <option value="miercoles">Miércoles</option>
+                        <option value="jueves">Jueves</option>
+                        <option value="viernes">Viernes</option>
+                        <option value="sabado">Sábado</option>
+                        <option value="domingo">Domingo</option>
                     </select>
                 </label>
                 <label>Hora inicio:
