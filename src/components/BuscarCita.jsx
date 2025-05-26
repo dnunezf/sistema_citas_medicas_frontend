@@ -79,10 +79,10 @@ const BuscarCita = () => {
                     <div className="doctor-card" key={medico.id}>
                         <div className="doctor-info">
                             <img
-                                src={medico.rutaFotoPerfil || "/images/avatar.png"}
-                                alt="Foto del Doctor"
                                 className="foto-doctor"
-                                onError={(e) => (e.target.src = "/images/avatar.png")}
+                                src={medico.rutaFotoPerfil ? `http://localhost:8080${medico.rutaFotoPerfil}` : '/images/noPhoto.png'}
+                                alt="Foto del médico"
+                                onError={(e) => { e.target.onerror = null; e.target.src = '/images/noPhoto.png'; }}
                             />
                             <div className="doctor-text">
                                 <strong>{medico.nombre}</strong>
@@ -95,9 +95,7 @@ const BuscarCita = () => {
                         <div className="horarios">
                             {fechaProxima ? (
                                 <>
-                                    <div className="fecha">
-                                        {new Date(fechaProxima).toLocaleDateString()}
-                                    </div>
+                                    <div className="fecha">{new Date(fechaProxima).toLocaleDateString()}</div>
                                     <div className="horas">
                                         {horas.map((hora) => {
                                             const horaSimple = new Date(hora).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });

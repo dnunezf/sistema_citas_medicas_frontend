@@ -14,8 +14,8 @@ const GestionCitas = ({ idMedico }) => {
         if (estado !== 'ALL') params.append('estado', estado);
         if (nombrePaciente.trim()) params.append('nombre', nombrePaciente);
 
-        if ([...params].length > 0) {
-            url += `/buscar?${params.toString()}`;
+        if (params.toString()) {
+            url = `http://localhost:8080/api/medico/citas/${idMedico}/buscar?${params.toString()}`;
         }
 
         try {

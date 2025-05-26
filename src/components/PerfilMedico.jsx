@@ -73,9 +73,9 @@ function PerfilMedico() {
 
                 <div className="foto-circular">
                     <img
-                        src={perfil.rutaFotoPerfil ? `http://localhost:8080${perfil.rutaFotoPerfil}` : '/images/no_photo.png'}
+                        src={perfil.rutaFotoPerfil ? `http://localhost:8080${perfil.rutaFotoPerfil}` : '/images/noPhoto.png'}
                         alt="Foto del médico"
-                        onError={(e) => { e.target.onerror = null; e.target.src = '/images/no_photo.png'; }}
+                        onError={(e) => { e.target.onerror = null; e.target.src = '/images/noPhoto.png'; }}
                     />
                 </div>
 
