@@ -44,8 +44,17 @@ const BuscarCita = () => {
         const fechas = Object.keys(espacios);
         if (fechas.length === 0) return null;
 
-        const ordenadas = fechas.sort((a, b) => new Date(a) - new Date(b));
-        return ordenadas[0];
+        return fechas.sort((a, b) => new Date(a) - new Date(b))[0];
+    };
+
+    const formatearFechaCR = (fechaISO) => {
+        const date = new Date(fechaISO + 'T00:00:00-06:00');
+        return date.toLocaleDateString('es-CR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+    };
+
+    const formatearHora = (horaISO) => {
+        const date = new Date(horaISO);
+        return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
     };
 
     return (
@@ -95,15 +104,14 @@ const BuscarCita = () => {
                         <div className="horarios">
                             {fechaProxima ? (
                                 <>
-                                    <div className="fecha">{new Date(fechaProxima).toLocaleDateString()}</div>
+                                    <div className="fecha">{formatearFechaCR(fechaProxima)}</div>
                                     <div className="horas">
                                         {horas.map((hora) => {
-                                            const horaSimple = new Date(hora).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
                                             const clase = esHoraOcupada(medico.id, hora) ? "hora ocupada" : "hora";
                                             const link = `/citas/confirmar?idMedico=${medico.id}&fechaHora=${hora}`;
                                             return (
                                                 <a key={hora} href={clase === "hora" ? link : undefined} className={clase}>
-                                                    {horaSimple}
+                                                    {formatearHora(hora)}
                                                 </a>
                                             );
                                         })}
