@@ -102,25 +102,28 @@ const BuscarCita = () => {
                         </div>
 
                         <div className="horarios">
-                            {fechaProxima ? (
-                                <>
-                                    <div className="fecha">{formatearFechaCR(fechaProxima)}</div>
-                                    <div className="horas">
-                                        {horas.map((hora) => {
-                                            const clase = esHoraOcupada(medico.id, hora) ? "hora ocupada" : "hora";
-                                            const link = `/citas/confirmar?idMedico=${medico.id}&fechaHora=${hora}`;
-                                            return (
-                                                <a key={hora} href={clase === "hora" ? link : undefined} className={clase}>
-                                                    {formatearHora(hora)}
-                                                </a>
-                                            );
-                                        })}
+                            {Object.keys(espacios).length > 0 ? (
+                                Object.entries(espacios).map(([fecha, horas]) => (
+                                    <div key={fecha}>
+                                        <div className="fecha">{formatearFechaCR(fecha)}</div>
+                                        <div className="horas">
+                                            {horas.map((hora) => {
+                                                const clase = esHoraOcupada(medico.id, hora) ? "hora ocupada" : "hora";
+                                                const link = `/citas/confirmar?idMedico=${medico.id}&fechaHora=${hora}`;
+                                                return (
+                                                    <a key={hora} href={clase === "hora" ? link : undefined} className={clase}>
+                                                        {formatearHora(hora)}
+                                                    </a>
+                                                );
+                                            })}
+                                        </div>
                                     </div>
-                                </>
+                                ))
                             ) : (
                                 <p>No hay horarios disponibles próximamente.</p>
                             )}
                         </div>
+
 
                         <div className="schedule-button">
                             <a href={`/citas/horarios/${medico.id}`}>Horario Extendido →</a>
