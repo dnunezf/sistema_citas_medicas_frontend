@@ -47,11 +47,12 @@ main h2 {
 
 .filters select,
 .filters input {
-    padding: 10px 14px;
+    padding: 6px 10px;
     border: 1px solid #ccc;
     border-radius: 8px;
-    font-size: 15px;
-    min-width: 160px;
+    font-size: 14px;
+    min-width: 100px;
+    max-width: 180px;
     transition: border-color 0.3s;
 }
 
