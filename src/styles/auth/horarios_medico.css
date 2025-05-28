@@ -95,6 +95,13 @@
     background-color: #e9f1fc;
 }
 
+.foto-doctor {
+    width: 75px;
+    height: 75px;
+    border-radius: 50%;
+    border: 2px solid #ddd;
+    object-fit: cover;
+}
 /* ===== BOTÓN ELIMINAR ===== */
 .horarios-lista button {
     background-color: #dc3545;

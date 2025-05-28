@@ -53,10 +53,10 @@ function HorarioMedicoExtendido() {
                 <div className="doctor-card">
                     <div className="doctor-info">
                         <img
-                            src={medico.rutaFotoPerfil || "/images/avatar.png"}
-                            alt="Foto del Doctor"
                             className="foto-doctor"
-                            onError={(e) => (e.target.src = "/images/avatar.png")}
+                            src={medico.rutaFotoPerfil ? `http://localhost:8080${medico.rutaFotoPerfil}` : '/images/noPhoto.png'}
+                            alt="Foto del médico"
+                            onError={(e) => { e.target.onerror = null; e.target.src = '/images/noPhoto.png'; }}
                         />
                         <div className="doctor-text">
                             <strong>{medico.nombre}</strong>

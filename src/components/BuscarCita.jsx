@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import '../styles/auth/dashboard.css';
+import { useNavigate } from "react-router-dom";
 
 const BuscarCita = () => {
     const [especialidad, setEspecialidad] = useState('');
@@ -8,6 +9,21 @@ const BuscarCita = () => {
     const [medicos, setMedicos] = useState([]);
     const [espaciosAgrupados, setEspaciosAgrupados] = useState({});
     const [horasOcupadas, setHorasOcupadas] = useState({});
+    const navigate = useNavigate();
+
+    const handleClickHora = (medicoId, hora, clase) => {
+        if (clase === "hora") {
+            const usuario = JSON.parse(sessionStorage.getItem("usuario"));
+            const destino = `/citas/confirmar?idMedico=${medicoId}&fechaHora=${hora}`;
+
+            if (!usuario || usuario.rol !== "PACIENTE") {
+                sessionStorage.setItem("urlPendiente", destino);
+                navigate("/login");
+            } else {
+                navigate(destino);
+            }
+        }
+    };
 
     const fetchDashboard = async () => {
         let url = 'http://localhost:8080/api/dashboard';
@@ -85,7 +101,7 @@ const BuscarCita = () => {
                 const horas = fechaProxima ? espacios[fechaProxima] : [];
 
                 return (
-                    <div className="doctor-card" key={medico.id}>
+                    <div key={medico.id} className="doctor-card">
                         <div className="doctor-info">
                             <img
                                 className="foto-doctor"
@@ -109,21 +125,25 @@ const BuscarCita = () => {
                                         <div className="horas">
                                             {horas.map((hora) => {
                                                 const clase = esHoraOcupada(medico.id, hora) ? "hora ocupada" : "hora";
-                                                const link = `/citas/confirmar?idMedico=${medico.id}&fechaHora=${hora}`;
                                                 return (
-                                                    <a key={hora} href={clase === "hora" ? link : undefined} className={clase}>
+                                                    <span
+                                                        key={hora}
+                                                        className={clase}
+                                                        style={{ cursor: clase === "hora" ? "pointer" : "default" }}
+                                                        onClick={() => handleClickHora(medico.id, hora, clase)}
+                                                    >
                                                         {formatearHora(hora)}
-                                                    </a>
+                                                    </span>
                                                 );
                                             })}
                                         </div>
                                     </div>
+
                                 ))
                             ) : (
                                 <p>No hay horarios disponibles próximamente.</p>
                             )}
                         </div>
-
 
                         <div className="schedule-button">
                             <a href={`/citas/horarios/${medico.id}`}>Horario Extendido →</a>

@@ -1,15 +1,12 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { UserContext } from '../context/UserContext';
 import '../styles/auth/login.css';
-
 
 const Login = () => {
     const [formData, setFormData] = useState({ id: '', clave: '' });
     const [error, setError] = useState('');
     const [mensaje, setMensaje] = useState('');
     const navigate = useNavigate();
-    //const { login } = useContext(UserContext);
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -34,15 +31,24 @@ const Login = () => {
 
             if (response.ok) {
                 const usuario = await response.json();
+                sessionStorage.setItem("usuario", JSON.stringify(usuario)); // Guarda usuario
                 setMensaje(`Bienvenido, ${usuario.nombre}`);
                 setError('');
 
-                // Redirigir según rol
+                // Redirigir a url pendiente si existe
+                const urlPendiente = sessionStorage.getItem("urlPendiente");
+                if (urlPendiente) {
+                    sessionStorage.removeItem("urlPendiente");
+                    navigate(urlPendiente);
+                    return;
+                }
+
+                // Redirecciones por rol si no hay url pendiente
                 if (usuario.rol === 'MEDICO') {
                     if (usuario.perfilCompleto) {
-                        navigate(`/citas/medico/${usuario.id}`);  // Perfil completo: ir a citas
+                        navigate(`/citas/medico/${usuario.id}`);
                     } else {
-                        navigate(`/medico/perfil/${usuario.id}`); // Perfil incompleto: ir a completar perfil
+                        navigate(`/medico/perfil/${usuario.id}`);
                     }
                 } else if (usuario.rol === 'ADMINISTRADOR') {
                     navigate('/admin/medicos');
@@ -52,12 +58,14 @@ const Login = () => {
                     setError('Rol no reconocido.');
                 }
 
-            } else if (response.status === 401) {
-                setError('Credenciales inválidas. Intenta de nuevo.');
-                setMensaje('');
-            } else if (response.status === 403) {
-                const errorMsg = await response.text();
-                setError(errorMsg);
+            } else if (response.status === 401 || response.status === 403) {
+                // Leer JSON con mensaje de error
+                try {
+                    const errorData = await response.json();
+                    setError(errorData.mensaje || 'Credenciales inválidas. Intenta de nuevo.');
+                } catch {
+                    setError('Credenciales inválidas. Intenta de nuevo.');
+                }
                 setMensaje('');
             } else {
                 setError('Error inesperado. Intenta más tarde.');
@@ -68,20 +76,6 @@ const Login = () => {
             setMensaje('');
         }
     };
-
-
-
-    //login(usuario); // ✅ Establece el usuario global
-
-    // Redirección condicional
-    //const urlPendiente = sessionStorage.getItem("urlPendiente");
-    //sessionStorage.removeItem("urlPendiente");
-
-    // if (urlPendiente) {
-    //    navigate(urlPendiente);
-    //    return;
-    // }
-
 
     return (
         <div className="login-container">
