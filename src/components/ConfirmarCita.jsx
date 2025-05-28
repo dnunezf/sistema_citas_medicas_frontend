@@ -42,8 +42,6 @@ function ConfirmarCita() {
             return;
         }
 
-        // Enviar la fecha tal cual viene del query (ISO 8601), o convertirla si fuera necesario
-        // Aquí asumo que fechaHora ya está en formato ISO 8601 válido
         fetch(`http://localhost:8080/api/medico/citas/confirmar`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -59,8 +57,15 @@ function ConfirmarCita() {
                     setError('');
                     setTimeout(() => navigate("/paciente/historico"), 2500);
                 } else {
-                    const textoRespuesta = await res.text();
-                    throw new Error(textoRespuesta || "Error desconocido");
+                    // Intentar extraer JSON con el mensaje
+                    let data;
+                    try {
+                        data = await res.json();
+                    } catch {
+                        throw new Error("Error desconocido");
+                    }
+                    // Mostrar solo el mensaje limpio
+                    throw new Error(data.mensaje || "Error desconocido");
                 }
             })
             .catch(e => {
