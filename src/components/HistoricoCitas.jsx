@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom'; // importa Link
 import '../styles/auth/historico_citas.css';
 
 const HistoricoCitas = () => {
@@ -6,14 +7,14 @@ const HistoricoCitas = () => {
     const [estadoFiltro, setEstadoFiltro] = useState('');
     const [medicoFiltro, setMedicoFiltro] = useState('');
     const [mensaje, setMensaje] = useState('');
+    const [infoMedicos, setInfoMedicos] = useState({});
 
     const usuario = JSON.parse(sessionStorage.getItem("usuario"));
 
     useEffect(() => {
         if (!usuario || usuario.rol !== "PACIENTE") return;
-
         cargarCitas();
-    }, []);
+    }, [estadoFiltro, medicoFiltro]);
 
     const cargarCitas = () => {
         let url = `http://localhost:8080/api/paciente/citas/${usuario.id}`;
@@ -28,69 +29,118 @@ const HistoricoCitas = () => {
 
         fetch(url)
             .then(res => res.json())
-            .then(data => {
+            .then(async data => {
                 setCitas(data);
-                if (data.length === 0) {
-                    setMensaje("No hay citas que coincidan con los filtros.");
-                } else {
-                    setMensaje('');
-                }
+                setMensaje(data.length === 0 ? "No hay citas que coincidan con los filtros." : '');
+
+                const nuevosMedicos = {};
+                await Promise.all(data.map(async cita => {
+                    if (!infoMedicos[cita.idMedico]) {
+                        const res = await fetch(`http://localhost:8080/api/medicos/${cita.idMedico}`);
+                        if (res.ok) {
+                            const medico = await res.json();
+                            nuevosMedicos[cita.idMedico] = medico;
+                        }
+                    }
+                }));
+                setInfoMedicos(prev => ({ ...prev, ...nuevosMedicos }));
             })
             .catch(() => setMensaje("Error al cargar las citas."));
     };
 
-    const manejarSubmit = (e) => {
-        e.preventDefault();
-        cargarCitas();
+    const claseEstado = (estado) => {
+        switch (estado) {
+            case 'pendiente': return 'pending';
+            case 'completada': return 'attended';
+            case 'confirmada': return 'default';
+            case 'cancelada': return 'cancelled';
+            default: return '';
+        }
     };
 
     return (
         <div className="historico-container">
-            <h2>Historial de Citas</h2>
+            <h2>
+                Paciente - <span className="doctor-name">{usuario?.nombre}</span> - Historial de Citas
+            </h2>
 
-            <form className="form-filtros" onSubmit={manejarSubmit}>
-                <select value={estadoFiltro} onChange={(e) => setEstadoFiltro(e.target.value)}>
-                    <option value="">-- Todos los estados --</option>
-                    <option value="pendiente">Pendiente</option>
-                    <option value="confirmada">Confirmada</option>
-                    <option value="completada">Completada</option>
-                    <option value="cancelada">Cancelada</option>
-                </select>
+            <div className="filters">
+                <form>
+                    <label htmlFor="estado">Estado:</label>
+                    <select
+                        id="estado"
+                        name="estado"
+                        value={estadoFiltro}
+                        onChange={e => setEstadoFiltro(e.target.value)}
+                    >
+                        <option value="">-- Todos los estados --</option>
+                        <option value="pendiente">Pendiente</option>
+                        <option value="confirmada">Confirmada</option>
+                        <option value="cancelada">Cancelada</option>
+                        <option value="completada">Completada</option>
+                    </select>
 
-                <input
-                    type="text"
-                    placeholder="Buscar por nombre del médico"
-                    value={medicoFiltro}
-                    onChange={(e) => setMedicoFiltro(e.target.value)}
-                />
-
-                <button type="submit">Filtrar</button>
-            </form>
+                    <label htmlFor="nombreMedico">Doctor:</label>
+                    <input
+                        type="text"
+                        id="nombreMedico"
+                        name="nombreMedico"
+                        placeholder="Nombre del médico"
+                        value={medicoFiltro}
+                        onChange={e => setMedicoFiltro(e.target.value)}
+                    />
+                </form>
+            </div>
 
             {mensaje && <div className="mensaje">{mensaje}</div>}
 
-            <table className="tabla-citas">
-                <thead>
-                <tr>
-                    <th>Fecha y Hora</th>
-                    <th>Médico</th>
-                    <th>Especialidad</th>
-                    <th>Estado</th>
-                    <th>Notas</th>
-                </tr>
-                </thead>
-                <tbody>
-                {citas.map((cita) => (
-                    <tr key={cita.id}>
-                        <td>{new Date(cita.fechaHora).toLocaleString()}</td>
-                        <td>{cita.nombreMedico}</td>
-                        <td>{cita.especialidad || '-'}</td>
-                        <td>{cita.estado}</td>
-                        <td>{cita.notas || '---'}</td>
-                    </tr>
-                ))}
-                </tbody>
-            </table>
+            <div className="appointments">
+                {citas.map(cita => {
+                    const medico = infoMedicos[cita.idMedico];
+                    return (
+                        <div key={cita.id} className="appointment">
+                            <div className="patient-info">
+                                <img
+                                    className="foto-doctor"
+                                    src={medico?.rutaFotoPerfil ? `http://localhost:8080${medico.rutaFotoPerfil}` : '/images/noPhoto.png'}
+                                    alt="Foto del médico"
+                                    onError={(e) => {
+                                        e.target.onerror = null;
+                                        e.target.src = '/images/noPhoto.png';
+                                    }}
+                                />
+                                <div>
+                                    <span style={{ fontWeight: 'bold', fontSize: '1.1em' }}>{cita.nombreMedico}</span><br />
+                                    <span>{medico?.especialidad || '-'}</span><br />
+                                    <span>Precio de consulta: ${medico?.costoConsulta?.toLocaleString('en-US') || '-'}</span><br />
+                                    <span>{medico?.localidad || '-'}</span>
+                                </div>
+                            </div>
+
+                            <div className="appointment-details">
+                                <span className="date-time">
+                                    {new Date(cita.fechaHora).toLocaleString('es-CR', {
+                                        day: '2-digit',
+                                        month: '2-digit',
+                                        year: 'numeric',
+                                        hour: '2-digit',
+                                        minute: '2-digit'
+                                    })}
+                                </span>
+                                <span className={`status ${claseEstado(cita.estado)}`}>
+                                    {cita.estado}
+                                </span>
+                            </div>
+
+                            <div className="actions">
+                                <Link to={`/citas/paciente/detalle/${cita.id}`} title="Ver notas de la cita">
+                                    <img src="/images/binoculares.png" alt="Ver notas" className="icono-ver" />
+                                </Link>
+                                </div>
+                        </div>
+                    );
+                })}
+            </div>
         </div>
     );
 };

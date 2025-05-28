@@ -1,0 +1,74 @@
+/* Contenedor principal */
+.detalle-cita-container {
+    max-width: 700px;
+    margin: 50px auto;
+    background-color: #fff;
+    padding: 30px 40px;
+    border-radius: 15px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Título */
+.detalle-cita-container h2 {
+    font-size: 28px;
+    color: #0077b6;
+    margin-bottom: 25px;
+    text-align: center;
+}
+
+/* Párrafos de información */
+.detalle-cita-container p {
+    font-size: 18px;
+    margin: 15px 0;
+    color: #333;
+}
+
+/* Etiquetas en negrita */
+.detalle-cita-container p strong {
+    font-weight: 700;
+    color: #005f87;
+}
+
+/* Link de volver */
+.detalle-cita-container a {
+    display: inline-block;
+    margin-top: 30px;
+    text-decoration: none;
+    color: #0077b6;
+    font-weight: 600;
+    font-size: 16px;
+    transition: color 0.3s ease;
+}
+
+.detalle-cita-container a:hover {
+    color: #004a72;
+    text-decoration: underline;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    .detalle-cita-container {
+        padding: 20px;
+        margin: 30px 20px;
+    }
+
+    .detalle-cita-container h2 {
+        font-size: 24px;
+    }
+
+    .detalle-cita-container p {
+        font-size: 16px;
+    }
+
+    .detalle-cita-container a {
+        font-size: 14px;
+    }
+
+    .mensaje-error {
+        color: #dc3545;
+        font-weight: bold;
+        text-align: center;
+        margin-top: 20px;
+    }
+}

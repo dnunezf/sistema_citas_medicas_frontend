@@ -1,11 +1,17 @@
-body {
-    font-family: 'Segoe UI', sans-serif;
-    background-color: #f4f9fc;
+/* ========== RESET ========== */
+* {
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', sans-serif;
 }
 
-/* ===== CONTENEDOR PRINCIPAL ===== */
+body {
+    background-color: #f0f4f8;
+    color: #333;
+}
+
+/* ========== CONTENEDOR PRINCIPAL ========== */
 .historico-container {
     max-width: 1100px;
     margin: 60px auto;
@@ -15,57 +21,75 @@ body {
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
 }
 
-/* ===== TÍTULO ===== */
+/* ========== TÍTULO ========== */
 .historico-container h2 {
     text-align: center;
     font-size: 28px;
-    color: #007bff;
-    font-weight: 700;
+    color: #0077b6;
     margin-bottom: 30px;
 }
 
-/* ===== FORMULARIO DE FILTROS ===== */
-.form-filtros {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 18px;
-    justify-content: center;
-    margin-bottom: 25px;
+.doctor-name {
+    color: #0077b6;
+    font-weight: bold;
+    font-style: italic;
 }
 
-.form-filtros select,
-.form-filtros input {
+/* ========== FORMULARIO DE FILTROS ========== */
+.filters {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-bottom: 35px;
+}
+
+.filters form {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.filters label {
+    font-weight: 600;
+    color: #555;
+}
+
+.filters select,
+.filters input {
     padding: 10px 14px;
-    font-size: 15px;
-    border: 1.5px solid #ccc;
+    border: 1px solid #ccc;
     border-radius: 8px;
-    min-width: 220px;
+    font-size: 15px;
+    min-width: 160px;
     transition: border-color 0.3s ease;
 }
 
-.form-filtros select:focus,
-.form-filtros input:focus {
-    border-color: #007bff;
+.filters select:focus,
+.filters input:focus {
+    border-color: #0077b6;
     outline: none;
 }
 
-.form-filtros button {
-    background-color: #28a745;
+.filters button {
+    background-color: #00a8e8;
     color: white;
     border: none;
-    padding: 10px 18px;
+    padding: 8px 12px;
     border-radius: 8px;
-    font-size: 15px;
     font-weight: bold;
     cursor: pointer;
     transition: background-color 0.3s ease;
+    min-width: 100px; /* opcional */
 }
 
-.form-filtros button:hover {
-    background-color: #218838;
+
+.filters button:hover {
+    background-color: #007bbd;
 }
 
-/* ===== MENSAJE DE FILTRO O ERROR ===== */
+/* ========== MENSAJE DE FILTRO O ERROR ========== */
 .mensaje {
     text-align: center;
     margin-top: 15px;
@@ -75,102 +99,148 @@ body {
     color: #dc3545;
 }
 
-/* ===== TABLA DE CITAS ===== */
-.tabla-citas {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 25px;
-    font-size: 15px;
-    background-color: #fff;
-    border-radius: 10px;
-    overflow: hidden;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+/* ========== LISTADO DE CITAS ========== */
+.appointments {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
 }
 
-.tabla-citas thead {
-    background-color: #007bff;
-    color: white;
-    text-transform: uppercase;
-    font-size: 14px;
+.appointment {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    align-items: center;
+    background: #ffffff;
+    padding: 25px 20px;
+    border-radius: 12px;
+    box-shadow: 0px 5px 12px rgba(0, 0, 0, 0.08);
+    border-left: 6px solid #0077b6;
+    transition: transform 0.2s ease;
 }
 
-.tabla-citas th,
-.tabla-citas td {
-    padding: 14px 18px;
-    border-bottom: 1px solid #e0e0e0;
-    text-align: left;
+.appointment:hover {
+    transform: translateY(-3px);
 }
 
-.tabla-citas td {
-    vertical-align: top;
+/* ========== INFO DEL MÉDICO ========== */
+.patient-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    min-width: 300px;
+}
+
+.foto-doctor {
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+    border: 3px solid #0077b6;
+    object-fit: cover;
+}
+
+.patient-info div span {
+    display: block;
+    line-height: 1.2;
     color: #333;
 }
 
-.tabla-citas tbody tr:nth-child(even) {
-    background-color: #f9fcff;
+/* ========== DETALLES DE LA CITA ========== */
+.appointment-details {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    text-align: center;
+    min-width: 180px;
+    flex-grow: 1;
 }
 
-.tabla-citas tbody tr:hover {
-    background-color: #f1f7ff;
-}
-
-/* ===== CELDAS DESTACADAS ===== */
-.tabla-citas td.estado {
+.date-time {
     font-weight: bold;
+    color: #333;
+    font-size: 15px;
+}
+
+.status {
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 14px;
     text-transform: capitalize;
-    color: #007bff;
+    width: fit-content;
+    margin: 0 auto;
 }
 
-.tabla-citas td.notas {
-    font-style: italic;
-    color: #555;
+/* ESTADOS DE LA CITA */
+.status.pending {
+    background-color: #fff3cd;
+    color: #856404;
 }
 
-.tabla-citas td.fecha {
-    white-space: nowrap;
+.status.attended {
+    background-color: #d4edda;
+    color: #155724;
 }
 
-/* ===== RESPONSIVE ===== */
+.status.default {
+    background-color: #e2e3e5;
+    color: #383d41;
+}
+
+.status.cancelled {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+/* ========== ACCIONES ========== */
+.actions {
+    min-width: 60px;
+    text-align: center;
+}
+
+.actions a {
+    display: inline-block;
+}
+
+.icono-ver {
+    height: 25px;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.icono-ver:hover {
+    transform: scale(1.1);
+}
+
+/* ========== RESPONSIVE ========== */
 @media (max-width: 768px) {
-    .form-filtros {
+    .filters {
+        justify-content: center;
+    }
+
+    .filters form {
         flex-direction: column;
         align-items: center;
+        gap: 15px;
     }
 
-    .tabla-citas,
-    .tabla-citas thead,
-    .tabla-citas tbody,
-    .tabla-citas th,
-    .tabla-citas td,
-    .tabla-citas tr {
-        display: block;
-        width: 100%;
+    .appointment {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
     }
 
-    .tabla-citas thead {
-        display: none;
+    .patient-info {
+        min-width: auto;
+        gap: 10px;
     }
 
-    .tabla-citas tr {
-        margin-bottom: 16px;
-        border: 1px solid #ccc;
-        border-radius: 10px;
-        padding: 12px;
-        background-color: white;
+    .appointment-details {
+        text-align: left;
+        min-width: auto;
     }
 
-    .tabla-citas td {
-        text-align: right;
-        padding-left: 50%;
-        position: relative;
-    }
-
-    .tabla-citas td::before {
-        content: attr(data-label);
-        position: absolute;
-        left: 12px;
-        top: 12px;
-        font-weight: bold;
-        color: #007bff;
+    .actions {
+        min-width: auto;
     }
 }

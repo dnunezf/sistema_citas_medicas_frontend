@@ -17,6 +17,7 @@ import PacientePerfil from './components/PacientePerfil';
 
 
 import './styles/global.css';
+import DetalleCita from "./components/DetalleCita.jsx";
 
 function App() {
     return (
@@ -35,8 +36,7 @@ function App() {
                 <Route path="/citas/confirmar" element={<ConfirmarCita />} />
                 <Route path="/paciente/historico" element={<HistoricoCitas />} />
                 <Route path="/paciente/perfil" element={<PacientePerfil />} />
-
-
+                <Route path="/citas/paciente/detalle/:id" element={<DetalleCita />} />
             </Routes>
 
             <Footer />
