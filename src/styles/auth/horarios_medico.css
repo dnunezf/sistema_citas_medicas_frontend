@@ -1,4 +1,4 @@
-/* ===== CONTENEDOR PRINCIPAL ===== */
+/* CONTENEDOR PRINCIPAL */
 .horarios-container {
     max-width: 650px;
     margin: 60px auto;
@@ -9,7 +9,7 @@
     font-family: 'Segoe UI', sans-serif;
 }
 
-/* ===== TÍTULOS ===== */
+/* TÍTULOS */
 .horarios-container h2 {
     text-align: center;
     font-size: 26px;
@@ -25,7 +25,7 @@
     padding-bottom: 6px;
 }
 
-/* ===== FORMULARIO ===== */
+/* FORMULARIO */
 .horarios-container label {
     font-weight: 600;
     margin-top: 12px;
@@ -53,24 +53,101 @@
     box-shadow: 0 0 6px rgba(0, 123, 255, 0.25);
 }
 
-/* ===== BOTONES ===== */
-.horarios-container button {
-    padding: 10px 18px;
-    background-color: #007bff;
-    color: white;
-    border: none;
+/* MENSAJES */
+.mensaje {
+    padding: 10px 15px;
+    border-radius: 6px;
+    font-weight: 600;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.mensaje.error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1.5px solid #f5c6cb;
+}
+
+.mensaje.exito {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1.5px solid #c3e6cb;
+}
+
+/* BOTONES */
+/* Contenedor de los botones - usa flex para alinear */
+.botones-accion {
+    margin-top: 10px;
+    display: inline-flex;
+    gap: 10px; /* espacio entre botones */
+    align-items: center; /* alinea verticalmente */
+}
+
+/* Estilo común para todos los botones de acción */
+.botones-accion button {
     font-weight: 600;
     border-radius: 6px;
+    padding: 6px 14px; /* menos padding horizontal para que sean angostos */
     cursor: pointer;
     transition: background-color 0.3s ease;
-    margin-top: 10px;
+    font-size: 14px;
+    border: none;
+    min-width: 90px; /* ancho mínimo para consistencia */
+    white-space: nowrap; /* que no se rompan textos */
 }
 
-.horarios-container button:hover {
-    background-color: #0056b3;
+/* Botón Guardar / Actualizar */
+.btn-guardar {
+    background-color: #28a745;
+    color: white;
 }
 
-/* ===== LISTA DE HORARIOS ===== */
+.btn-guardar:hover {
+    background-color: #218838;
+}
+
+/* Botón Cancelar */
+.btn-cancelar {
+    background-color: #dc3545;
+    color: white;
+}
+
+.btn-cancelar:hover {
+    background-color: #c82333;
+}
+
+/* Botones Editar y Eliminar en la lista */
+.horarios-lista button {
+    padding: 4px 10px; /* menos padding que antes */
+    border-radius: 5px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    margin-left: 8px;
+    min-width: 75px; /* ancho mínimo un poco menor para estos */
+    white-space: nowrap;
+}
+
+.btn-editar {
+    background-color: #17a2b8;
+    color: white;
+}
+
+.btn-editar:hover {
+    background-color: #117a8b;
+}
+
+.btn-eliminar {
+    background-color: #dc3545;
+    color: white;
+}
+
+.btn-eliminar:hover {
+    background-color: #c82333;
+}
+
+/* LISTA DE HORARIOS */
 .horarios-lista {
     list-style: none;
     padding: 0;
@@ -95,31 +172,7 @@
     background-color: #e9f1fc;
 }
 
-.foto-doctor {
-    width: 75px;
-    height: 75px;
-    border-radius: 50%;
-    border: 2px solid #ddd;
-    object-fit: cover;
-}
-/* ===== BOTÓN ELIMINAR ===== */
-.horarios-lista button {
-    background-color: #dc3545;
-    color: white;
-    border: none;
-    padding: 7px 14px;
-    border-radius: 5px;
-    font-size: 14px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-.horarios-lista button:hover {
-    background-color: #c82333;
-}
-
-/* ===== SEPARADOR ===== */
+/* SEPARADOR */
 hr {
     border: none;
     border-top: 1.5px dashed #ccc;

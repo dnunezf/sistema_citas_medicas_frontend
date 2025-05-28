@@ -8,11 +8,13 @@ function HorariosMedicoExtendido() {
 
     const [horarios, setHorarios] = useState([]);
     const [nuevoHorario, setNuevoHorario] = useState({
+        id: null, // <-- para editar
         dia: '',
         horaInicio: '',
         horaFin: '',
         intervalo: 30
     });
+    const [mensaje, setMensaje] = useState({ texto: '', tipo: '' }); // tipo: 'error' | 'exito'
 
     const cargarHorarios = () => {
         fetch(`http://localhost:8080/api/horarios/medico/${idMedico}`)
@@ -21,13 +23,14 @@ function HorariosMedicoExtendido() {
                 if (Array.isArray(data)) {
                     setHorarios(data);
                 } else {
-                    console.warn("Se esperaba un arreglo pero se recibió:", data);
                     setHorarios([]);
+                    setMensaje({ texto: 'Error al cargar horarios.', tipo: 'error' });
                 }
             })
             .catch(err => {
                 console.error("Error al cargar horarios:", err);
                 setHorarios([]);
+                setMensaje({ texto: 'Error al cargar horarios.', tipo: 'error' });
             });
     };
 
@@ -42,16 +45,40 @@ function HorariosMedicoExtendido() {
         setNuevoHorario(prev => ({ ...prev, [name]: value }));
     };
 
+    const limpiarFormulario = () => {
+        setNuevoHorario({
+            id: null,
+            dia: '',
+            horaInicio: '',
+            horaFin: '',
+            intervalo: 30
+        });
+        setMensaje({ texto: '', tipo: '' });
+    };
+
     const guardarHorario = () => {
-        const { dia, horaInicio, horaFin, intervalo } = nuevoHorario;
+        const { id: idHorario, dia, horaInicio, horaFin, intervalo } = nuevoHorario;
 
         if (!idMedico || !dia || !horaInicio || !horaFin || intervalo <= 0) {
-            alert("Todos los campos son obligatorios.");
+            setMensaje({ texto: "Todos los campos son obligatorios.", tipo: "error" });
             return;
         }
 
-        fetch(`http://localhost:8080/api/horarios/medico/${idMedico}`, {
-            method: 'POST',
+        if (!idHorario) {
+            const existeHorarioDia = horarios.some(h => h.diaSemana.toLowerCase() === dia.toLowerCase());
+            if (existeHorarioDia) {
+                setMensaje({ texto: `Ya existe un horario registrado para el día ${dia}. Edita el existente.`, tipo: "error" });
+                return;
+            }
+        }
+
+        const metodo = idHorario ? 'PUT' : 'POST';
+        const url = idHorario
+            ? `http://localhost:8080/api/horarios/${idHorario}`
+            : `http://localhost:8080/api/horarios/medico/${idMedico}`;
+
+        fetch(url, {
+            method: metodo,
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 diaSemana: dia,
@@ -65,13 +92,13 @@ function HorariosMedicoExtendido() {
                 return res.text();
             })
             .then(() => {
-                alert("Horario creado correctamente.");
-                setNuevoHorario({ dia: '', horaInicio: '', horaFin: '', intervalo: 30 });
+                setMensaje({ texto: idHorario ? "Horario actualizado correctamente." : "Horario creado correctamente.", tipo: "exito" });
+                limpiarFormulario();
                 cargarHorarios();
             })
             .catch(err => {
                 console.error(err);
-                alert("No se pudo guardar el horario.");
+                setMensaje({ texto: "No se pudo guardar el horario.", tipo: "error" });
             });
     };
 
@@ -79,7 +106,24 @@ function HorariosMedicoExtendido() {
         fetch(`http://localhost:8080/api/horarios/${idHorario}`, {
             method: "DELETE"
         })
-            .then(() => cargarHorarios());
+            .then(() => {
+                setMensaje({ texto: "Horario eliminado correctamente.", tipo: "exito" });
+                cargarHorarios();
+            })
+            .catch(() => {
+                setMensaje({ texto: "Error al eliminar horario.", tipo: "error" });
+            });
+    };
+
+    const editarHorario = (horario) => {
+        setNuevoHorario({
+            id: horario.id,
+            dia: horario.diaSemana,
+            horaInicio: horario.horaInicio,
+            horaFin: horario.horaFin,
+            intervalo: horario.tiempoCita
+        });
+        setMensaje({ texto: '', tipo: '' });
     };
 
     return (
@@ -87,7 +131,14 @@ function HorariosMedicoExtendido() {
             <h2>Gestión de Horarios del Médico</h2>
 
             <div>
-                <h4>Agregar horario</h4>
+                <h4>{nuevoHorario.id ? "Editar horario" : "Agregar horario"}</h4>
+
+                {mensaje.texto && (
+                    <div className={`mensaje ${mensaje.tipo}`}>
+                        {mensaje.texto}
+                    </div>
+                )}
+
                 <label>Día:
                     <select name="dia" value={nuevoHorario.dia} onChange={handleChange}>
                         <option value="">Seleccione</option>
@@ -109,7 +160,17 @@ function HorariosMedicoExtendido() {
                 <label>Duración de la cita (min):
                     <input type="number" name="intervalo" value={nuevoHorario.intervalo} onChange={handleChange} />
                 </label>
-                <button onClick={guardarHorario}>Guardar Horario</button>
+
+                <div className="botones-accion">
+                    <button className="btn-guardar" onClick={guardarHorario}>
+                        {nuevoHorario.id ? "Actualizar" : "Guardar"}
+                    </button>
+                    {nuevoHorario.id && (
+                        <button className="btn-cancelar" onClick={limpiarFormulario}>
+                            Cancelar
+                        </button>
+                    )}
+                </div>
             </div>
 
             <hr />
@@ -120,7 +181,8 @@ function HorariosMedicoExtendido() {
                     horarios.map(h => (
                         <li key={h.id}>
                             {h.diaSemana}: {h.horaInicio} - {h.horaFin}
-                            <button onClick={() => eliminarHorario(h.id)}>Eliminar</button>
+                            <button className="btn-editar" onClick={() => editarHorario(h)}>Editar</button>
+                            <button className="btn-eliminar" onClick={() => eliminarHorario(h.id)}>Eliminar</button>
                         </li>
                     ))
                 ) : (
