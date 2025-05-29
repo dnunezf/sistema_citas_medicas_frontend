@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { fetchWithInterceptor } from '../utils/fetchInterceptor';
+import { fetchWithInterceptor } from '../Utils/FetchInterceptor.js'; // <-- importa aquí
 import '../styles/auth/gestion_citas.css';
 
 const GestionCitas = ({ idMedico }) => {

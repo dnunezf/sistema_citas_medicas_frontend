@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { fetchWithInterceptor } from '../utils/fetchInterceptor'; // Importa tu interceptor
+import { fetchWithInterceptor } from '../Utils/FetchInterceptor.js'; // <-- importa aquí
 import '../styles/auth/dashboard.css';
 
 function HorarioMedicoExtendido() {

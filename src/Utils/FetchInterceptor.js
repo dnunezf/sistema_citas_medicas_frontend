@@ -1,5 +1,5 @@
 // src/utils/fetchInterceptor.js
-import { getToken, logout } from './auth';
+import { getToken, logout } from './Auth.js';
 
 export async function fetchWithInterceptor(url, options = {}) {
     const token = getToken();

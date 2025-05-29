@@ -1,17 +1,19 @@
+// src/components/PrivateRoute.jsx
 import React, { useContext } from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
 import { UserContext } from '../context/UserContext';
 
-const PrivateRoute = () => {
+const PrivateRoute = ({ rolesPermitidos }) => {
     const { usuario } = useContext(UserContext);
-    console.log('PrivateRoute usuario:', usuario);
 
-    // Si no hay usuario logueado, redirige a login
     if (!usuario) {
         return <Navigate to="/login" replace />;
     }
 
-    // Si está autenticado, renderiza los componentes hijos
+    if (rolesPermitidos && !rolesPermitidos.includes(usuario.rol)) {
+        return <Navigate to="/unauthorized" replace />;
+    }
+
     return <Outlet />;
 };
 

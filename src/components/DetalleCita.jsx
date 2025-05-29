@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import '../styles/auth/detalle_cita.css';
-import { fetchWithInterceptor } from '../utils/fetchInterceptor';
+import { fetchWithInterceptor } from '../Utils/FetchInterceptor.js'; // <-- importa aquí
 
 const DetalleCita = () => {
     const { id } = useParams();

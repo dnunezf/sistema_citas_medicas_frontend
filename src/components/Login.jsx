@@ -1,6 +1,7 @@
 import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { UserContext } from '../context/UserContext';
+import { getRutaInicioPorRol } from '../Utils/routing.js';
 import '../styles/auth/login.css';
 
 const Login = () => {
@@ -71,17 +72,13 @@ const Login = () => {
 
             // Redirigir según rol
             const rol = usuario.usuario?.rol || usuario.rol;
+            const id = usuario.usuario?.id || usuario.id;
+            const perfilCompleto = usuario.perfilCompleto ?? false;
 
-            if (rol === 'MEDICO') {
-                if (usuario.perfilCompleto) {
-                    navigate(`/citas/medico/${usuario.usuario?.id || usuario.id}`);
-                } else {
-                    navigate(`/medico/perfil/${usuario.usuario?.id || usuario.id}`);
-                }
-            } else if (rol === 'ADMINISTRADOR') {
-                navigate('/admin/medicos');
-            } else if (rol === 'PACIENTE') {
-                navigate('/');
+            const ruta = getRutaInicioPorRol(rol, id, perfilCompleto);
+
+            if (ruta) {
+                navigate(ruta);
             } else {
                 setError('Rol no reconocido.');
             }

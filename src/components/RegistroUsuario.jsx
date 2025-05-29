@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { fetchWithInterceptor } from '../utils/fetchInterceptor'; // Importa tu interceptor
 import '../styles/auth/registro_usuario.css';
 
 const RegistroUsuario = () => {
@@ -43,7 +42,7 @@ const RegistroUsuario = () => {
         }
 
         try {
-            const response = await fetchWithInterceptor('/api/usuarios/registro', {
+            const response = await fetch('/api/usuarios/registro', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -120,7 +119,7 @@ const RegistroUsuario = () => {
                             onChange={handleChange}
                             placeholder="Nombre completo"
                             required
-                            pattern="^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$"
+                            pattern="^[A-Za-zÁÉÍÓÚáéíóúÑñ\\s]+$"
                             title="Solo letras y espacios"
                         />
                     </div>

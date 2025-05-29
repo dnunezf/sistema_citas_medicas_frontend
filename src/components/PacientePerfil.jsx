@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { fetchWithInterceptor } from '../utils/fetchInterceptor';
+import { fetchWithInterceptor } from '../Utils/FetchInterceptor.js'; // <-- importa aquí
 import '../styles/auth/paciente_perfil.css';
 
 const PacientePerfil = () => {

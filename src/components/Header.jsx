@@ -1,7 +1,7 @@
 import React, { useContext, useState, useRef } from 'react';
 import { UserContext } from '../context/UserContext';
 import { useNavigate, Link } from 'react-router-dom';
-import { logout } from '../utils/auth';
+import { logout } from '../Utils/Auth.js';
 import '../styles/fragments.css';
 
 const Header = () => {

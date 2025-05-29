@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import '../styles/auth/confirmar_cita.css';
-import { fetchWithInterceptor } from '../utils/fetchInterceptor'; // <-- importa aquí
+import { fetchWithInterceptor } from '../Utils/FetchInterceptor.js'; // <-- importa aquí
 
 function ConfirmarCita() {
     const [medico, setMedico] = useState(null);
