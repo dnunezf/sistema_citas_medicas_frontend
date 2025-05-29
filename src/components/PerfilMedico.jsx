@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { fetchWithInterceptor } from '../utils/fetchInterceptor'; // Importar el interceptor
 import '../styles/auth/perfil_medico.css';
 
 function PerfilMedico() {
@@ -18,10 +19,17 @@ function PerfilMedico() {
     const [error, setError] = useState('');
 
     useEffect(() => {
-        fetch(`/api/medicos/${id}`)
-            .then(res => res.ok ? res.json() : Promise.reject())
-            .then(data => setPerfil(data))
-            .catch(() => setError('❌ No se pudo cargar el perfil.'));
+        const cargarPerfil = async () => {
+            try {
+                const res = await fetchWithInterceptor(`http://localhost:8080/api/medicos/${id}`);
+                if (!res.ok) throw new Error("No se pudo cargar el perfil.");
+                const data = await res.json();
+                setPerfil(data);
+            } catch {
+                setError('❌ No se pudo cargar el perfil.');
+            }
+        };
+        cargarPerfil();
     }, [id]);
 
     const handleChange = (e) => {
@@ -43,7 +51,7 @@ function PerfilMedico() {
         if (fotoPerfil) formData.append('fotoPerfil', fotoPerfil);
 
         try {
-            const res = await fetch(`/api/medicos/${id}`, {
+            const res = await fetchWithInterceptor(`http://localhost:8080/api/medicos/${id}`, {
                 method: 'PUT',
                 body: formData
             });

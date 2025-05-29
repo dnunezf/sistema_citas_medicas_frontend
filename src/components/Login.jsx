@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { UserContext } from '../context/UserContext';
 import '../styles/auth/login.css';
 
 const Login = () => {
@@ -7,6 +8,7 @@ const Login = () => {
     const [error, setError] = useState('');
     const [mensaje, setMensaje] = useState('');
     const navigate = useNavigate();
+    const { setUsuario } = useContext(UserContext);
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -31,11 +33,17 @@ const Login = () => {
 
             if (response.ok) {
                 const usuario = await response.json();
-                sessionStorage.setItem("usuario", JSON.stringify(usuario)); // Guarda usuario
-                setMensaje(`Bienvenido, ${usuario.nombre}`);
+
+                // Guarda token si viene incluido (ajusta si tu backend envía token aparte)
+                if (usuario.token) {
+                    sessionStorage.setItem("token", usuario.token);
+                }
+
+                sessionStorage.setItem("usuario", JSON.stringify(usuario.usuario || usuario)); // Guarda usuario
+                setUsuario(usuario.usuario || usuario);  // Actualiza contexto para refrescar UI
+                setMensaje(`Bienvenido, ${usuario.usuario?.nombre || usuario.nombre}`);
                 setError('');
 
-                // Redirigir a url pendiente si existe
                 const urlPendiente = sessionStorage.getItem("urlPendiente");
                 if (urlPendiente) {
                     sessionStorage.removeItem("urlPendiente");
@@ -43,23 +51,22 @@ const Login = () => {
                     return;
                 }
 
-                // Redirecciones por rol si no hay url pendiente
-                if (usuario.rol === 'MEDICO') {
+                const rol = usuario.usuario?.rol || usuario.rol;
+
+                if (rol === 'MEDICO') {
                     if (usuario.perfilCompleto) {
-                        navigate(`/citas/medico/${usuario.id}`);
+                        navigate(`/citas/medico/${usuario.usuario?.id || usuario.id}`);
                     } else {
-                        navigate(`/medico/perfil/${usuario.id}`);
+                        navigate(`/medico/perfil/${usuario.usuario?.id || usuario.id}`);
                     }
-                } else if (usuario.rol === 'ADMINISTRADOR') {
+                } else if (rol === 'ADMINISTRADOR') {
                     navigate('/admin/medicos');
-                } else if (usuario.rol === 'PACIENTE') {
+                } else if (rol === 'PACIENTE') {
                     navigate('/');
                 } else {
                     setError('Rol no reconocido.');
                 }
-
             } else if (response.status === 401 || response.status === 403) {
-                // Leer JSON con mensaje de error
                 try {
                     const errorData = await response.json();
                     setError(errorData.mensaje || 'Credenciales inválidas. Intenta de nuevo.');

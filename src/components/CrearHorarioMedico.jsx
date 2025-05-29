@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import '../styles/auth/horarios_medico.css';
+import { fetchWithInterceptor } from '../utils/fetchInterceptor'; // importa tu interceptor
 
 function HorariosMedicoExtendido() {
     const { id } = useParams();
@@ -17,7 +18,7 @@ function HorariosMedicoExtendido() {
     const [mensaje, setMensaje] = useState({ texto: '', tipo: '' }); // tipo: 'error' | 'exito'
 
     const cargarHorarios = () => {
-        fetch(`http://localhost:8080/api/horarios/medico/${idMedico}`)
+        fetchWithInterceptor(`http://localhost:8080/api/horarios/medico/${idMedico}`)
             .then(res => res.json())
             .then(data => {
                 if (Array.isArray(data)) {
@@ -77,7 +78,7 @@ function HorariosMedicoExtendido() {
             ? `http://localhost:8080/api/horarios/${idHorario}`
             : `http://localhost:8080/api/horarios/medico/${idMedico}`;
 
-        fetch(url, {
+        fetchWithInterceptor(url, {
             method: metodo,
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -103,7 +104,7 @@ function HorariosMedicoExtendido() {
     };
 
     const eliminarHorario = (idHorario) => {
-        fetch(`http://localhost:8080/api/horarios/${idHorario}`, {
+        fetchWithInterceptor(`http://localhost:8080/api/horarios/${idHorario}`, {
             method: "DELETE"
         })
             .then(() => {

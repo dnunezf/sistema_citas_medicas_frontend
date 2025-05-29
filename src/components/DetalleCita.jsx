@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import '../styles/auth/detalle_cita.css';
+import { fetchWithInterceptor } from '../utils/fetchInterceptor';
 
 const DetalleCita = () => {
     const { id } = useParams();
@@ -15,7 +16,7 @@ const DetalleCita = () => {
             return;
         }
 
-        fetch(`http://localhost:8080/api/medico/citas/detalle/${id}`)
+        fetchWithInterceptor(`http://localhost:8080/api/medico/citas/detalle/${id}`)
             .then(res => {
                 if (!res.ok) throw new Error(`Error ${res.status}: ${res.statusText}`);
                 return res.json();

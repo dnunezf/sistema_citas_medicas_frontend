@@ -1,20 +1,23 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState, useRef } from 'react';
 import { UserContext } from '../context/UserContext';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
+import { logout } from '../utils/auth'; // <-- Importa la función logout
 import '../styles/fragments.css';
 
 const Header = () => {
     const { usuario, setUsuario } = useContext(UserContext);
     const navigate = useNavigate();
 
+    const [dropdownOpen, setDropdownOpen] = useState(false);
+    const timeoutRef = useRef(null);
+
     const isPaciente = usuario?.rol === 'PACIENTE';
     const isMedico = usuario?.rol === 'MEDICO';
     const isAdmin = usuario?.rol === 'ADMINISTRADOR';
 
     const handleLogout = () => {
-        sessionStorage.removeItem("usuario");
-        setUsuario(null);
-        navigate("/login");
+        logout();           // Limpia sessionStorage y redirige a login
+        setUsuario(null);   // Limpia contexto para refrescar UI
     };
 
     const handlePerfil = () => {
@@ -32,11 +35,24 @@ const Header = () => {
         else navigate('/login');
     };
 
+    const handleMouseEnter = () => {
+        if (timeoutRef.current) clearTimeout(timeoutRef.current);
+        setDropdownOpen(true);
+    };
+
+    const handleMouseLeave = () => {
+        timeoutRef.current = setTimeout(() => {
+            setDropdownOpen(false);
+        }, 300);
+    };
+
     return (
         <header>
             <div className="top-bar">
                 <div className="logo">
-                    <a href="/"><img src="/images/logo.png" alt="Logo" /></a>
+                    <Link to="/">
+                        <img src="/images/logo.png" alt="Logo" />
+                    </Link>
                     <span className="brand-title">Citas Médicas</span>
                 </div>
                 <div className="contact-info">
@@ -46,20 +62,28 @@ const Header = () => {
 
             <nav className="main-nav">
                 <ul>
-                    <li><a href="/">Inicio</a></li>
+                    <li><Link to="/">Inicio</Link></li>
                     <li><button onClick={handleCitas}>Citas</button></li>
 
                     {!usuario ? (
-                        <li><a href="/login" className="login-button">Iniciar Sesión</a></li>
+                        <li><Link to="/login" className="login-button">Iniciar Sesión</Link></li>
                     ) : (
-                        <li className="dropdown">
-                            <button className="login-button">{usuario.nombre}</button>
-                            <ul className="dropdown-content">
-                                <li><button onClick={handlePerfil}>Perfil</button></li>
-                                {isMedico && <li><button onClick={handleCrearHorario}>Crear Horarios</button></li>}
-                                {isAdmin && <li><button onClick={() => navigate('/admin/medicos')}>Gestión Médicos</button></li>}
-                                <li><button onClick={handleLogout}>Cerrar Sesión</button></li>
-                            </ul>
+                        <li className="dropdown" style={{ position: 'relative' }}>
+                            <div
+                                onMouseEnter={handleMouseEnter}
+                                onMouseLeave={handleMouseLeave}
+                                style={{ display: 'inline-block' }}
+                            >
+                                <button className="login-button">{usuario.nombre}</button>
+                                {dropdownOpen && (
+                                    <ul className="dropdown-content">
+                                        <li><button onClick={handlePerfil}>Perfil</button></li>
+                                        {isMedico && <li><button onClick={handleCrearHorario}>Crear Horarios</button></li>}
+                                        {isAdmin && <li><button onClick={() => navigate('/admin/medicos')}>Gestión Médicos</button></li>}
+                                        <li><button onClick={handleLogout}>Cerrar Sesión</button></li>
+                                    </ul>
+                                )}
+                            </div>
                         </li>
                     )}
                 </ul>

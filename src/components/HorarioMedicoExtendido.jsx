@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
+import { fetchWithInterceptor } from '../utils/fetchInterceptor'; // Importa tu interceptor
 import '../styles/auth/dashboard.css';
 
 function HorarioMedicoExtendido() {
@@ -20,21 +21,29 @@ function HorarioMedicoExtendido() {
     };
 
     useEffect(() => {
-        fetch(`http://localhost:8080/api/medicos/${id}`)
-            .then(res => res.json())
-            .then(setMedico);
+        const cargarDatos = async () => {
+            try {
+                const resMedico = await fetchWithInterceptor(`http://localhost:8080/api/medicos/${id}`);
+                if (!resMedico.ok) throw new Error('Error al cargar médico');
+                const medicoData = await resMedico.json();
+                setMedico(medicoData);
 
-        fetch(`http://localhost:8080/api/horarios/extendido/${id}`)
-            .then(res => res.json())
-            .then(data => {
-                setEspacios(data || {});
-            });
+                const resEspacios = await fetchWithInterceptor(`http://localhost:8080/api/horarios/extendido/${id}`);
+                if (!resEspacios.ok) throw new Error('Error al cargar horarios');
+                const espaciosData = await resEspacios.json();
+                setEspacios(espaciosData || {});
 
-        fetch(`http://localhost:8080/api/dashboard`)
-            .then(res => res.json())
-            .then(data => {
-                setOcupados(data.horasOcupadas[id] || []);
-            });
+                const resDashboard = await fetchWithInterceptor(`http://localhost:8080/api/dashboard`);
+                if (!resDashboard.ok) throw new Error('Error al cargar dashboard');
+                const dashboardData = await resDashboard.json();
+                setOcupados(dashboardData.horasOcupadas[id] || []);
+            } catch (error) {
+                console.error(error);
+                // Opcional: mostrar mensaje de error en UI
+            }
+        };
+
+        cargarDatos();
     }, [id]);
 
     const esHoraOcupada = (fechaHora) => {
@@ -46,7 +55,7 @@ function HorarioMedicoExtendido() {
             <h2 className="dashboard-title">Horario Extendido</h2>
 
             <div style={{ marginBottom: '20px' }}>
-                <a href="/" className="btn-volver">← Volver al Dashboard</a>
+                <Link to="/" className="btn-volver">← Volver al Dashboard</Link>
             </div>
 
             {medico && (
@@ -76,7 +85,12 @@ function HorarioMedicoExtendido() {
                                             const clase = esHoraOcupada(hora) ? "hora ocupada" : "hora";
                                             const link = `/citas/confirmar?idMedico=${id}&fechaHora=${hora}`;
                                             return (
-                                                <a key={hora} href={clase === "hora" ? link : undefined} className={clase}>
+                                                <a
+                                                    key={hora}
+                                                    href={clase === "hora" ? link : undefined}
+                                                    className={clase}
+                                                    style={{ cursor: clase === "hora" ? 'pointer' : 'default' }}
+                                                >
                                                     {formatearHoraCR(hora)}
                                                 </a>
                                             );

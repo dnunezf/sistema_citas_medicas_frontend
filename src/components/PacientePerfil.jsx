@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { fetchWithInterceptor } from '../utils/fetchInterceptor'; // Importa el interceptor
 import '../styles/auth/paciente_perfil.css';
 
 const PacientePerfil = () => {
@@ -21,9 +22,11 @@ const PacientePerfil = () => {
             return;
         }
 
-        fetch(`http://localhost:8080/api/pacientes/${usuario.id}`)
-            .then(res => res.json())
-            .then(data => {
+        const cargarPerfil = async () => {
+            try {
+                const res = await fetchWithInterceptor(`http://localhost:8080/api/pacientes/${usuario.id}`);
+                if (!res.ok) throw new Error("No se pudo cargar el perfil.");
+                const data = await res.json();
                 setForm({
                     id: data.id,
                     nombre: data.nombre,
@@ -31,8 +34,12 @@ const PacientePerfil = () => {
                     direccion: data.direccion,
                     fechaNacimiento: data.fechaNacimiento
                 });
-            })
-            .catch(() => setError("❌ No se pudo cargar el perfil."));
+            } catch {
+                setError("❌ No se pudo cargar el perfil.");
+            }
+        };
+
+        cargarPerfil();
     }, [navigate]);
 
     const handleChange = (e) => {
@@ -50,7 +57,7 @@ const PacientePerfil = () => {
         }
 
         try {
-            const res = await fetch(`http://localhost:8080/api/pacientes/${form.id}`, {
+            const res = await fetchWithInterceptor(`http://localhost:8080/api/pacientes/${form.id}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(form)
@@ -58,6 +65,7 @@ const PacientePerfil = () => {
 
             if (res.ok) {
                 setMensaje("✅ Perfil actualizado correctamente.");
+                // Actualizar nombre en sesión
                 const usuario = JSON.parse(sessionStorage.getItem("usuario"));
                 usuario.nombre = form.nombre;
                 sessionStorage.setItem("usuario", JSON.stringify(usuario));

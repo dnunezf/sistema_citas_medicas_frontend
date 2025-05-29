@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { fetchWithInterceptor } from '../utils/fetchInterceptor'; // importa tu interceptor
 import '../styles/auth/gestion_citas.css';
 
 const GestionCitas = ({ idMedico }) => {
@@ -6,6 +7,8 @@ const GestionCitas = ({ idMedico }) => {
     const [estado, setEstado] = useState('ALL');
     const [nombrePaciente, setNombrePaciente] = useState('');
     const [medicoNombre, setMedicoNombre] = useState('');
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState('');
 
     const cargarCitas = async () => {
         let url = `http://localhost:8080/api/medico/citas/${idMedico}`;
@@ -18,24 +21,36 @@ const GestionCitas = ({ idMedico }) => {
             url = `http://localhost:8080/api/medico/citas/${idMedico}/buscar?${params.toString()}`;
         }
 
+        setLoading(true);
+        setError('');
+
         try {
-            const res = await fetch(url);
+            const res = await fetchWithInterceptor(url);
             if (res.ok) {
                 const data = await res.json();
                 setCitas(data);
                 if (data.length > 0) {
                     setMedicoNombre(data[0].nombreMedico);
+                } else {
+                    setMedicoNombre('');
                 }
             } else {
-                console.error("Error al cargar citas.");
+                setError("Error al cargar citas.");
+                setCitas([]);
+                setMedicoNombre('');
             }
         } catch (err) {
-            console.error("Error:", err);
+            setError("Error de red al cargar citas.");
+            setCitas([]);
+            setMedicoNombre('');
+        } finally {
+            setLoading(false);
         }
     };
 
     useEffect(() => {
         cargarCitas();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [estado, nombrePaciente]);
 
     const handleEstadoChange = (e) => setEstado(e.target.value);
@@ -44,10 +59,7 @@ const GestionCitas = ({ idMedico }) => {
     const actualizarCita = async (idCita, nuevoEstado, notas) => {
         try {
             const url = `http://localhost:8080/api/medico/citas/${idCita}?estado=${nuevoEstado}&notas=${encodeURIComponent(notas)}`;
-
-            const res = await fetch(url, {
-                method: 'PUT'
-            });
+            const res = await fetchWithInterceptor(url, { method: 'PUT' });
 
             if (res.ok) {
                 cargarCitas();
@@ -56,13 +68,14 @@ const GestionCitas = ({ idMedico }) => {
             }
         } catch (error) {
             console.error("Error:", error);
+            alert("Error de red al actualizar la cita");
         }
     };
 
     return (
         <main className="gestion-citas-container">
             <h2>
-                Doctor - <span className="doctor-name">{medicoNombre}</span> - Citas
+                Doctor - <span className="doctor-name">{medicoNombre || "N/D"}</span> - Citas
             </h2>
 
             <div className="filters">
@@ -85,11 +98,15 @@ const GestionCitas = ({ idMedico }) => {
                 />
             </div>
 
-            <div className="appointments">
-                {citas.length === 0 ? (
-                    <p className="no-citas">No hay citas para mostrar.</p>
-                ) : (
-                    citas.map((cita) => (
+            {loading ? (
+                <p>Cargando citas...</p>
+            ) : error ? (
+                <p className="error-message">{error}</p>
+            ) : citas.length === 0 ? (
+                <p className="no-citas">No hay citas para mostrar.</p>
+            ) : (
+                <div className="appointments">
+                    {citas.map((cita) => (
                         <div key={cita.id} className="appointment">
                             <div className="patient-info">
                                 <img src="/images/avatar.png" alt="Paciente" />
@@ -106,8 +123,15 @@ const GestionCitas = ({ idMedico }) => {
                                         minute: '2-digit'
                                     })}
                                 </span>
-                                <span className={`status ${cita.estado === 'pendiente' ? 'pending' :
-                                    cita.estado === 'completada' ? 'attended' : 'default'}`}>
+                                <span
+                                    className={`status ${
+                                        cita.estado === 'pendiente'
+                                            ? 'pending'
+                                            : cita.estado === 'completada'
+                                                ? 'attended'
+                                                : 'default'
+                                    }`}
+                                >
                                     {cita.estado}
                                 </span>
                                 <p className="notas">
@@ -116,13 +140,15 @@ const GestionCitas = ({ idMedico }) => {
                             </div>
 
                             <div className="actions">
-                                <form onSubmit={(e) => {
-                                    e.preventDefault();
-                                    const form = e.target;
-                                    const nuevoEstado = form.estado.value;
-                                    const notas = form.notas.value;
-                                    actualizarCita(cita.id, nuevoEstado, notas);
-                                }}>
+                                <form
+                                    onSubmit={(e) => {
+                                        e.preventDefault();
+                                        const form = e.target;
+                                        const nuevoEstado = form.estado.value;
+                                        const notas = form.notas.value;
+                                        actualizarCita(cita.id, nuevoEstado, notas);
+                                    }}
+                                >
                                     <select name="estado" defaultValue={cita.estado}>
                                         <option value="pendiente">Pendiente</option>
                                         <option value="confirmada">Confirmada</option>
@@ -139,9 +165,9 @@ const GestionCitas = ({ idMedico }) => {
                                 </form>
                             </div>
                         </div>
-                    ))
-                )}
-            </div>
+                    ))}
+                </div>
+            )}
         </main>
     );
 };

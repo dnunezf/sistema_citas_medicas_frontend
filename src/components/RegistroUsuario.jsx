@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { fetchWithInterceptor } from '../utils/fetchInterceptor'; // Importa tu interceptor
 import '../styles/auth/registro_usuario.css';
 
 const RegistroUsuario = () => {
@@ -10,12 +11,11 @@ const RegistroUsuario = () => {
         rol: ''
     });
 
-
     const [mensaje, setMensaje] = useState('');
     const [error, setError] = useState('');
     const [errorClave, setErrorClave] = useState('');
 
-    const rolesDisponibles = ['PACIENTE', 'MEDICO',];
+    const rolesDisponibles = ['PACIENTE', 'MEDICO'];
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -27,7 +27,6 @@ const RegistroUsuario = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        // Validación de ID numérico
         if (!/^\d{9,15}$/.test(formData.id)) {
             setError('El ID debe tener entre 9 y 15 dígitos numéricos.');
             return;
@@ -44,7 +43,7 @@ const RegistroUsuario = () => {
         }
 
         try {
-            const response = await fetch('http://localhost:8080/api/usuarios/registro', {
+            const response = await fetchWithInterceptor('http://localhost:8080/api/usuarios/registro', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -163,9 +162,12 @@ const RegistroUsuario = () => {
                         </select>
                     </div>
 
-                    <button type="submit" disabled={
-                        !formData.id || !formData.nombre || !formData.clave || !formData.confirmarClave || !formData.rol
-                    }>
+                    <button
+                        type="submit"
+                        disabled={
+                            !formData.id || !formData.nombre || !formData.clave || !formData.confirmarClave || !formData.rol
+                        }
+                    >
                         Registrar
                     </button>
                 </form>

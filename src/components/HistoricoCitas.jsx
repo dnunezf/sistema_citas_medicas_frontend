@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom'; // importa Link
+import { Link } from 'react-router-dom';
+import { fetchWithInterceptor } from '../utils/fetchInterceptor'; // Importa tu interceptor
 import '../styles/auth/historico_citas.css';
 
 const HistoricoCitas = () => {
@@ -8,6 +9,7 @@ const HistoricoCitas = () => {
     const [medicoFiltro, setMedicoFiltro] = useState('');
     const [mensaje, setMensaje] = useState('');
     const [infoMedicos, setInfoMedicos] = useState({});
+    const [loading, setLoading] = useState(false);
 
     const usuario = JSON.parse(sessionStorage.getItem("usuario"));
 
@@ -16,36 +18,45 @@ const HistoricoCitas = () => {
         cargarCitas();
     }, [estadoFiltro, medicoFiltro]);
 
-    const cargarCitas = () => {
-        let url = `http://localhost:8080/api/paciente/citas/${usuario.id}`;
-        const params = [];
+    const cargarCitas = async () => {
+        if (!usuario) return;
+        setLoading(true);
+        setMensaje('');
+        try {
+            let url = `http://localhost:8080/api/paciente/citas/${usuario.id}`;
+            const params = [];
 
-        if (estadoFiltro) params.push(`estado=${estadoFiltro}`);
-        if (medicoFiltro.trim()) params.push(`nombreMedico=${encodeURIComponent(medicoFiltro)}`);
+            if (estadoFiltro) params.push(`estado=${estadoFiltro}`);
+            if (medicoFiltro.trim()) params.push(`nombreMedico=${encodeURIComponent(medicoFiltro)}`);
 
-        if (params.length > 0) {
-            url += `/buscar?` + params.join("&");
-        }
+            if (params.length > 0) {
+                url += `/buscar?` + params.join("&");
+            }
 
-        fetch(url)
-            .then(res => res.json())
-            .then(async data => {
-                setCitas(data);
-                setMensaje(data.length === 0 ? "No hay citas que coincidan con los filtros." : '');
+            const res = await fetchWithInterceptor(url);
+            if (!res.ok) throw new Error('Error al cargar citas');
+            const data = await res.json();
+            setCitas(data);
+            setMensaje(data.length === 0 ? "No hay citas que coincidan con los filtros." : '');
 
-                const nuevosMedicos = {};
-                await Promise.all(data.map(async cita => {
-                    if (!infoMedicos[cita.idMedico]) {
-                        const res = await fetch(`http://localhost:8080/api/medicos/${cita.idMedico}`);
-                        if (res.ok) {
-                            const medico = await res.json();
-                            nuevosMedicos[cita.idMedico] = medico;
-                        }
+            const nuevosMedicos = {};
+            await Promise.all(data.map(async cita => {
+                if (!infoMedicos[cita.idMedico]) {
+                    const resMed = await fetchWithInterceptor(`http://localhost:8080/api/medicos/${cita.idMedico}`);
+                    if (resMed.ok) {
+                        const medico = await resMed.json();
+                        nuevosMedicos[cita.idMedico] = medico;
                     }
-                }));
-                setInfoMedicos(prev => ({ ...prev, ...nuevosMedicos }));
-            })
-            .catch(() => setMensaje("Error al cargar las citas."));
+                }
+            }));
+            setInfoMedicos(prev => ({ ...prev, ...nuevosMedicos }));
+        } catch (error) {
+            console.error(error);
+            setMensaje("Error al cargar las citas.");
+            setCitas([]);
+        } finally {
+            setLoading(false);
+        }
     };
 
     const claseEstado = (estado) => {
@@ -93,6 +104,7 @@ const HistoricoCitas = () => {
             </div>
 
             {mensaje && <div className="mensaje">{mensaje}</div>}
+            {loading && <p>Cargando citas...</p>}
 
             <div className="appointments">
                 {citas.map(cita => {
@@ -136,7 +148,7 @@ const HistoricoCitas = () => {
                                 <Link to={`/citas/paciente/detalle/${cita.id}`} title="Ver notas de la cita">
                                     <img src="/images/binoculares.png" alt="Ver notas" className="icono-ver" />
                                 </Link>
-                                </div>
+                            </div>
                         </div>
                     );
                 })}

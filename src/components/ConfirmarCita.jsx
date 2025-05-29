@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import '../styles/auth/confirmar_cita.css';
+import { fetchWithInterceptor } from '../utils/fetchInterceptor'; // <-- importa aquí
 
 function ConfirmarCita() {
     const [medico, setMedico] = useState(null);
@@ -26,7 +27,7 @@ function ConfirmarCita() {
 
         setFechaHora(fecha);
 
-        fetch(`http://localhost:8080/api/medicos/${idMedico}`)
+        fetchWithInterceptor(`http://localhost:8080/api/medicos/${idMedico}`)
             .then(res => {
                 if (!res.ok) throw new Error("No se pudo cargar el médico.");
                 return res.json();
@@ -42,7 +43,7 @@ function ConfirmarCita() {
             return;
         }
 
-        fetch(`http://localhost:8080/api/medico/citas/confirmar`, {
+        fetchWithInterceptor(`http://localhost:8080/api/medico/citas/confirmar`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
@@ -57,14 +58,12 @@ function ConfirmarCita() {
                     setError('');
                     setTimeout(() => navigate("/paciente/historico"), 2500);
                 } else {
-                    // Intentar extraer JSON con el mensaje
                     let data;
                     try {
                         data = await res.json();
                     } catch {
                         throw new Error("Error desconocido");
                     }
-                    // Mostrar solo el mensaje limpio
                     throw new Error(data.mensaje || "Error desconocido");
                 }
             })

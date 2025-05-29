@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import '../styles/auth/dashboard.css';
 import { useNavigate } from "react-router-dom";
+import { fetchWithInterceptor } from '../utils/fetchInterceptor';  // <-- importa tu interceptor
 
 const BuscarCita = () => {
     const [especialidad, setEspecialidad] = useState('');
@@ -34,7 +35,8 @@ const BuscarCita = () => {
 
         if (params.length > 0) url += '?' + params.join('&');
 
-        const res = await fetch(url);
+        // Usa fetchWithInterceptor en vez de fetch normal
+        const res = await fetchWithInterceptor(url);
         const data = await res.json();
 
         setMedicos(data.medicos);
