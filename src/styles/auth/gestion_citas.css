@@ -1,42 +1,46 @@
-/* ========== RESET ========== */
+/* ===== Fuente profesional ===== */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+/* ===== Reset global ===== */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Segoe UI', sans-serif;
+    font-family: 'Inter', sans-serif;
 }
 
 body {
     background-color: #f0f4f8;
-    color: #333;
+    color: #2c2f33;
 }
 
-/* ========== CONTENEDOR GENERAL ========== */
+/* ===== Contenedor general ===== */
 main {
     width: 90%;
     max-width: 1200px;
     margin: 50px auto;
     background: #ffffff;
-    padding: 40px;
-    border-radius: 15px;
-    box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.08);
+    padding: 44px;
+    border-radius: 16px;
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.08);
 }
 
-/* ========== TÍTULO ========== */
+/* ===== Título principal ===== */
 main h2 {
     text-align: center;
     font-size: 28px;
-    color: #0077b6;
-    margin-bottom: 20px;
+    color: #004085;
+    margin-bottom: 28px;
+    font-weight: 700;
 }
 
 .doctor-name {
-    color: #0077b6;
-    font-weight: bold;
+    color: #004085;
+    font-weight: 600;
     font-style: italic;
 }
 
-/* ========== FILTROS ========== */
+/* ===== Filtros ===== */
 .filters {
     display: flex;
     justify-content: center;
@@ -47,35 +51,43 @@ main h2 {
 
 .filters select,
 .filters input {
-    padding: 6px 10px;
-    border: 1px solid #ccc;
+    padding: 8px 12px;
+    border: 1.5px solid #ccd6e0;
     border-radius: 8px;
     font-size: 14px;
-    min-width: 100px;
-    max-width: 180px;
-    transition: border-color 0.3s;
+    min-width: 140px;
+    max-width: 200px;
+    background-color: #ffffff;
+    transition: border-color 0.3s, box-shadow 0.2s;
+}
+
+.filters select:focus,
+.filters input:focus {
+    border-color: #0077b6;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(0, 119, 182, 0.15);
 }
 
 .filters button {
-    background-color: #00a8e8;
+    background-color: #0077b6;
     color: white;
     border: none;
     padding: 10px 18px;
     border-radius: 8px;
     cursor: pointer;
-    font-weight: bold;
-    transition: background-color 0.3s;
+    font-weight: 600;
+    transition: background-color 0.3s ease;
 }
 
 .filters button:hover {
-    background-color: #007bbd;
+    background-color: #005f96;
 }
 
-/* ========== LISTADO DE CITAS ========== */
+/* ===== Listado de citas ===== */
 .appointments {
     display: flex;
     flex-direction: column;
-    gap: 25px;
+    gap: 24px;
 }
 
 .appointment {
@@ -84,9 +96,9 @@ main h2 {
     flex-wrap: wrap;
     align-items: center;
     background: #ffffff;
-    padding: 25px 20px;
-    border-radius: 12px;
-    box-shadow: 0px 5px 12px rgba(0, 0, 0, 0.08);
+    padding: 24px;
+    border-radius: 14px;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
     border-left: 6px solid #0077b6;
     transition: transform 0.2s ease;
 }
@@ -95,26 +107,28 @@ main h2 {
     transform: translateY(-3px);
 }
 
-/* ========== INFO PACIENTE ========== */
+/* ===== Información del paciente ===== */
 .patient-info {
     display: flex;
     align-items: center;
-    gap: 15px;
+    gap: 16px;
 }
 
 .patient-info img {
-    width: 55px;
-    height: 55px;
+    width: 58px;
+    height: 58px;
     border-radius: 50%;
     border: 3px solid #0077b6;
+    object-fit: cover;
 }
 
 .patient-info span {
     font-size: 16px;
     font-weight: 600;
+    color: #333;
 }
 
-/* ========== DETALLES CITA ========== */
+/* ===== Detalles de la cita ===== */
 .appointment-details {
     display: flex;
     flex-direction: column;
@@ -124,8 +138,8 @@ main h2 {
 }
 
 .date-time {
-    font-weight: bold;
-    color: #333;
+    font-weight: 600;
+    color: #2c2f33;
     font-size: 15px;
 }
 
@@ -139,6 +153,7 @@ main h2 {
     margin: 0 auto;
 }
 
+/* ===== Estados ===== */
 .status.pending {
     background-color: #fff3cd;
     color: #856404;
@@ -155,7 +170,7 @@ main h2 {
     color: #383d41;
 }
 
-/* ========== FORMULARIO DE ACCIONES ========== */
+/* ===== Formulario de acciones ===== */
 .actions form {
     display: flex;
     flex-wrap: wrap;
@@ -166,9 +181,18 @@ main h2 {
 .actions select,
 .actions input {
     padding: 8px 10px;
-    border: 1px solid #ccc;
+    border: 1.5px solid #ccd6e0;
     border-radius: 6px;
     font-size: 14px;
+    background-color: #ffffff;
+    transition: border-color 0.3s ease;
+}
+
+.actions select:focus,
+.actions input:focus {
+    border-color: #28a745;
+    box-shadow: 0 0 0 3px rgba(40, 167, 69, 0.15);
+    outline: none;
 }
 
 .actions button {
@@ -186,10 +210,10 @@ main h2 {
     background-color: #218838;
 }
 
-/* ========== RESPONSIVE ========== */
+/* ===== Responsivo ===== */
 @media (max-width: 768px) {
     main {
-        padding: 20px;
+        padding: 24px;
     }
 
     .filters {
@@ -205,17 +229,24 @@ main h2 {
 
     .appointment-details {
         align-items: flex-start;
+        text-align: left;
+        width: 100%;
     }
 
     .actions form {
         flex-direction: column;
         align-items: flex-start;
+        width: 100%;
     }
 
-    .foto-doctor {
-        width: 60px;
-        height: 60px;
-        border-radius: 50%;
-        object-fit: cover;
+    .patient-info {
+        flex-direction: row;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .patient-info img {
+        width: 50px;
+        height: 50px;
     }
 }

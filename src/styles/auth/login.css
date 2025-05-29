@@ -1,67 +1,74 @@
+/* ===== Fuente profesional ===== */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+/* ===== Estilos base ===== */
 body {
     margin: 0;
     padding: 0;
-    background-color: #f2f8fd;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f0f4f8;
+    font-family: 'Inter', sans-serif;
+    color: #2c2f33;
 }
 
-/* Contenedor centrado */
+/* ===== Contenedor centrado ===== */
 .login-container {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    min-height: 100vh;
     padding: 20px;
+    background: linear-gradient(to bottom right, #dbeafe, #eff6ff);
 }
 
-/* Formulario */
+/* ===== Formulario ===== */
 .login-form {
-    background: #ffffff;
-    padding: 40px 30px;
-    border-radius: 12px;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+    background-color: #ffffff;
+    padding: 40px 32px;
+    border-radius: 14px;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
     width: 100%;
-    max-width: 380px;
+    max-width: 400px;
     text-align: center;
     transition: transform 0.3s ease;
 }
 
 .login-form:hover {
-    transform: translateY(-4px);
+    transform: translateY(-3px);
 }
 
-/* Header del formulario */
+/* ===== Header del formulario ===== */
 .login-header h2 {
-    margin: 10px 0 5px;
+    margin: 10px 0 6px;
     font-size: 26px;
-    color: #007bff;
-    font-weight: 600;
+    color: #003366;
+    font-weight: 700;
 }
 
 .login-header p {
     font-size: 14px;
-    color: #666;
-    margin-bottom: 20px;
+    color: #5f6c7b;
+    margin-bottom: 24px;
 }
 
 .login-image {
-    width: 60px;
-    height: 60px;
+    width: 64px;
+    height: 64px;
     border-radius: 50%;
     object-fit: cover;
-    margin-bottom: 10px;
+    margin-bottom: 12px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
 
-/* Input con ícono */
+/* ===== Input con ícono ===== */
 .input-group {
     display: flex;
     align-items: center;
-    background: #f1f3f5;
-    border: 1px solid #ced4da;
-    border-radius: 8px;
+    background: #f3f6f9;
+    border: 1.5px solid #d0d7de;
+    border-radius: 10px;
     padding: 10px 14px;
-    margin-bottom: 18px;
-    transition: border-color 0.3s;
+    margin-bottom: 20px;
+    transition: border-color 0.3s ease;
 }
 
 .input-group:focus-within {
@@ -80,72 +87,82 @@ body {
     width: 100%;
     font-size: 15px;
     outline: none;
+    color: #333;
 }
 
-/* Botón login */
+/* ===== Botón login ===== */
 .btn-login {
-    background-color: #007bff;
+    background-color: #004085;
     color: white;
     border: none;
     padding: 12px;
     width: 100%;
     border-radius: 8px;
     font-size: 16px;
+    font-weight: 600;
     cursor: pointer;
-    font-weight: bold;
-    transition: background-color 0.3s ease, transform 0.2s;
+    transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 .btn-login:hover {
-    background-color: #0056b3;
+    background-color: #002f66;
     transform: scale(1.02);
 }
 
-/* Registro */
+/* ===== Registro ===== */
 .register-container {
-    margin-top: 18px;
+    margin-top: 20px;
     font-size: 14px;
     color: #555;
 }
 
 .btn-register {
-    color: #dc3545;
+    color: #c82333;
     font-weight: 600;
     text-decoration: none;
     margin-left: 6px;
-    transition: color 0.3s;
+    transition: color 0.3s ease;
 }
 
 .btn-register:hover {
-    text-decoration: underline;
     color: #a80000;
+    text-decoration: underline;
 }
 
-/* Mensajes de error y éxito */
+/* ===== Mensajes de error y éxito ===== */
 .error-message,
 .alert-success {
-    padding: 12px;
-    margin-bottom: 16px;
-    border-radius: 6px;
+    padding: 12px 16px;
+    margin-bottom: 20px;
+    border-radius: 8px;
     font-weight: 500;
+    font-size: 14px;
     text-align: center;
 }
 
 .error-message {
-    background-color: #ffe2e2;
-    color: #a80000;
+    background-color: #ffe6e6;
+    color: #b02a37;
     border: 1px solid #e84c4c;
 }
 
 .alert-success {
-    background-color: #d4edda;
-    color: #155724;
+    background-color: #e0f7ea;
+    color: #218838;
     border: 1px solid #c3e6cb;
 }
 
-/* Responsive para móvil */
+/* ===== Responsivo ===== */
 @media (max-width: 450px) {
     .login-form {
         padding: 30px 20px;
+    }
+
+    .login-header h2 {
+        font-size: 22px;
+    }
+
+    .btn-login {
+        font-size: 15px;
     }
 }

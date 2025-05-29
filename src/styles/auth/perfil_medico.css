@@ -1,17 +1,28 @@
-/* ===== CONTENEDOR GLOBAL ===== */
+/* ===== Fuente moderna ===== */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+/* ===== Global ===== */
+body {
+    font-family: 'Inter', sans-serif;
+    background: linear-gradient(to right, #e6f0ff, #f4f8fd);
+    margin: 0;
+    padding: 0;
+    color: #2c2f33;
+}
+
+/* ===== Contenedor principal ===== */
 .perfil-wrapper {
     display: flex;
     justify-content: center;
     align-items: center;
     padding: 60px 20px;
     min-height: 100vh;
-    background: linear-gradient(to right, #e6f0ff, #f4f8fd);
 }
 
-/* ===== TARJETA DE PERFIL ===== */
+/* ===== Tarjeta de perfil ===== */
 .perfil-container {
     background-color: #ffffff;
-    padding: 40px 35px;
+    padding: 42px 36px;
     border-radius: 18px;
     box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
     max-width: 620px;
@@ -19,7 +30,7 @@
     animation: fadeInUp 0.4s ease-out;
 }
 
-/* ===== ANIMACIÓN DE ENTRADA ===== */
+/* ===== Animación ===== */
 @keyframes fadeInUp {
     from {
         opacity: 0;
@@ -31,18 +42,19 @@
     }
 }
 
-/* ===== TÍTULO ===== */
+/* ===== Título ===== */
 .perfil-title {
     text-align: center;
-    color: #0077cc;
+    color: #003366;
     font-size: 28px;
     font-weight: 700;
-    margin-bottom: 30px;
-    letter-spacing: 0.5px;
+    margin-bottom: 32px;
+    letter-spacing: 0.4px;
 }
 
-/* ===== ALERTAS ===== */
-.alert-success, .alert-error {
+/* ===== Alertas ===== */
+.alert-success,
+.alert-error {
     padding: 14px 16px;
     border-radius: 8px;
     font-weight: 600;
@@ -53,8 +65,8 @@
 }
 
 .alert-success {
-    background-color: #dafbe1;
-    color: #147b34;
+    background-color: #e0f7ea;
+    color: #217a00;
     border: 1px solid #8fd694;
 }
 
@@ -64,10 +76,10 @@
     border: 1px solid #ff6666;
 }
 
-/* ===== FOTO DE PERFIL ===== */
+/* ===== Foto de perfil ===== */
 .foto-circular {
     text-align: center;
-    margin-bottom: 24px;
+    margin-bottom: 26px;
 }
 
 .foto-circular img {
@@ -75,18 +87,18 @@
     height: 150px;
     object-fit: cover;
     border-radius: 50%;
-    border: 3px solid #0077cc44;
+    border: 3px solid #007bff33;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
     transition: transform 0.3s ease;
 }
 
 .foto-circular img:hover {
-    transform: scale(1.04);
+    transform: scale(1.05);
 }
 
-/* ===== FORMULARIO ===== */
+/* ===== Formulario ===== */
 .form-group {
-    margin-bottom: 20px;
+    margin-bottom: 22px;
     display: flex;
     flex-direction: column;
 }
@@ -101,11 +113,12 @@
 .form-group input,
 .form-group textarea {
     padding: 12px 14px;
-    border: 1.5px solid #ced4da;
+    border: 1.6px solid #ccd6e0;
     border-radius: 8px;
     font-size: 15px;
-    background-color: #fdfdfd;
-    transition: all 0.3s ease;
+    background-color: #fefefe;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    color: #2c2f33;
 }
 
 .form-group input:focus,
@@ -116,7 +129,7 @@
     box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
 }
 
-/* ===== BOTÓN ===== */
+/* ===== Botón ===== */
 button[type="submit"] {
     width: 100%;
     background: linear-gradient(135deg, #007bff, #0056b3);
@@ -135,10 +148,10 @@ button[type="submit"]:hover {
     transform: translateY(-2px);
 }
 
-/* ===== RESPONSIVO ===== */
+/* ===== Responsivo ===== */
 @media (max-width: 480px) {
     .perfil-container {
-        padding: 25px 20px;
+        padding: 28px 20px;
     }
 
     .perfil-title {

@@ -1,47 +1,71 @@
+/* ===== Fuente profesional ===== */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+/* ===== Estructura principal ===== */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Inter', sans-serif;
+    background: linear-gradient(to bottom, #eaf4ff, #d9e8ff);
+    color: #2c2f33;
+}
+
+/* ===== Contenedor general ===== */
 .main-wrapper {
     display: flex;
     justify-content: center;
     align-items: center;
     padding: 40px 15px;
     min-height: 100vh;
-    background: linear-gradient(to bottom, #f2f8fd, #e0ecff);
 }
 
+/* ===== Formulario ===== */
 .form-container {
     background-color: #ffffff;
-    padding: 35px 28px;
-    border-radius: 16px;
-    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.08);
+    padding: 40px 32px;
+    border-radius: 14px;
+    box-shadow: 0 10px 32px rgba(0, 0, 0, 0.08);
     width: 100%;
     max-width: 440px;
     text-align: center;
-    animation: fadeIn 0.6s ease-in-out;
+    animation: fadeIn 0.5s ease-in-out;
 }
 
+/* ===== Animación fade ===== */
 @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(-10px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+        opacity: 0;
+        transform: translateY(-8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
+/* ===== Icono de usuario ===== */
 .user-icon {
-    width: 85px;
-    height: 85px;
+    width: 84px;
+    height: 84px;
     object-fit: cover;
     border-radius: 50%;
-    margin-bottom: 20px;
+    margin-bottom: 24px;
     border: 3px solid #007bff30;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
 }
 
+/* ===== Título ===== */
 h2 {
     font-size: 26px;
     font-weight: 700;
-    color: #007bff;
-    margin-bottom: 18px;
+    color: #004085;
+    margin-bottom: 20px;
 }
 
+/* ===== Input con ícono ===== */
 .input-container {
     position: relative;
-    margin-bottom: 20px;
+    margin-bottom: 22px;
     text-align: left;
 }
 
@@ -51,56 +75,59 @@ h2 {
     left: 12px;
     transform: translateY(-50%);
     color: #007bff;
-    font-size: 15px;
+    font-size: 16px;
 }
 
-input, select {
+input,
+select {
     width: 100%;
-    padding: 12px 12px 12px 38px;
-    border: 1.8px solid #ccc;
-    border-radius: 6px;
+    padding: 12px 12px 12px 40px;
+    border: 1.6px solid #ccd6e0;
+    border-radius: 8px;
     font-size: 15px;
     background-color: #fefefe;
     transition: all 0.25s ease-in-out;
+    color: #333;
 }
 
-input:focus, select:focus {
+input:focus,
+select:focus {
     border-color: #007bff;
     outline: none;
-    box-shadow: 0 0 6px rgba(0, 123, 255, 0.25);
+    box-shadow: 0 0 6px rgba(0, 123, 255, 0.2);
 }
 
-/*input:invalid {*/
-/*    border-color: #dc3545;*/
-/*}*/
-
+/* ===== Botón principal ===== */
 button {
-    background-color: #007bff;
+    background-color: #004085;
     color: white;
     border: none;
     padding: 12px;
     width: 100%;
     font-size: 16px;
     font-weight: 600;
-    border-radius: 6px;
+    border-radius: 8px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
-    margin-top: 5px;
-}
-
-button:disabled {
-    background-color: #a0c7ff;
-    cursor: not-allowed;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    margin-top: 6px;
 }
 
 button:hover:not(:disabled) {
-    background-color: #0056b3;
+    background-color: #003066;
+    transform: scale(1.02);
 }
 
-.alert-error, .alert-success {
-    padding: 14px;
-    border-radius: 6px;
-    margin-bottom: 14px;
+button:disabled {
+    background-color: #a6c8f2;
+    cursor: not-allowed;
+}
+
+/* ===== Alertas de error y éxito ===== */
+.alert-error,
+.alert-success {
+    padding: 14px 16px;
+    border-radius: 8px;
+    margin-bottom: 16px;
     font-size: 15px;
     font-weight: 600;
     text-align: center;
@@ -108,40 +135,43 @@ button:hover:not(:disabled) {
 
 .alert-error {
     background-color: #ffe5e5;
-    color: #a80000;
-    border: 1px solid #ff6666;
+    color: #b02a37;
+    border: 1px solid #ff7f7f;
 }
 
 .alert-success {
-    background-color: #e1f7e1;
+    background-color: #e0f7ea;
     color: #217a00;
-    border: 1px solid #66cc66;
+    border: 1px solid #7dd97d;
 }
 
+/* ===== Validación específica ===== */
 .error-text {
     color: #dc3545;
     font-size: 14px;
-    margin-top: -10px;
-    padding-bottom: 8px;
+    margin-top: -8px;
+    margin-bottom: 10px;
+    padding-left: 4px;
     text-align: left;
 }
 
-/* RESPONSIVE */
+/* ===== Responsive ===== */
 @media (max-width: 480px) {
     .form-container {
-        padding: 28px 20px;
+        padding: 30px 20px;
     }
 
     .user-icon {
-        width: 70px;
-        height: 70px;
-    }
-
-    input, select {
-        font-size: 14px;
+        width: 72px;
+        height: 72px;
     }
 
     h2 {
         font-size: 22px;
+    }
+
+    input,
+    select {
+        font-size: 14px;
     }
 }

@@ -1,33 +1,37 @@
-/* ===== CONTENEDOR PRINCIPAL ===== */
+/* ===== Fuente profesional ===== */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+/* ===== Contenedor principal ===== */
 .perfil-paciente-container {
     max-width: 580px;
     margin: 70px auto;
-    padding: 40px 35px;
-    background: linear-gradient(to right, #fefeff, #f7faff);
-    border-radius: 14px;
-    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.08);
-    font-family: 'Segoe UI', sans-serif;
-    transition: all 0.3s ease-in-out;
+    padding: 42px 36px;
+    background: linear-gradient(to right, #fefeff, #f3f7fd);
+    border-radius: 16px;
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.07);
+    font-family: 'Inter', sans-serif;
+    transition: all 0.3s ease;
+    color: #2c2f33;
 }
 
-/* ===== TÍTULO ===== */
+/* ===== Título ===== */
 .perfil-paciente-container h2 {
     text-align: center;
-    color: #007bff;
-    margin-bottom: 30px;
-    font-size: 30px;
+    color: #003366;
+    margin-bottom: 32px;
+    font-size: 28px;
     font-weight: 700;
-    letter-spacing: 0.5px;
+    letter-spacing: 0.4px;
 }
 
-/* ===== FORMULARIO ===== */
+/* ===== Formulario ===== */
 .perfil-form {
     display: flex;
     flex-direction: column;
     gap: 20px;
 }
 
-/* ===== GRUPO DE INPUT ===== */
+/* ===== Grupo de campos ===== */
 .form-group {
     display: flex;
     flex-direction: column;
@@ -40,23 +44,25 @@
     font-size: 15px;
 }
 
-/* ===== CAMPOS DE ENTRADA ===== */
+/* ===== Inputs ===== */
 .form-group input {
     padding: 12px 14px;
-    border: 1.6px solid #ced4da;
+    border: 1.6px solid #ccd6e0;
     border-radius: 8px;
     font-size: 15px;
-    background-color: #fbfbfb;
+    background-color: #fcfcfc;
     transition: border-color 0.3s, box-shadow 0.3s;
+    color: #2c2f33;
 }
 
 .form-group input:focus {
     border-color: #007bff;
     outline: none;
+    background-color: #ffffff;
     box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.15);
 }
 
-/* ===== BOTÓN DE ENVÍO ===== */
+/* ===== Botón de envío ===== */
 button[type="submit"] {
     padding: 13px;
     background: linear-gradient(135deg, #007bff, #0056b3);
@@ -71,11 +77,11 @@ button[type="submit"] {
 }
 
 button[type="submit"]:hover {
-    background: linear-gradient(135deg, #0056b3, #00408a);
+    background: linear-gradient(135deg, #0056b3, #003d80);
     transform: translateY(-2px);
 }
 
-/* ===== MENSAJES ===== */
+/* ===== Mensajes ===== */
 .alert-success,
 .alert-error {
     padding: 14px 18px;
@@ -88,26 +94,32 @@ button[type="submit"]:hover {
 }
 
 .alert-success {
-    background-color: #d9fbe7;
-    color: #147b34;
+    background-color: #e0f7ea;
+    color: #217a00;
     border: 1px solid #8fd694;
 }
 
 .alert-error {
-    background-color: #fbe1e1;
-    color: #c31616;
-    border: 1px solid #f7b2b2;
+    background-color: #ffe5e5;
+    color: #a80000;
+    border: 1px solid #f08a8a;
 }
 
-/* ===== RESPONSIVE ===== */
+/* ===== Animación fadeIn ===== */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* ===== Responsivo ===== */
 @media (max-width: 600px) {
     .perfil-paciente-container {
-        padding: 28px 22px;
+        padding: 28px 20px;
         margin: 40px 16px;
     }
 
     .perfil-paciente-container h2 {
-        font-size: 25px;
+        font-size: 24px;
     }
 
     button[type="submit"] {

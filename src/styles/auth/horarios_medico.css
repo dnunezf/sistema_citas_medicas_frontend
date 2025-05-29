@@ -1,49 +1,62 @@
-/* CONTENEDOR PRINCIPAL */
+/* ===== Fuente profesional ===== */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #f4f7fb;
+    color: #2c2f33;
+    margin: 0;
+    padding: 0;
+}
+
+/* ===== Contenedor principal ===== */
 .horarios-container {
     max-width: 650px;
     margin: 60px auto;
-    padding: 35px 30px;
+    padding: 38px 32px;
     background-color: #ffffff;
-    border-radius: 14px;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
-    font-family: 'Segoe UI', sans-serif;
+    border-radius: 16px;
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.08);
 }
 
-/* TÍTULOS */
+/* ===== Títulos ===== */
 .horarios-container h2 {
     text-align: center;
     font-size: 26px;
-    color: #007bff;
-    margin-bottom: 25px;
+    color: #004085;
+    margin-bottom: 28px;
+    font-weight: 700;
 }
 
 .horarios-container h4 {
-    color: #333;
     font-size: 18px;
-    margin: 30px 0 15px;
-    border-bottom: 2px solid #007bff20;
+    color: #333;
+    margin: 30px 0 18px;
+    border-bottom: 2px solid #cfe2ff;
     padding-bottom: 6px;
+    font-weight: 600;
 }
 
-/* FORMULARIO */
+/* ===== Formulario ===== */
 .horarios-container label {
     font-weight: 600;
     margin-top: 12px;
     display: block;
-    color: #333;
+    color: #444;
+    font-size: 15px;
 }
 
 .horarios-container input,
 .horarios-container select {
     width: 100%;
-    padding: 10px;
-    margin-top: 5px;
-    margin-bottom: 16px;
+    padding: 10px 12px;
+    margin-top: 6px;
+    margin-bottom: 18px;
     font-size: 15px;
-    border-radius: 6px;
-    border: 1.5px solid #ccc;
-    background-color: #fdfdfd;
-    transition: border-color 0.3s;
+    border-radius: 8px;
+    border: 1.5px solid #ccd6e0;
+    background-color: #fefefe;
+    transition: border-color 0.3s, box-shadow 0.3s;
 }
 
 .horarios-container input:focus,
@@ -53,50 +66,49 @@
     box-shadow: 0 0 6px rgba(0, 123, 255, 0.25);
 }
 
-/* MENSAJES */
+/* ===== Mensajes ===== */
 .mensaje {
-    padding: 10px 15px;
-    border-radius: 6px;
+    padding: 12px 16px;
+    border-radius: 8px;
     font-weight: 600;
-    margin-bottom: 15px;
     text-align: center;
+    font-size: 15px;
+    margin-bottom: 18px;
 }
 
 .mensaje.error {
-    background-color: #f8d7da;
-    color: #721c24;
-    border: 1.5px solid #f5c6cb;
+    background-color: #ffe5e5;
+    color: #a80000;
+    border: 1.5px solid #f5bcbc;
 }
 
 .mensaje.exito {
-    background-color: #d4edda;
-    color: #155724;
-    border: 1.5px solid #c3e6cb;
+    background-color: #e0f7ea;
+    color: #1d7745;
+    border: 1.5px solid #8fd694;
 }
 
-/* BOTONES */
-/* Contenedor de los botones - usa flex para alinear */
+/* ===== Botones de acción ===== */
 .botones-accion {
     margin-top: 10px;
     display: inline-flex;
-    gap: 10px; /* espacio entre botones */
-    align-items: center; /* alinea verticalmente */
+    gap: 12px;
+    align-items: center;
 }
 
-/* Estilo común para todos los botones de acción */
 .botones-accion button {
     font-weight: 600;
     border-radius: 6px;
-    padding: 6px 14px; /* menos padding horizontal para que sean angostos */
+    padding: 8px 16px;
     cursor: pointer;
     transition: background-color 0.3s ease;
     font-size: 14px;
     border: none;
-    min-width: 90px; /* ancho mínimo para consistencia */
-    white-space: nowrap; /* que no se rompan textos */
+    min-width: 100px;
+    white-space: nowrap;
 }
 
-/* Botón Guardar / Actualizar */
+/* Guardar / Actualizar */
 .btn-guardar {
     background-color: #28a745;
     color: white;
@@ -106,7 +118,7 @@
     background-color: #218838;
 }
 
-/* Botón Cancelar */
+/* Cancelar */
 .btn-cancelar {
     background-color: #dc3545;
     color: white;
@@ -116,17 +128,41 @@
     background-color: #c82333;
 }
 
-/* Botones Editar y Eliminar en la lista */
+/* ===== Lista de horarios ===== */
+.horarios-lista {
+    list-style: none;
+    padding: 0;
+    margin-top: 25px;
+}
+
+.horarios-lista li {
+    background-color: #f5f9fc;
+    padding: 14px 16px;
+    border-radius: 10px;
+    margin-bottom: 14px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 15px;
+    color: #2c2f33;
+    border-left: 5px solid #007bff;
+    transition: background-color 0.3s;
+}
+
+.horarios-lista li:hover {
+    background-color: #e9f1fc;
+}
+
+/* Botones dentro de la lista */
 .horarios-lista button {
-    padding: 4px 10px; /* menos padding que antes */
-    border-radius: 5px;
+    padding: 6px 12px;
+    border-radius: 6px;
     font-size: 13px;
     font-weight: 600;
     cursor: pointer;
     border: none;
     margin-left: 8px;
-    min-width: 75px; /* ancho mínimo un poco menor para estos */
-    white-space: nowrap;
+    min-width: 80px;
 }
 
 .btn-editar {
@@ -147,34 +183,41 @@
     background-color: #c82333;
 }
 
-/* LISTA DE HORARIOS */
-.horarios-lista {
-    list-style: none;
-    padding: 0;
-    margin-top: 20px;
-}
-
-.horarios-lista li {
-    background-color: #f1f5f9;
-    padding: 14px 16px;
-    border-radius: 8px;
-    margin-bottom: 12px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 15px;
-    color: #333;
-    border-left: 5px solid #007bff;
-    transition: background 0.3s;
-}
-
-.horarios-lista li:hover {
-    background-color: #e9f1fc;
-}
-
-/* SEPARADOR */
+/* ===== Separador visual ===== */
 hr {
     border: none;
     border-top: 1.5px dashed #ccc;
-    margin: 35px 0;
+    margin: 36px 0;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 600px) {
+    .horarios-container {
+        padding: 28px 20px;
+        margin: 40px 16px;
+    }
+
+    .horarios-container h2 {
+        font-size: 22px;
+    }
+
+    .botones-accion {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .botones-accion button {
+        width: 100%;
+        min-width: unset;
+    }
+
+    .horarios-lista li {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .horarios-lista button {
+        width: 100%;
+    }
 }

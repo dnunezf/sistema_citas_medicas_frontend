@@ -1,31 +1,36 @@
+/* ===== Fuente profesional ===== */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+/* ===== Reset ===== */
 body {
-    font-family: 'Segoe UI', sans-serif;
+    font-family: 'Inter', sans-serif;
     background-color: #f4f9fc;
     margin: 0;
     padding: 0;
+    color: #2c2f33;
 }
 
-/* ===== CONTENEDOR PRINCIPAL ===== */
+/* ===== Contenedor principal ===== */
 .container {
     max-width: 1100px;
     margin: 60px auto;
-    background: white;
-    padding: 30px 40px;
-    border-radius: 14px;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+    background: #ffffff;
+    padding: 36px 44px;
+    border-radius: 16px;
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.07);
 }
 
-/* ===== TÍTULO ===== */
+/* ===== Título principal ===== */
 .title {
     text-align: center;
     font-size: 28px;
-    color: #007bff;
+    color: #004085;
     font-weight: 700;
-    margin-bottom: 30px;
-    letter-spacing: 0.5px;
+    margin-bottom: 32px;
+    letter-spacing: 0.4px;
 }
 
-/* ===== MENSAJES ===== */
+/* ===== Mensajes ===== */
 .message {
     padding: 14px 20px;
     border-radius: 8px;
@@ -37,42 +42,43 @@ body {
 }
 
 .success {
-    background-color: #e6f4ea;
-    color: #1e7e34;
-    border: 1px solid #c3e6cb;
+    background-color: #e0f7ea;
+    color: #217a00;
+    border: 1px solid #b8e1c0;
 }
 
 .error {
-    background-color: #f8d7da;
-    color: #842029;
-    border: 1px solid #f5c6cb;
+    background-color: #ffe5e5;
+    color: #b02a37;
+    border: 1px solid #f7b2b2;
 }
 
-/* ===== TABLA ===== */
+/* ===== Tabla de médicos ===== */
 .medicos-table {
     width: 100%;
     border-collapse: collapse;
     border-radius: 12px;
     overflow: hidden;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.05);
 }
 
 .medicos-table thead {
     background-color: #007bff;
-    color: white;
+    color: #ffffff;
     text-transform: uppercase;
-    font-size: 14px;
+    font-size: 13.5px;
+    letter-spacing: 0.5px;
 }
 
 .medicos-table th,
 .medicos-table td {
-    padding: 16px;
+    padding: 16px 14px;
     text-align: center;
-    border-bottom: 1px solid #e0e0e0;
+    border-bottom: 1px solid #e2e8f0;
 }
 
 .medicos-table tbody tr:nth-child(even) {
-    background-color: #f7fbff;
+    background-color: #f8fbff;
 }
 
 .medicos-table tbody tr:hover {
@@ -80,14 +86,14 @@ body {
     transition: background-color 0.2s ease;
 }
 
-/* ===== SELECT ESTADO ===== */
+/* ===== Select de estado ===== */
 select {
     padding: 8px 12px;
     border-radius: 6px;
-    border: 1.5px solid #ccc;
-    background-color: #fff;
+    border: 1.6px solid #ccd6e0;
+    background-color: #ffffff;
     font-size: 14px;
-    transition: border-color 0.3s ease;
+    transition: border-color 0.3s ease, box-shadow 0.2s ease;
     min-width: 140px;
 }
 
@@ -95,12 +101,13 @@ select:hover,
 select:focus {
     border-color: #007bff;
     outline: none;
+    box-shadow: 0 0 0 3px rgba(0, 119, 182, 0.15);
 }
 
-/* ===== RESPONSIVE ===== */
+/* ===== Responsivo ===== */
 @media (max-width: 768px) {
     .container {
-        padding: 20px;
+        padding: 24px 20px;
     }
 
     .medicos-table,
@@ -131,6 +138,7 @@ select:focus {
         padding-left: 50%;
         position: relative;
         font-size: 14px;
+        border-bottom: none;
     }
 
     .medicos-table td::before {
@@ -138,7 +146,8 @@ select:focus {
         position: absolute;
         left: 12px;
         top: 12px;
-        font-weight: bold;
+        font-weight: 600;
         color: #007bff;
+        white-space: nowrap;
     }
 }

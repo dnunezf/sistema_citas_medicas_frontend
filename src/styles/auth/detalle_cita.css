@@ -1,36 +1,42 @@
-/* Contenedor principal */
+/* ===== Fuente profesional ===== */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+/* ===== Contenedor principal ===== */
 .detalle-cita-container {
     max-width: 700px;
-    margin: 50px auto;
-    background-color: #fff;
-    padding: 30px 40px;
-    border-radius: 15px;
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 60px auto;
+    background-color: #ffffff;
+    padding: 36px 40px;
+    border-radius: 16px;
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.06);
+    font-family: 'Inter', sans-serif;
+    color: #2c2f33;
 }
 
-/* Título */
+/* ===== Título ===== */
 .detalle-cita-container h2 {
     font-size: 28px;
-    color: #0077b6;
-    margin-bottom: 25px;
+    color: #004085;
+    margin-bottom: 28px;
     text-align: center;
+    font-weight: 700;
 }
 
-/* Párrafos de información */
+/* ===== Párrafos de información ===== */
 .detalle-cita-container p {
-    font-size: 18px;
-    margin: 15px 0;
-    color: #333;
+    font-size: 17px;
+    margin: 16px 0;
+    color: #3d3d3d;
+    line-height: 1.6;
 }
 
-/* Etiquetas en negrita */
+/* ===== Etiquetas en negrita ===== */
 .detalle-cita-container p strong {
     font-weight: 700;
     color: #005f87;
 }
 
-/* Link de volver */
+/* ===== Enlace de volver ===== */
 .detalle-cita-container a {
     display: inline-block;
     margin-top: 30px;
@@ -46,11 +52,20 @@
     text-decoration: underline;
 }
 
-/* Responsive */
+/* ===== Mensaje de error (en caso de usarlo) ===== */
+.mensaje-error {
+    color: #dc3545;
+    font-weight: 600;
+    text-align: center;
+    margin-top: 20px;
+    font-size: 15px;
+}
+
+/* ===== Responsive ===== */
 @media (max-width: 600px) {
     .detalle-cita-container {
-        padding: 20px;
-        margin: 30px 20px;
+        padding: 24px 20px;
+        margin: 40px 16px;
     }
 
     .detalle-cita-container h2 {
@@ -58,17 +73,10 @@
     }
 
     .detalle-cita-container p {
-        font-size: 16px;
+        font-size: 15px;
     }
 
     .detalle-cita-container a {
         font-size: 14px;
-    }
-
-    .mensaje-error {
-        color: #dc3545;
-        font-weight: bold;
-        text-align: center;
-        margin-top: 20px;
     }
 }
