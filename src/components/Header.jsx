@@ -1,7 +1,7 @@
 import React, { useContext, useState, useRef } from 'react';
 import { UserContext } from '../context/UserContext';
 import { useNavigate, Link } from 'react-router-dom';
-import { logout } from '../utils/auth'; // <-- Importa la función logout
+import { logout } from '../utils/auth';
 import '../styles/fragments.css';
 
 const Header = () => {
@@ -63,7 +63,9 @@ const Header = () => {
             <nav className="main-nav">
                 <ul>
                     <li><Link to="/">Inicio</Link></li>
-                    <li><button onClick={handleCitas}>Citas</button></li>
+                    <li>
+                        <button type="button" onClick={handleCitas}>Citas</button>
+                    </li>
 
                     {!usuario ? (
                         <li><Link to="/login" className="login-button">Iniciar Sesión</Link></li>
@@ -74,13 +76,13 @@ const Header = () => {
                                 onMouseLeave={handleMouseLeave}
                                 style={{ display: 'inline-block' }}
                             >
-                                <button className="login-button">{usuario.nombre}</button>
+                                <button type="button" className="login-button">{usuario.nombre}</button>
                                 {dropdownOpen && (
                                     <ul className="dropdown-content">
-                                        <li><button onClick={handlePerfil}>Perfil</button></li>
-                                        {isMedico && <li><button onClick={handleCrearHorario}>Crear Horarios</button></li>}
-                                        {isAdmin && <li><button onClick={() => navigate('/admin/medicos')}>Gestión Médicos</button></li>}
-                                        <li><button onClick={handleLogout}>Cerrar Sesión</button></li>
+                                        <li><button type="button" onClick={handlePerfil}>Perfil</button></li>
+                                        {isMedico && <li><button type="button" onClick={handleCrearHorario}>Crear Horarios</button></li>}
+                                        {isAdmin && <li><button type="button" onClick={() => navigate('/admin/medicos')}>Gestión Médicos</button></li>}
+                                        <li><button type="button" onClick={handleLogout}>Cerrar Sesión</button></li>
                                     </ul>
                                 )}
                             </div>

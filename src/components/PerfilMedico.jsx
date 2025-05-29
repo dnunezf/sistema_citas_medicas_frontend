@@ -21,7 +21,7 @@ function PerfilMedico() {
     useEffect(() => {
         const cargarPerfil = async () => {
             try {
-                const res = await fetchWithInterceptor(`http://localhost:8080/api/medicos/${id}`);
+                const res = await fetchWithInterceptor(`/api/medicos/${id}`);
                 if (!res.ok) throw new Error("No se pudo cargar el perfil.");
                 const data = await res.json();
                 setPerfil(data);
@@ -51,7 +51,7 @@ function PerfilMedico() {
         if (fotoPerfil) formData.append('fotoPerfil', fotoPerfil);
 
         try {
-            const res = await fetchWithInterceptor(`http://localhost:8080/api/medicos/${id}`, {
+            const res = await fetchWithInterceptor(`/api/medicos/${id}`, {
                 method: 'PUT',
                 body: formData
             });
@@ -81,7 +81,7 @@ function PerfilMedico() {
 
                 <div className="foto-circular">
                     <img
-                        src={perfil.rutaFotoPerfil ? `http://localhost:8080${perfil.rutaFotoPerfil}` : '/images/noPhoto.png'}
+                        src={perfil.rutaFotoPerfil ? `/api${perfil.rutaFotoPerfil}` : '/images/noPhoto.png'}
                         alt="Foto del médico"
                         onError={(e) => { e.target.onerror = null; e.target.src = '/images/noPhoto.png'; }}
                     />

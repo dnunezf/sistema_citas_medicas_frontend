@@ -1,7 +1,19 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
 import '../styles/auth/dashboard.css';
-import { useNavigate } from "react-router-dom";
-import { fetchWithInterceptor } from '../utils/fetchInterceptor';  // <-- importa tu interceptor
+
+// fetchWithInterceptor que agrega token Authorization automáticamente
+async function fetchWithInterceptor(url, options = {}) {
+    const token = sessionStorage.getItem("token");
+    const headers = {
+        ...(options.headers || {}),
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+    };
+
+    const newOptions = { ...options, headers };
+
+    return fetch(url, newOptions);
+}
 
 const BuscarCita = () => {
     const [especialidad, setEspecialidad] = useState('');
@@ -10,6 +22,7 @@ const BuscarCita = () => {
     const [medicos, setMedicos] = useState([]);
     const [espaciosAgrupados, setEspaciosAgrupados] = useState({});
     const [horasOcupadas, setHorasOcupadas] = useState({});
+    const [error, setError] = useState('');
     const navigate = useNavigate();
 
     const handleClickHora = (medicoId, hora, clase) => {
@@ -27,26 +40,34 @@ const BuscarCita = () => {
     };
 
     const fetchDashboard = async () => {
-        let url = 'http://localhost:8080/api/dashboard';
-        const params = [];
+        try {
+            let url = '/api/dashboard';
+            const params = [];
 
-        if (especialidad) params.push(`especialidad=${encodeURIComponent(especialidad)}`);
-        if (localidad) params.push(`localidad=${encodeURIComponent(localidad)}`);
+            if (especialidad) params.push(`especialidad=${encodeURIComponent(especialidad)}`);
+            if (localidad) params.push(`localidad=${encodeURIComponent(localidad)}`);
 
-        if (params.length > 0) url += '?' + params.join('&');
+            if (params.length > 0) url += '?' + params.join('&');
 
-        // Usa fetchWithInterceptor en vez de fetch normal
-        const res = await fetchWithInterceptor(url);
-        const data = await res.json();
+            const res = await fetchWithInterceptor(url);
+            if (!res.ok) throw new Error("Error al cargar datos del dashboard");
 
-        setMedicos(data.medicos);
-        setEspaciosAgrupados(data.espaciosAgrupados);
-        setHorasOcupadas(data.horasOcupadas);
-        setEspecialidades(data.especialidades);
+            const data = await res.json();
+
+            setMedicos(data.medicos);
+            setEspaciosAgrupados(data.espaciosAgrupados);
+            setHorasOcupadas(data.horasOcupadas);
+            setEspecialidades(data.especialidades);
+            setError('');
+        } catch (e) {
+            console.error(e);
+            setError("Error al cargar los datos. Intenta recargar la página.");
+        }
     };
 
     useEffect(() => {
         fetchDashboard();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const handleSubmit = (e) => {
@@ -61,7 +82,6 @@ const BuscarCita = () => {
     const obtenerFechaMasProxima = (espacios) => {
         const fechas = Object.keys(espacios);
         if (fechas.length === 0) return null;
-
         return fechas.sort((a, b) => new Date(a) - new Date(b))[0];
     };
 
@@ -78,6 +98,8 @@ const BuscarCita = () => {
     return (
         <main className="dashboard-container">
             <h2 className="dashboard-title">Buscar Médicos</h2>
+
+            {error && <div className="error-message">{error}</div>}
 
             <form onSubmit={handleSubmit} className="form-busqueda">
                 <select value={especialidad} onChange={(e) => setEspecialidad(e.target.value)}>
@@ -107,7 +129,7 @@ const BuscarCita = () => {
                         <div className="doctor-info">
                             <img
                                 className="foto-doctor"
-                                src={medico.rutaFotoPerfil ? `http://localhost:8080${medico.rutaFotoPerfil}` : '/images/noPhoto.png'}
+                                src={medico.rutaFotoPerfil ? `/api${medico.rutaFotoPerfil}` : '/images/noPhoto.png'}
                                 alt="Foto del médico"
                                 onError={(e) => { e.target.onerror = null; e.target.src = '/images/noPhoto.png'; }}
                             />
@@ -140,7 +162,6 @@ const BuscarCita = () => {
                                             })}
                                         </div>
                                     </div>
-
                                 ))
                             ) : (
                                 <p>No hay horarios disponibles próximamente.</p>
@@ -148,7 +169,7 @@ const BuscarCita = () => {
                         </div>
 
                         <div className="schedule-button">
-                            <a href={`/citas/horarios/${medico.id}`}>Horario Extendido →</a>
+                            <Link to={`/citas/horarios/${medico.id}`}>Horario Extendido →</Link>
                         </div>
                     </div>
                 );

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { fetchWithInterceptor } from '../utils/fetchInterceptor'; // Importa tu interceptor
+import { fetchWithInterceptor } from '../utils/fetchInterceptor'; // importa tu interceptor
 import '../styles/auth/gestion_medicos.css';
 
 const GestionMedicos = () => {
@@ -7,12 +7,13 @@ const GestionMedicos = () => {
     const [mensaje, setMensaje] = useState('');
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
+    const [updatingId, setUpdatingId] = useState(null); // Para manejar select deshabilitado
 
     const cargarMedicos = async () => {
         setLoading(true);
         setError('');
         try {
-            const res = await fetchWithInterceptor('http://localhost:8080/api/admin/medicos');
+            const res = await fetchWithInterceptor('/api/admin/medicos');
             if (res.ok) {
                 const data = await res.json();
                 setMedicos(data);
@@ -35,9 +36,10 @@ const GestionMedicos = () => {
     const actualizarEstado = async (id, nuevoEstado) => {
         setMensaje('');
         setError('');
+        setUpdatingId(id);
         try {
             const res = await fetchWithInterceptor(
-                `http://localhost:8080/api/admin/medicos/${id}/estado`,
+                `/api/admin/medicos/${id}/estado`,
                 {
                     method: 'PUT',
                     headers: { 'Content-Type': 'application/json' },
@@ -48,8 +50,12 @@ const GestionMedicos = () => {
             const msg = await res.text();
             setMensaje(msg);
             cargarMedicos();
+            setTimeout(() => setMensaje(''), 5000);
         } catch {
             setError('Error al actualizar el estado.');
+            setTimeout(() => setError(''), 5000);
+        } finally {
+            setUpdatingId(null);
         }
     };
 
@@ -85,6 +91,7 @@ const GestionMedicos = () => {
                                 <select
                                     value={medico.estadoAprobacion}
                                     onChange={(e) => actualizarEstado(medico.id, e.target.value)}
+                                    disabled={updatingId === medico.id}
                                 >
                                     <option value="pendiente">Pendiente</option>
                                     <option value="aprobado">Aprobado</option>

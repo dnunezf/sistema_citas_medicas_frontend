@@ -16,7 +16,7 @@ const DetalleCita = () => {
             return;
         }
 
-        fetchWithInterceptor(`http://localhost:8080/api/medico/citas/detalle/${id}`)
+        fetchWithInterceptor(`/api/medico/citas/detalle/${id}`)
             .then(res => {
                 if (!res.ok) throw new Error(`Error ${res.status}: ${res.statusText}`);
                 return res.json();
@@ -33,7 +33,12 @@ const DetalleCita = () => {
     }, [id]);
 
     if (loading) return <div className="detalle-cita-container"><p>Cargando detalles de la cita...</p></div>;
-    if (error) return <div className="detalle-cita-container"><p className="mensaje-error">{error}</p><Link to="/paciente/historico">Volver al historial</Link></div>;
+    if (error) return (
+        <div className="detalle-cita-container">
+            <p className="mensaje-error">{error}</p>
+            <Link to="/paciente/historico">Volver al historial</Link>
+        </div>
+    );
 
     return (
         <div className="detalle-cita-container">

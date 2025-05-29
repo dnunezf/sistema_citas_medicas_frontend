@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { fetchWithInterceptor } from '../utils/fetchInterceptor'; // Importa el interceptor
+import { fetchWithInterceptor } from '../utils/fetchInterceptor';
 import '../styles/auth/paciente_perfil.css';
 
 const PacientePerfil = () => {
+
     const [form, setForm] = useState({
         id: '',
         nombre: '',
@@ -16,17 +17,29 @@ const PacientePerfil = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
+        console.log("PacientePerfil montado");
         const usuario = JSON.parse(sessionStorage.getItem("usuario"));
+        console.log("Usuario en sessionStorage:", usuario);
+
         if (!usuario || usuario.rol !== "PACIENTE") {
+            console.log("Usuario no válido o no es paciente. Redirigiendo a login.");
             navigate('/login');
             return;
         }
 
         const cargarPerfil = async () => {
             try {
-                const res = await fetchWithInterceptor(`http://localhost:8080/api/pacientes/${usuario.id}`);
-                if (!res.ok) throw new Error("No se pudo cargar el perfil.");
+                console.log("Solicitando datos del paciente con ID:", usuario.id);
+                const res = await fetchWithInterceptor(`/api/pacientes/${usuario.id}`);
+                console.log("Respuesta del fetch:", res);
+
+                if (!res.ok) {
+                    throw new Error(`Error HTTP ${res.status}`);
+                }
+
                 const data = await res.json();
+                console.log("Datos recibidos:", data);
+
                 setForm({
                     id: data.id,
                     nombre: data.nombre,
@@ -34,7 +47,9 @@ const PacientePerfil = () => {
                     direccion: data.direccion,
                     fechaNacimiento: data.fechaNacimiento
                 });
-            } catch {
+                setError('');
+            } catch (error) {
+                console.error("Error al cargar el perfil:", error);
                 setError("❌ No se pudo cargar el perfil.");
             }
         };
@@ -57,22 +72,26 @@ const PacientePerfil = () => {
         }
 
         try {
-            const res = await fetchWithInterceptor(`http://localhost:8080/api/pacientes/${form.id}`, {
+            console.log("Enviando datos actualizados:", form);
+            const res = await fetchWithInterceptor(`/api/pacientes/${form.id}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(form)
             });
 
+            console.log("Respuesta de actualización:", res);
+
             if (res.ok) {
                 setMensaje("✅ Perfil actualizado correctamente.");
-                // Actualizar nombre en sesión
                 const usuario = JSON.parse(sessionStorage.getItem("usuario"));
                 usuario.nombre = form.nombre;
                 sessionStorage.setItem("usuario", JSON.stringify(usuario));
+                setError('');
             } else {
                 setError("❌ No se pudo actualizar el perfil.");
             }
-        } catch {
+        } catch (error) {
+            console.error("Error al actualizar el perfil:", error);
             setError("❌ Error al conectar con el servidor.");
         }
     };

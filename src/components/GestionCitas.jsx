@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { fetchWithInterceptor } from '../utils/fetchInterceptor'; // importa tu interceptor
+import { fetchWithInterceptor } from '../utils/fetchInterceptor';
 import '../styles/auth/gestion_citas.css';
 
 const GestionCitas = ({ idMedico }) => {
@@ -9,37 +9,34 @@ const GestionCitas = ({ idMedico }) => {
     const [medicoNombre, setMedicoNombre] = useState('');
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
+    const [actualizandoId, setActualizandoId] = useState(null);
+    const [mensaje, setMensaje] = useState('');
 
     const cargarCitas = async () => {
-        let url = `http://localhost:8080/api/medico/citas/${idMedico}`;
-
+        let url = `/api/medico/citas/${idMedico}`;
         const params = new URLSearchParams();
         if (estado !== 'ALL') params.append('estado', estado);
         if (nombrePaciente.trim()) params.append('nombre', nombrePaciente);
-
         if (params.toString()) {
-            url = `http://localhost:8080/api/medico/citas/${idMedico}/buscar?${params.toString()}`;
+            url = `/api/medico/citas/${idMedico}/buscar?${params.toString()}`;
         }
 
         setLoading(true);
         setError('');
-
+        setMensaje('');
         try {
             const res = await fetchWithInterceptor(url);
             if (res.ok) {
                 const data = await res.json();
                 setCitas(data);
-                if (data.length > 0) {
-                    setMedicoNombre(data[0].nombreMedico);
-                } else {
-                    setMedicoNombre('');
-                }
+                if (data.length > 0) setMedicoNombre(data[0].nombreMedico);
+                else setMedicoNombre('');
             } else {
                 setError("Error al cargar citas.");
                 setCitas([]);
                 setMedicoNombre('');
             }
-        } catch (err) {
+        } catch {
             setError("Error de red al cargar citas.");
             setCitas([]);
             setMedicoNombre('');
@@ -57,18 +54,28 @@ const GestionCitas = ({ idMedico }) => {
     const handleNombreChange = (e) => setNombrePaciente(e.target.value);
 
     const actualizarCita = async (idCita, nuevoEstado, notas) => {
+        setActualizandoId(idCita);
+        setMensaje('');
+        setError('');
         try {
-            const url = `http://localhost:8080/api/medico/citas/${idCita}?estado=${nuevoEstado}&notas=${encodeURIComponent(notas)}`;
+            const url = `/api/medico/citas/${idCita}?estado=${nuevoEstado}&notas=${encodeURIComponent(notas)}`;
             const res = await fetchWithInterceptor(url, { method: 'PUT' });
 
             if (res.ok) {
+                setMensaje('Cita actualizada correctamente.');
                 cargarCitas();
             } else {
-                alert("Error al actualizar la cita");
+                setError("Error al actualizar la cita");
             }
         } catch (error) {
             console.error("Error:", error);
-            alert("Error de red al actualizar la cita");
+            setError("Error de red al actualizar la cita");
+        } finally {
+            setActualizandoId(null);
+            setTimeout(() => {
+                setMensaje('');
+                setError('');
+            }, 4000);
         }
     };
 
@@ -98,13 +105,13 @@ const GestionCitas = ({ idMedico }) => {
                 />
             </div>
 
-            {loading ? (
-                <p>Cargando citas...</p>
-            ) : error ? (
-                <p className="error-message">{error}</p>
-            ) : citas.length === 0 ? (
-                <p className="no-citas">No hay citas para mostrar.</p>
-            ) : (
+            {loading && <p>Cargando citas...</p>}
+            {mensaje && <p className="mensaje-exito">{mensaje}</p>}
+            {error && <p className="error-message">{error}</p>}
+
+            {!loading && citas.length === 0 && !error && <p className="no-citas">No hay citas para mostrar.</p>}
+
+            {!loading && citas.length > 0 && (
                 <div className="appointments">
                     {citas.map((cita) => (
                         <div key={cita.id} className="appointment">
@@ -149,7 +156,7 @@ const GestionCitas = ({ idMedico }) => {
                                         actualizarCita(cita.id, nuevoEstado, notas);
                                     }}
                                 >
-                                    <select name="estado" defaultValue={cita.estado}>
+                                    <select name="estado" defaultValue={cita.estado} disabled={actualizandoId === cita.id}>
                                         <option value="pendiente">Pendiente</option>
                                         <option value="confirmada">Confirmada</option>
                                         <option value="cancelada">Cancelada</option>
@@ -160,8 +167,9 @@ const GestionCitas = ({ idMedico }) => {
                                         name="notas"
                                         placeholder="Añadir notas..."
                                         defaultValue={cita.notas || ''}
+                                        disabled={actualizandoId === cita.id}
                                     />
-                                    <button type="submit">Actualizar</button>
+                                    <button type="submit" disabled={actualizandoId === cita.id}>Actualizar</button>
                                 </form>
                             </div>
                         </div>

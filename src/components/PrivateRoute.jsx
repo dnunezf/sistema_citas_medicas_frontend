@@ -4,6 +4,7 @@ import { UserContext } from '../context/UserContext';
 
 const PrivateRoute = () => {
     const { usuario } = useContext(UserContext);
+    console.log('PrivateRoute usuario:', usuario);
 
     // Si no hay usuario logueado, redirige a login
     if (!usuario) {

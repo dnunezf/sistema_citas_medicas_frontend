@@ -23,23 +23,23 @@ function HorarioMedicoExtendido() {
     useEffect(() => {
         const cargarDatos = async () => {
             try {
-                const resMedico = await fetchWithInterceptor(`http://localhost:8080/api/medicos/${id}`);
+                const resMedico = await fetchWithInterceptor(`/api/medicos/${id}`);
                 if (!resMedico.ok) throw new Error('Error al cargar médico');
                 const medicoData = await resMedico.json();
                 setMedico(medicoData);
 
-                const resEspacios = await fetchWithInterceptor(`http://localhost:8080/api/horarios/extendido/${id}`);
+                const resEspacios = await fetchWithInterceptor(`/api/horarios/extendido/${id}`);
                 if (!resEspacios.ok) throw new Error('Error al cargar horarios');
                 const espaciosData = await resEspacios.json();
                 setEspacios(espaciosData || {});
 
-                const resDashboard = await fetchWithInterceptor(`http://localhost:8080/api/dashboard`);
+                const resDashboard = await fetchWithInterceptor(`/api/dashboard`);
                 if (!resDashboard.ok) throw new Error('Error al cargar dashboard');
                 const dashboardData = await resDashboard.json();
                 setOcupados(dashboardData.horasOcupadas[id] || []);
             } catch (error) {
                 console.error(error);
-                // Opcional: mostrar mensaje de error en UI
+                // Opcional: puedes agregar un estado para mostrar mensaje de error en UI
             }
         };
 
@@ -76,28 +76,27 @@ function HorarioMedicoExtendido() {
                     </div>
 
                     <div className="horarios">
-                        {Object.entries(espacios)
-                            .map(([fecha, horas]) => (
-                                <div key={fecha}>
-                                    <div className="fecha">{formatearFechaCR(fecha)}</div>
-                                    <div className="horas">
-                                        {horas.map((hora) => {
-                                            const clase = esHoraOcupada(hora) ? "hora ocupada" : "hora";
-                                            const link = `/citas/confirmar?idMedico=${id}&fechaHora=${hora}`;
-                                            return (
-                                                <a
-                                                    key={hora}
-                                                    href={clase === "hora" ? link : undefined}
-                                                    className={clase}
-                                                    style={{ cursor: clase === "hora" ? 'pointer' : 'default' }}
-                                                >
-                                                    {formatearHoraCR(hora)}
-                                                </a>
-                                            );
-                                        })}
-                                    </div>
+                        {Object.entries(espacios).map(([fecha, horas]) => (
+                            <div key={fecha}>
+                                <div className="fecha">{formatearFechaCR(fecha)}</div>
+                                <div className="horas">
+                                    {horas.map((hora) => {
+                                        const clase = esHoraOcupada(hora) ? "hora ocupada" : "hora";
+                                        const link = `/citas/confirmar?idMedico=${id}&fechaHora=${hora}`;
+                                        return (
+                                            <a
+                                                key={hora}
+                                                href={clase === "hora" ? link : undefined}
+                                                className={clase}
+                                                style={{ cursor: clase === "hora" ? 'pointer' : 'default' }}
+                                            >
+                                                {formatearHoraCR(hora)}
+                                            </a>
+                                        );
+                                    })}
                                 </div>
-                            ))}
+                            </div>
+                        ))}
                     </div>
                 </div>
             )}

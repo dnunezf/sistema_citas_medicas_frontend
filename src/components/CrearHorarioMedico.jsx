@@ -9,7 +9,7 @@ function HorariosMedicoExtendido() {
 
     const [horarios, setHorarios] = useState([]);
     const [nuevoHorario, setNuevoHorario] = useState({
-        id: null, // <-- para editar
+        id: null, // para editar
         dia: '',
         horaInicio: '',
         horaFin: '',
@@ -18,11 +18,15 @@ function HorariosMedicoExtendido() {
     const [mensaje, setMensaje] = useState({ texto: '', tipo: '' }); // tipo: 'error' | 'exito'
 
     const cargarHorarios = () => {
-        fetchWithInterceptor(`http://localhost:8080/api/horarios/medico/${idMedico}`)
-            .then(res => res.json())
+        fetchWithInterceptor(`/api/horarios/medico/${idMedico}`)
+            .then(res => {
+                if (!res.ok) throw new Error('Error al cargar horarios');
+                return res.json();
+            })
             .then(data => {
                 if (Array.isArray(data)) {
                     setHorarios(data);
+                    setMensaje({ texto: '', tipo: '' });
                 } else {
                     setHorarios([]);
                     setMensaje({ texto: 'Error al cargar horarios.', tipo: 'error' });
@@ -75,16 +79,16 @@ function HorariosMedicoExtendido() {
 
         const metodo = idHorario ? 'PUT' : 'POST';
         const url = idHorario
-            ? `http://localhost:8080/api/horarios/${idHorario}`
-            : `http://localhost:8080/api/horarios/medico/${idMedico}`;
+            ? `/api/horarios/${idHorario}`
+            : `/api/horarios/medico/${idMedico}`;
 
         fetchWithInterceptor(url, {
             method: metodo,
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 diaSemana: dia,
-                horaInicio: horaInicio,
-                horaFin: horaFin,
+                horaInicio,
+                horaFin,
                 tiempoCita: intervalo
             })
         })
@@ -104,10 +108,11 @@ function HorariosMedicoExtendido() {
     };
 
     const eliminarHorario = (idHorario) => {
-        fetchWithInterceptor(`http://localhost:8080/api/horarios/${idHorario}`, {
+        fetchWithInterceptor(`/api/horarios/${idHorario}`, {
             method: "DELETE"
         })
-            .then(() => {
+            .then(res => {
+                if (!res.ok) throw new Error("Error al eliminar horario.");
                 setMensaje({ texto: "Horario eliminado correctamente.", tipo: "exito" });
                 cargarHorarios();
             })

@@ -16,6 +16,7 @@ const HistoricoCitas = () => {
     useEffect(() => {
         if (!usuario || usuario.rol !== "PACIENTE") return;
         cargarCitas();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [estadoFiltro, medicoFiltro]);
 
     const cargarCitas = async () => {
@@ -23,7 +24,7 @@ const HistoricoCitas = () => {
         setLoading(true);
         setMensaje('');
         try {
-            let url = `http://localhost:8080/api/paciente/citas/${usuario.id}`;
+            let url = `/api/paciente/citas/${usuario.id}`;
             const params = [];
 
             if (estadoFiltro) params.push(`estado=${estadoFiltro}`);
@@ -42,7 +43,7 @@ const HistoricoCitas = () => {
             const nuevosMedicos = {};
             await Promise.all(data.map(async cita => {
                 if (!infoMedicos[cita.idMedico]) {
-                    const resMed = await fetchWithInterceptor(`http://localhost:8080/api/medicos/${cita.idMedico}`);
+                    const resMed = await fetchWithInterceptor(`/api/medicos/${cita.idMedico}`);
                     if (resMed.ok) {
                         const medico = await resMed.json();
                         nuevosMedicos[cita.idMedico] = medico;

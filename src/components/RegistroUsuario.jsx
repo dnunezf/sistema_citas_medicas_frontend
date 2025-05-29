@@ -43,7 +43,7 @@ const RegistroUsuario = () => {
         }
 
         try {
-            const response = await fetchWithInterceptor('http://localhost:8080/api/usuarios/registro', {
+            const response = await fetchWithInterceptor('/api/usuarios/registro', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
