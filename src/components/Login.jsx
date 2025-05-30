@@ -20,7 +20,6 @@ const Login = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        // Validación previa sencilla
         if (!formData.id.trim() || !formData.clave.trim()) {
             setError('Por favor ingrese ID y contraseña.');
             return;
@@ -34,7 +33,6 @@ const Login = () => {
             });
 
             if (!response.ok) {
-                // Tratar respuesta con error
                 let errorMsg = 'Error inesperado. Intenta más tarde.';
                 if (response.status === 401 || response.status === 403) {
                     try {
@@ -49,7 +47,6 @@ const Login = () => {
                 return;
             }
 
-            // Si ok
             const usuario = await response.json();
 
             // Guardar token y usuario en sessionStorage
@@ -58,11 +55,13 @@ const Login = () => {
             }
             sessionStorage.setItem('usuario', JSON.stringify(usuario.usuario || usuario));
 
+            // Actualizar contexto
             setUsuario(usuario.usuario || usuario);
+
             setMensaje(`Bienvenido, ${usuario.usuario?.nombre || usuario.nombre}`);
             setError('');
 
-            // Redirección url pendiente (si la hay)
+            // Redirección pendiente
             const urlPendiente = sessionStorage.getItem('urlPendiente');
             if (urlPendiente) {
                 sessionStorage.removeItem('urlPendiente');
@@ -70,12 +69,14 @@ const Login = () => {
                 return;
             }
 
-            // Redirigir según rol
+            // Extraer datos clave
             const rol = usuario.usuario?.rol || usuario.rol;
             const id = usuario.usuario?.id || usuario.id;
             const perfilCompleto = usuario.perfilCompleto ?? false;
+            const estadoAprobacion = usuario.estadoAprobacion || 'pendiente';
 
-            const ruta = getRutaInicioPorRol(rol, id, perfilCompleto);
+            // Calcular ruta según lógica de negocio
+            const ruta = getRutaInicioPorRol(rol, id, perfilCompleto, estadoAprobacion);
 
             if (ruta) {
                 navigate(ruta);

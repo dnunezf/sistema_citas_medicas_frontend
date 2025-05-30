@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { fetchWithInterceptor } from '../Utils/FetchInterceptor.js'; // <-- importa aquí
+import { fetchWithInterceptor } from '../Utils/FetchInterceptor.js';
 import '../styles/auth/perfil_medico.css';
 
 function PerfilMedico() {
@@ -14,6 +14,8 @@ function PerfilMedico() {
         presentacion: '',
         rutaFotoPerfil: ''
     });
+    const [estadoAprobacion, setEstadoAprobacion] = useState('');
+    const [bloqueado, setBloqueado] = useState(true);
     const [fotoPerfil, setFotoPerfil] = useState(null);
     const [mensaje, setMensaje] = useState('');
     const [error, setError] = useState('');
@@ -25,6 +27,8 @@ function PerfilMedico() {
                 if (!res.ok) throw new Error("No se pudo cargar el perfil.");
                 const data = await res.json();
                 setPerfil(data);
+                setEstadoAprobacion(data.estadoAprobacion);
+                setBloqueado(data.estadoAprobacion !== 'aprobado');
             } catch {
                 setError('❌ No se pudo cargar el perfil.');
             }
@@ -60,6 +64,8 @@ function PerfilMedico() {
                 const data = await res.json();
                 setPerfil(data);
                 setMensaje('✅ Perfil actualizado correctamente.');
+            } else if (res.status === 403) {
+                setError('🛑 Su cuenta no ha sido aprobada. No puede modificar su perfil.');
             } else {
                 throw new Error();
             }
@@ -79,6 +85,13 @@ function PerfilMedico() {
                     </div>
                 )}
 
+                {bloqueado && (
+                    <div className="alert-error">
+                        🛑 Su cuenta está pendiente de aprobación por parte del administrador.
+                        No puede modificar su perfil hasta entonces.
+                    </div>
+                )}
+
                 <div className="foto-circular">
                     <img
                         src={perfil.rutaFotoPerfil ? `/api${perfil.rutaFotoPerfil}` : '/images/noPhoto.png'}
@@ -90,40 +103,40 @@ function PerfilMedico() {
                 <form onSubmit={handleSubmit} encType="multipart/form-data">
                     <div className="form-group">
                         <label>Nombre Completo</label>
-                        <input type="text" name="nombre" value={perfil.nombre} onChange={handleChange} required />
+                        <input type="text" name="nombre" value={perfil.nombre} onChange={handleChange} required disabled={bloqueado} />
                     </div>
 
                     <div className="form-group">
                         <label>Especialidad</label>
-                        <input type="text" name="especialidad" value={perfil.especialidad} onChange={handleChange} required />
+                        <input type="text" name="especialidad" value={perfil.especialidad} onChange={handleChange} required disabled={bloqueado} />
                     </div>
 
                     <div className="form-group">
                         <label>Costo de Consulta (USD)</label>
-                        <input type="number" name="costoConsulta" value={perfil.costoConsulta} onChange={handleChange} min="1" step="0.01" required />
+                        <input type="number" name="costoConsulta" value={perfil.costoConsulta} onChange={handleChange} min="1" step="0.01" required disabled={bloqueado} />
                     </div>
 
                     <div className="form-group">
                         <label>Localidad</label>
-                        <input type="text" name="localidad" value={perfil.localidad} onChange={handleChange} required />
+                        <input type="text" name="localidad" value={perfil.localidad} onChange={handleChange} required disabled={bloqueado} />
                     </div>
 
                     <div className="form-group">
                         <label>Frecuencia de Citas (minutos)</label>
-                        <input type="number" name="frecuenciaCitas" value={perfil.frecuenciaCitas} onChange={handleChange} min="10" max="120" required />
+                        <input type="number" name="frecuenciaCitas" value={perfil.frecuenciaCitas} onChange={handleChange} min="10" max="120" required disabled={bloqueado} />
                     </div>
 
                     <div className="form-group">
                         <label>Presentación Profesional</label>
-                        <textarea name="presentacion" value={perfil.presentacion} onChange={handleChange} rows="4" required />
+                        <textarea name="presentacion" value={perfil.presentacion} onChange={handleChange} rows="4" required disabled={bloqueado} />
                     </div>
 
                     <div className="form-group">
                         <label>Foto de Perfil</label>
-                        <input type="file" name="fotoPerfil" onChange={handleFileChange} accept="image/*" />
+                        <input type="file" name="fotoPerfil" onChange={handleFileChange} accept="image/*" disabled={bloqueado} />
                     </div>
 
-                    <button type="submit">Guardar Cambios</button>
+                    <button type="submit" disabled={bloqueado}>Guardar Cambios</button>
                 </form>
             </section>
         </main>
