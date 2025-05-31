@@ -1,7 +1,19 @@
-/* Fuente moderna y legible */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+/* Fuente profesional y limpia */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
-/* Reset */
+/* Variables base */
+:root {
+    --primary: #0d6efd;
+    --primary-dark: #0a58ca;
+    --bg-light: #f5f8fc;
+    --bg-nav: #eaf1fb;
+    --text-dark: #212529;
+    --text-light: #ffffff;
+    --shadow-soft: 0 4px 12px rgba(0, 0, 0, 0.08);
+    --radius: 10px;
+}
+
+/* Reset básico */
 * {
     margin: 0;
     padding: 0;
@@ -10,21 +22,22 @@
 
 body {
     font-family: 'Inter', sans-serif;
-    background-color: #f3f6fa;
-    color: #212529; /* Legible, elegante */
+    background-color: var(--bg-light);
+    color: var(--text-dark);
     font-size: 16px;
-    line-height: 1.65;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
 }
 
 /* Enlaces */
 a {
     text-decoration: none;
-    color: #0d6efd;
+    color: var(--primary);
     transition: color 0.3s ease;
 }
 
 a:hover {
-    color: #084298;
+    color: var(--primary-dark);
 }
 
 /* Botones base */
@@ -33,6 +46,7 @@ button {
     cursor: pointer;
     background: none;
     border: none;
+    outline: none;
 }
 
 /* HEADER */
@@ -40,8 +54,8 @@ header {
     position: sticky;
     top: 0;
     z-index: 999;
-    background-color: #ffffff;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+    background-color: #fff;
+    box-shadow: var(--shadow-soft);
 }
 
 /* Top bar */
@@ -49,25 +63,30 @@ header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 16px 40px;
-    background-color: #eef3f8;
-    border-bottom: 1px solid #d3dce6;
+    padding: 20px 40px;
+    background-color: #f1f5fb;
+    border-bottom: 1px solid #d0dae5;
 }
 
 .logo {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 14px;
 }
 
 .logo img {
-    height: 44px;
+    height: 48px;
+    transition: transform 0.3s ease;
+}
+
+.logo img:hover {
+    transform: scale(1.05);
 }
 
 .brand-title {
-    font-size: 22px;
+    font-size: 24px;
     font-weight: 700;
-    color: #002d72;
+    color: var(--primary-dark);
 }
 
 .contact-info {
@@ -77,15 +96,15 @@ header {
 
 /* NAV */
 .main-nav {
-    background-color: #e4effc;
-    padding: 12px 40px;
+    background-color: var(--bg-nav);
+    padding: 14px 40px;
 }
 
 .main-nav ul {
     display: flex;
     justify-content: flex-end;
     align-items: center;
-    gap: 20px;
+    gap: 24px;
     list-style: none;
     flex-wrap: wrap;
 }
@@ -94,30 +113,33 @@ header {
 .main-nav button {
     font-weight: 500;
     font-size: 15px;
-    color: #212529;
-    padding: 8px 14px;
-    border-radius: 6px;
-    transition: background-color 0.3s ease;
+    color: var(--text-dark);
+    padding: 10px 16px;
+    border-radius: var(--radius);
+    transition: all 0.3s ease;
 }
 
 .main-nav a:hover,
 .main-nav button:hover {
-    background-color: #d2e9ff;
-    color: #002d72;
+    background-color: rgba(13, 110, 253, 0.1);
+    color: var(--primary-dark);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
 }
 
-/* Botón de login */
+/* Botón destacado (login/usuario) */
 .login-button {
-    background-color: #0d6efd;
-    color: #ffffff !important;
+    background: linear-gradient(135deg, #0d6efd, #0a58ca);
+    color: var(--text-light) !important;
     font-weight: 600;
-    padding: 8px 18px;
-    border-radius: 6px;
-    transition: background-color 0.3s ease;
+    padding: 10px 20px;
+    border-radius: var(--radius);
+    box-shadow: 0 6px 20px rgba(13, 110, 253, 0.25);
+    transition: background 0.3s ease, transform 0.2s ease;
 }
 
 .login-button:hover {
-    background-color: #0a58ca;
+    transform: translateY(-2px);
+    background: linear-gradient(135deg, #0a58ca, #084298);
 }
 
 /* DROPDOWN */
@@ -129,15 +151,19 @@ header {
     position: absolute;
     top: 110%;
     right: 0;
-    background-color: #ffffff;
-    border-radius: 10px;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
-    min-width: 200px;
+    background: #fff;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-soft);
+    min-width: 220px;
     opacity: 0;
     visibility: hidden;
-    transform: translateY(-5px);
-    transition: all 0.2s ease-in-out;
-    z-index: 999;
+    transform: translateY(-10px);
+    transition: all 0.25s ease;
+    z-index: 1000;
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
 }
 
 .dropdown:hover .dropdown-content {
@@ -146,28 +172,29 @@ header {
     transform: translateY(0);
 }
 
-.dropdown-content li {
-    padding: 12px 20px;
-    font-size: 15px;
-    color: #212529;
-    transition: background-color 0.2s;
-    border-bottom: 1px solid #f1f1f1;
+/* Botones del dropdown */
+.dropdown-content button {
+    background: var(--primary);
+    color: var(--text-light);
+    font-weight: 500;
+    padding: 10px 14px;
+    border-radius: 8px;
+    transition: background 0.2s ease;
+    width: 100%;
+    text-align: left;
 }
 
-.dropdown-content li:last-child {
-    border-bottom: none;
-}
-
-.dropdown-content li:hover {
-    background-color: #f7faff;
+.dropdown-content button:hover {
+    background: var(--primary-dark);
 }
 
 /* FOOTER */
 footer {
-    background-color: #1b1f24;
-    color: #f1f1f1;
-    padding: 50px 20px;
+    background-color: #1c1f26;
+    color: var(--text-light);
+    padding: 60px 20px;
     text-align: center;
+    box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.08);
 }
 
 .footer-content {
@@ -176,28 +203,28 @@ footer {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 14px;
+    gap: 20px;
 }
 
 .footer-content p {
     font-size: 15px;
-    opacity: 0.95;
+    opacity: 0.9;
 }
 
 .social-icons {
     display: flex;
-    gap: 16px;
+    gap: 20px;
 }
 
 .social-icons img {
-    width: 28px;
-    height: 28px;
+    width: 30px;
+    height: 30px;
     filter: brightness(0) invert(1);
     transition: transform 0.3s ease;
 }
 
 .social-icons img:hover {
-    transform: scale(1.1);
+    transform: scale(1.15);
 }
 
 /* RESPONSIVE */
@@ -205,8 +232,8 @@ footer {
     .top-bar {
         flex-direction: column;
         text-align: center;
-        gap: 10px;
-        padding: 20px;
+        gap: 12px;
+        padding: 24px;
     }
 
     .main-nav {
@@ -216,7 +243,7 @@ footer {
     .main-nav ul {
         flex-direction: column;
         align-items: center;
-        gap: 14px;
+        gap: 16px;
     }
 
     .footer-content {
@@ -224,6 +251,6 @@ footer {
     }
 
     .logo img {
-        height: 40px;
+        height: 42px;
     }
 }
