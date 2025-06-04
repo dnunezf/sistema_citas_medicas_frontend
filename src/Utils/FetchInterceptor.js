@@ -1,10 +1,7 @@
-// src/utils/fetchInterceptor.js
 import { getToken, logout } from './Auth.js';
 
 export async function fetchWithInterceptor(url, options = {}) {
     const token = getToken();
-
-    // No enviar token en URLs de imágenes públicas
     const esRutaPublica = url.includes('/api/uploads/') || url.includes('/images/');
 
     const headers = new Headers(options.headers || {});
@@ -13,7 +10,11 @@ export async function fetchWithInterceptor(url, options = {}) {
         headers.set('Authorization', `Bearer ${token}`);
     }
 
-    if (!(options.body instanceof FormData)) {
+    if (
+        options.method &&
+        options.method.toUpperCase() !== 'GET' &&
+        !(options.body instanceof FormData)
+    ) {
         headers.set('Content-Type', 'application/json');
     }
 
@@ -33,5 +34,3 @@ export async function fetchWithInterceptor(url, options = {}) {
         throw error;
     }
 }
-
-

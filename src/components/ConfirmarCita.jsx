@@ -43,7 +43,7 @@ function ConfirmarCita() {
             return;
         }
 
-        fetchWithInterceptor(`/api/medico/citas/confirmar`, {
+        fetchWithInterceptor(`/api/paciente/citas/confirmar`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
