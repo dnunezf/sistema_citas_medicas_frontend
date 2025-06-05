@@ -94,7 +94,7 @@ function PerfilMedico() {
 
                 <div className="foto-circular">
                     <img
-                        src={perfil.rutaFotoPerfil ? `/api${perfil.rutaFotoPerfil}` : '/images/noPhoto.png'}
+                        src={perfil.rutaFotoPerfil ? perfil.rutaFotoPerfil : '/images/noPhoto.png'}
                         alt="Foto del médico"
                         onError={(e) => { e.target.onerror = null; e.target.src = '/images/noPhoto.png'; }}
                     />

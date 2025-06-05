@@ -11,7 +11,6 @@ async function fetchWithInterceptor(url, options = {}) {
     };
 
     const newOptions = { ...options, headers };
-
     return fetch(url, newOptions);
 }
 
@@ -53,7 +52,6 @@ const BuscarCita = () => {
             if (!res.ok) throw new Error("Error al cargar datos del dashboard");
 
             const data = await res.json();
-
             setMedicos(data.medicos);
             setEspaciosAgrupados(data.espaciosAgrupados);
             setHorasOcupadas(data.horasOcupadas);
@@ -66,6 +64,18 @@ const BuscarCita = () => {
     };
 
     useEffect(() => {
+        const usuario = JSON.parse(sessionStorage.getItem("usuario"));
+        if (usuario) {
+            if (usuario.rol === 'MEDICO') {
+                navigate(`/medico/${usuario.id}/gestion-citas`);
+                return;
+            } else if (usuario.rol === 'ADMINISTRADOR') {
+                navigate('/admin/medicos');
+                return;
+            }
+        }
+
+        // Solo pacientes o usuarios anónimos acceden al dashboard
         fetchDashboard();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
@@ -129,7 +139,7 @@ const BuscarCita = () => {
                         <div className="doctor-info">
                             <img
                                 className="foto-doctor"
-                                src={medico.rutaFotoPerfil ? `/api${medico.rutaFotoPerfil}` : '/images/noPhoto.png'}
+                                src={medico.rutaFotoPerfil ? medico.rutaFotoPerfil : '/images/noPhoto.png'}
                                 alt="Foto del médico"
                                 onError={(e) => { e.target.onerror = null; e.target.src = '/images/noPhoto.png'; }}
                             />

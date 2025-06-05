@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { fetchWithInterceptor } from '../Utils/FetchInterceptor.js'; // <-- importa aquí
+import { fetchWithInterceptor } from '../Utils/FetchInterceptor.js';
 import '../styles/auth/dashboard.css';
 
 function HorarioMedicoExtendido() {
@@ -9,9 +9,8 @@ function HorarioMedicoExtendido() {
     const [espacios, setEspacios] = useState({});
     const [ocupados, setOcupados] = useState([]);
 
-    // Función para mostrar la fecha correctamente con zona de Costa Rica
     const formatearFechaCR = (fechaISO) => {
-        const date = new Date(fechaISO + 'T00:00:00-06:00'); // Zona horaria CR
+        const date = new Date(fechaISO + 'T00:00:00-06:00');
         return date.toLocaleDateString('es-CR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
     };
 
@@ -31,6 +30,9 @@ function HorarioMedicoExtendido() {
                 const resEspacios = await fetchWithInterceptor(`/api/horarios/extendido/${id}`);
                 if (!resEspacios.ok) throw new Error('Error al cargar horarios');
                 const espaciosData = await resEspacios.json();
+                console.log("✅ Horarios extendidos recibidos:", JSON.stringify(espaciosData, null, 2));
+
+
                 setEspacios(espaciosData || {});
 
                 const resDashboard = await fetchWithInterceptor(`/api/dashboard`);
@@ -39,7 +41,6 @@ function HorarioMedicoExtendido() {
                 setOcupados(dashboardData.horasOcupadas[id] || []);
             } catch (error) {
                 console.error(error);
-                // Opcional: puedes agregar un estado para mostrar mensaje de error en UI
             }
         };
 
@@ -76,27 +77,31 @@ function HorarioMedicoExtendido() {
                     </div>
 
                     <div className="horarios">
-                        {Object.entries(espacios).map(([fecha, horas]) => (
-                            <div key={fecha}>
-                                <div className="fecha">{formatearFechaCR(fecha)}</div>
-                                <div className="horas">
-                                    {horas.map((hora) => {
-                                        const clase = esHoraOcupada(hora) ? "hora ocupada" : "hora";
-                                        const link = `/citas/confirmar?idMedico=${id}&fechaHora=${hora}`;
-                                        return (
-                                            <a
-                                                key={hora}
-                                                href={clase === "hora" ? link : undefined}
-                                                className={clase}
-                                                style={{ cursor: clase === "hora" ? 'pointer' : 'default' }}
-                                            >
-                                                {formatearHoraCR(hora)}
-                                            </a>
-                                        );
-                                    })}
+                        {Object.keys(espacios).length === 0 ? (
+                            <p>No hay horarios disponibles próximamente.</p>
+                        ) : (
+                            Object.entries(espacios).map(([fecha, horas]) => (
+                                <div key={fecha}>
+                                    <div className="fecha">{formatearFechaCR(fecha)}</div>
+                                    <div className="horas">
+                                        {horas.map((hora) => {
+                                            const clase = esHoraOcupada(hora) ? "hora ocupada" : "hora";
+                                            const link = `/citas/confirmar?idMedico=${id}&fechaHora=${hora}`;
+                                            return (
+                                                <a
+                                                    key={hora}
+                                                    href={clase === "hora" ? link : undefined}
+                                                    className={clase}
+                                                    style={{ cursor: clase === "hora" ? 'pointer' : 'default' }}
+                                                >
+                                                    {formatearHoraCR(hora)}
+                                                </a>
+                                            );
+                                        })}
+                                    </div>
                                 </div>
-                            </div>
-                        ))}
+                            ))
+                        )}
                     </div>
                 </div>
             )}
