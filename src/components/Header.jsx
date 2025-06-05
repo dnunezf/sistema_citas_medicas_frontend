@@ -13,6 +13,10 @@ const Header = () => {
     const handleLogout = () => {
         logout();
         setUsuario(null);
+
+        // Guardar mensaje temporal para mostrarlo en la página principal
+        sessionStorage.setItem("logoutMensaje", "Sesión cerrada con éxito.");
+        navigate("/");
     };
 
     const handlePerfil = () => {
@@ -25,9 +29,15 @@ const Header = () => {
     };
 
     const handleCitas = () => {
-        if (usuario?.rol === 'PACIENTE') navigate('/paciente/historico');
-        if (usuario?.rol === 'ADMINISTRADOR') navigate('/admin/medicos');
-        else navigate('/login');
+        if (!usuario) {
+            navigate('/login');
+        } else if (usuario.rol === 'PACIENTE') {
+            navigate('/paciente/historico');
+        } else if (usuario.rol === 'ADMINISTRADOR') {
+            navigate('/admin/medicos');
+        } else if (usuario.rol === 'MEDICO') {
+            navigate(`/medico/${usuario.id}/gestion-citas`);
+        }
     };
 
     const handleMouseEnter = () => {
@@ -57,6 +67,7 @@ const Header = () => {
                 <ul>
                     <li><Link to="/">Inicio</Link></li>
                     <li><button type="button" onClick={handleCitas}>Citas</button></li>
+
                     {!usuario ? (
                         <li><Link to="/login" className="login-button">Iniciar Sesión</Link></li>
                     ) : (

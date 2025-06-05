@@ -19,5 +19,5 @@ export function getRutaInicioPorRol(rol, id, perfilCompleto, estadoAprobacion) {
         return '/';
     }
 
-    return '/login'; // ruta por defecto si no se reconoce el rol
+    return '/'; // ruta por defecto si no se reconoce el rol
 }

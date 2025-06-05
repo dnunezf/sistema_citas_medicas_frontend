@@ -12,7 +12,13 @@ export function logout() {
 }
 
 export function getToken() {
-    // Función para obtener el token de sesión si necesitas usarla en algún lado
-    return sessionStorage.getItem('token');
+    // ✅ Primero intentamos extraerlo desde el objeto usuario
+    const usuario = JSON.parse(sessionStorage.getItem("usuario"));
+    if (usuario?.token) {
+        return usuario.token;
+    }
+
+    // ✅ Si no está ahí, lo sacamos de una clave separada (forma actual)
+    return sessionStorage.getItem("token");
 }
 

@@ -20,6 +20,14 @@ export async function fetchWithInterceptor(url, options = {}) {
 
     const newOptions = { ...options, headers };
 
+    // 🧪 LOGS DE DEPURACIÓN
+    console.log('🧪 Interceptando fetch →', {
+        url,
+        tokenUsado: token,
+        metodo: options.method || 'GET',
+        headers: Object.fromEntries(headers.entries())
+    });
+
     try {
         const response = await fetch(url, newOptions);
 
@@ -30,7 +38,7 @@ export async function fetchWithInterceptor(url, options = {}) {
 
         return response;
     } catch (error) {
-        console.error('Fetch error:', error);
+        console.error('❌ Error en fetch interceptado:', error);
         throw error;
     }
 }
