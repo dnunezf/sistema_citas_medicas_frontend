@@ -17,7 +17,8 @@ const RegistroUsuario = () => {
     const rolesDisponibles = ['PACIENTE', 'MEDICO'];
 
     const handleChange = (e) => {
-        setFormData({ ...formData, [e.target.name]: e.target.value });
+        const { name, value } = e.target;
+        setFormData({ ...formData, [name === "nombreCompleto" ? "nombre" : name]: value });
         setError('');
         setMensaje('');
         setErrorClave('');
@@ -96,7 +97,7 @@ const RegistroUsuario = () => {
                 {mensaje && <div className="alert-success">{mensaje}</div>}
                 {errorClave && <div className="error-text">{errorClave}</div>}
 
-                <form onSubmit={handleSubmit}>
+                <form onSubmit={handleSubmit} autoComplete="off">
                     <div className="input-container">
                         <i className="fas fa-user"></i>
                         <input
@@ -106,6 +107,7 @@ const RegistroUsuario = () => {
                             onChange={handleChange}
                             placeholder="ID de usuario"
                             required
+                            autoComplete="off"
                             title="Debe tener entre 9 y 15 dígitos numéricos"
                         />
                     </div>
@@ -114,11 +116,12 @@ const RegistroUsuario = () => {
                         <i className="fas fa-user-edit"></i>
                         <input
                             type="text"
-                            name="nombre"
+                            name="nombreCompleto"
                             value={formData.nombre}
                             onChange={handleChange}
                             placeholder="Nombre completo"
                             required
+                            autoComplete="off"
                             pattern="^[A-Za-zÁÉÍÓÚáéíóúÑñ\\s]+$"
                             title="Solo letras y espacios"
                         />
@@ -135,6 +138,7 @@ const RegistroUsuario = () => {
                             required
                             minLength={8}
                             maxLength={100}
+                            autoComplete="new-password"
                         />
                     </div>
 
@@ -148,6 +152,7 @@ const RegistroUsuario = () => {
                             placeholder="Confirmar contraseña"
                             required
                             maxLength={100}
+                            autoComplete="new-password"
                         />
                     </div>
 
