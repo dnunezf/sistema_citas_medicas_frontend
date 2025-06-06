@@ -38,7 +38,7 @@ const HistoricoCitas = () => {
             if (!res.ok) throw new Error('Error al cargar citas');
             const data = await res.json();
             setCitas(data);
-            setMensaje(data.length === 0 ? "No hay citas que coincidan con los filtros." : '');
+            setMensaje(data.length === 0 ? "No hay citas para mostrar." : '');
 
             const nuevosMedicos = {};
             await Promise.all(data.map(async cita => {

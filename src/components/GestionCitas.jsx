@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { fetchWithInterceptor } from '../Utils/FetchInterceptor.js'; // <-- importa aquí
+import { fetchWithInterceptor } from '../Utils/FetchInterceptor.js';
 import '../styles/auth/gestion_citas.css';
 
 const GestionCitas = ({ idMedico }) => {
@@ -11,6 +11,18 @@ const GestionCitas = ({ idMedico }) => {
     const [error, setError] = useState('');
     const [actualizandoId, setActualizandoId] = useState(null);
     const [mensaje, setMensaje] = useState('');
+
+    const cargarNombreMedico = async () => {
+        try {
+            const res = await fetchWithInterceptor(`/api/medicos/${idMedico}`);
+            if (res.ok) {
+                const medico = await res.json();
+                setMedicoNombre(medico.nombre || 'N/D');
+            }
+        } catch (err) {
+            console.error("Error al cargar el nombre del médico:", err);
+        }
+    };
 
     const cargarCitas = async () => {
         let url = `/api/medico/citas/${idMedico}`;
@@ -29,23 +41,20 @@ const GestionCitas = ({ idMedico }) => {
             if (res.ok) {
                 const data = await res.json();
                 setCitas(data);
-                if (data.length > 0) setMedicoNombre(data[0].nombreMedico);
-                else setMedicoNombre('');
             } else {
                 setError("Error al cargar citas.");
                 setCitas([]);
-                setMedicoNombre('');
             }
         } catch {
             setError("Error de red al cargar citas.");
             setCitas([]);
-            setMedicoNombre('');
         } finally {
             setLoading(false);
         }
     };
 
     useEffect(() => {
+        cargarNombreMedico();
         cargarCitas();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [estado, nombrePaciente]);
