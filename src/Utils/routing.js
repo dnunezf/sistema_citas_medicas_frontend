@@ -1,13 +1,12 @@
-// src/utils/routing.js
 export function getRutaInicioPorRol(rol, id, perfilCompleto, estadoAprobacion) {
     if (rol === 'MEDICO') {
-        // Si aún no está aprobado, siempre va al perfil (aunque lo tenga completo)
-        if (estadoAprobacion !== 'aprobado') {
+        const estado = (estadoAprobacion || '').toLowerCase();
+        if (estado !== 'aprobado') {
             return `/medico/perfil/${id}`;
         }
 
         return perfilCompleto
-            ? `/citas/medico/${id}`
+            ? `/medico/${id}/gestion-citas`
             : `/medico/perfil/${id}`;
     }
 
@@ -19,5 +18,5 @@ export function getRutaInicioPorRol(rol, id, perfilCompleto, estadoAprobacion) {
         return '/';
     }
 
-    return '/'; // ruta por defecto si no se reconoce el rol
+    return '/';
 }
