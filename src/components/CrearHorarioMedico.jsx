@@ -86,6 +86,7 @@ function HorariosMedicoExtendido() {
             method: metodo,
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
+                idMedico,
                 diaSemana: dia,
                 horaInicio,
                 horaFin,
