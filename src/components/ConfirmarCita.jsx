@@ -69,7 +69,7 @@ function ConfirmarCita() {
             })
             .catch(e => {
                 setMensaje('');
-                setError("❌ Error al confirmar la cita: " + e.message);
+                setError(e.message);
             });
     };
 

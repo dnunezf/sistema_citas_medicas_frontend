@@ -13,8 +13,6 @@ const Header = () => {
     const handleLogout = () => {
         logout();
         setUsuario(null);
-
-        // Guardar mensaje temporal para mostrarlo en la página principal
         sessionStorage.setItem("logoutMensaje", "Sesión cerrada con éxito.");
         navigate("/");
     };
@@ -33,8 +31,6 @@ const Header = () => {
             navigate('/login');
         } else if (usuario.rol === 'PACIENTE') {
             navigate('/paciente/historico');
-        } else if (usuario.rol === 'ADMINISTRADOR') {
-            navigate('/admin/medicos');
         } else if (usuario.rol === 'MEDICO') {
             navigate(`/medico/${usuario.id}/gestion-citas`);
         }
@@ -65,9 +61,17 @@ const Header = () => {
 
             <nav className="main-nav" role="navigation">
                 <ul>
-                    <li><Link to="/">Inicio</Link></li>
-                    <li><button type="button" onClick={handleCitas}>Citas</button></li>
+                    {/* Mostrar "Inicio" solo si es PACIENTE o no ha iniciado sesión */}
+                    {(!usuario || usuario.rol === 'PACIENTE') && (
+                        <li><Link to="/">Inicio</Link></li>
+                    )}
 
+                    {/* Mostrar "Citas" solo si es PACIENTE o MÉDICO */}
+                    {usuario?.rol === 'PACIENTE' || usuario?.rol === 'MEDICO' ? (
+                        <li><button type="button" onClick={handleCitas}>Citas</button></li>
+                    ) : null}
+
+                    {/* Mostrar Login si no hay usuario */}
                     {!usuario ? (
                         <li><Link to="/login" className="login-button">Iniciar Sesión</Link></li>
                     ) : (
@@ -79,9 +83,17 @@ const Header = () => {
                                 <button type="button" className="login-button">{usuario.nombre}</button>
                                 {dropdownOpen && (
                                     <ul className="dropdown-content">
-                                        <li><button onClick={handlePerfil}>Perfil</button></li>
-                                        {usuario.rol === 'MEDICO' && <li><button onClick={handleCrearHorario}>Crear Horarios</button></li>}
-                                        {usuario.rol === 'ADMINISTRADOR' && <li><button onClick={() => navigate('/admin/medicos')}>Gestión Médicos</button></li>}
+                                        {/* Perfil para PACIENTE y MÉDICO */}
+                                        {usuario.rol === 'PACIENTE' && (
+                                            <li><button onClick={handlePerfil}>Perfil</button></li>
+                                        )}
+                                        {usuario.rol === 'MEDICO' && (
+                                            <>
+                                                <li><button onClick={handlePerfil}>Perfil</button></li>
+                                                <li><button onClick={handleCrearHorario}>Crear Horarios</button></li>
+                                            </>
+                                        )}
+                                        {/* Solo cierre de sesión para ADMIN */}
                                         <li><button onClick={handleLogout}>Cerrar Sesión</button></li>
                                     </ul>
                                 )}
