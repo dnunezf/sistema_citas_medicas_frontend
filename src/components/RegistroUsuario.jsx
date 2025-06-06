@@ -122,7 +122,7 @@ const RegistroUsuario = () => {
                             placeholder="Nombre completo"
                             required
                             autoComplete="off"
-                            pattern="^[A-Za-zÁÉÍÓÚáéíóúÑñ\\s]+$"
+                            pattern="^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$"
                             title="Solo letras y espacios"
                         />
                     </div>
